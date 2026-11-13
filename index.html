@@ -1,0 +1,3256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旅行足迹 · 我们的世界足迹</title>
+<style>
+  @font-face {
+    font-family: 'TravelSerif';
+    src: url('public/fonts/noto-serif-sc-500-subset.woff') format('woff');
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #F2EDE4;
+    --muted: #8A8F98;
+    --bg: #0A0A0B;
+    --serif: 'TravelSerif', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', serif;
+    --sans: -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0A0A0B;
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    position: relative;
+    background: #0A0A0B;
+  }
+
+  /* 稀疏星空 */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,.25) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 44% 32%, rgba(255,255,255,.3) 50%, transparent 51%),
+      radial-gradient(1px 1px at 62% 82%, rgba(255,255,255,.22) 50%, transparent 51%),
+      radial-gradient(1.1px 1.1px at 76% 22%, rgba(255,255,255,.3) 50%, transparent 51%),
+      radial-gradient(1px 1px at 88% 58%, rgba(255,255,255,.22) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 62%, rgba(255,255,255,.2) 50%, transparent 51%),
+      radial-gradient(1px 1px at 36% 8%, rgba(255,255,255,.25) 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 52%, rgba(255,255,255,.2) 50%, transparent 51%),
+      radial-gradient(1px 1px at 94% 90%, rgba(255,255,255,.22) 50%, transparent 51%),
+      radial-gradient(1px 1px at 18% 92%, rgba(255,255,255,.2) 50%, transparent 51%),
+      radial-gradient(1px 1px at 70% 44%, rgba(255,255,255,.22) 50%, transparent 51%);
+    opacity: .32;
+  }
+
+  #globe {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1;
+    overflow: hidden;
+    transition: left 600ms var(--ease-out-expo), width 600ms var(--ease-out-expo);
+  }
+
+  #globe canvas { outline: none; }
+
+  body.is-trips #globe {
+    left: 480px;
+    width: calc(100vw - 480px);
+    width: calc(100dvw - 480px);
+  }
+
+  /* 近黑暗角 */
+  #vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at 50% 45%,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0) 32%,
+      rgba(0,0,0,.24) 62%,
+      rgba(2,2,3,.72) 100%
+    );
+    opacity: 0;
+    transition: opacity 600ms ease;
+    will-change: opacity;
+  }
+
+  body.is-focusing #vignette { opacity: 1; }
+
+  .marker-wrap { z-index: 3; }
+
+  /* 标题块 */
+  .header {
+    position: fixed;
+    top: 48px;
+    left: 48px;
+    z-index: 5;
+    pointer-events: none;
+    max-width: 72vw;
+  }
+
+  .header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-family: var(--sans);
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 4vw, 56px);
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .header .stats {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .header .stats span {
+    color: var(--ink);
+  }
+
+  /* 视图切换 */
+  .view-switch {
+    margin-top: 20px;
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    pointer-events: auto;
+  }
+
+  .view-switch button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 250ms var(--ease-out-expo), color 250ms var(--ease-out-expo);
+    font-family: var(--sans);
+    outline: none;
+  }
+
+  .view-switch button:hover { color: var(--ink); }
+
+  .view-switch button.active {
+    background: var(--ink);
+    color: #111;
+  }
+
+  .view-switch button:focus-visible {
+    box-shadow: 0 0 0 2px rgba(242,237,228,0.4);
+  }
+
+  /* 顶部导航 */
+  .top-nav {
+    position: fixed;
+    top: 48px;
+    right: 48px;
+    z-index: 25;
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .top-nav button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 250ms var(--ease-out-expo), color 250ms var(--ease-out-expo);
+    font-family: var(--sans);
+    outline: none;
+  }
+
+  .top-nav button:hover { color: var(--ink); }
+
+  .top-nav button.active {
+    background: var(--ink);
+    color: #111;
+  }
+
+  .top-nav button:focus-visible {
+    box-shadow: 0 0 0 2px rgba(242,237,228,0.4);
+  }
+
+  /* 标记外层 */
+  .marker-wrap {
+    width: 0;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+  }
+
+  /* 标记内层 */
+  .place-marker {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #1a1a1c;
+    border: 1.5px solid rgba(255,255,255,0.85);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    pointer-events: auto;
+    cursor: pointer;
+    position: relative;
+    transform: translate(-50%, -50%) scale(1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    will-change: transform, opacity;
+    transition: transform 200ms ease, opacity 300ms ease;
+    outline: none;
+  }
+
+  .place-marker:hover,
+  .place-marker:focus-visible {
+    transform: translate(-50%, -50%) scale(1.12);
+    z-index: 10;
+  }
+
+  body.is-focusing .place-marker {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.8);
+    pointer-events: none;
+  }
+
+  body.is-focusing .place-marker.is-selected {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.35);
+    pointer-events: auto;
+    transition: transform 400ms var(--ease-out-expo), opacity 300ms ease;
+  }
+
+  /* 旅行详情联动：其他标记淡出 */
+  body.trip-detail .place-marker:not(.is-trip-in) {
+    opacity: 0.25;
+  }
+
+  .marker-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .marker-label {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: rgba(12,12,14,0.9);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.12);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
+
+  .place-marker:hover .marker-label,
+  .place-marker:focus-visible .marker-label {
+    opacity: 1;
+  }
+
+  .marker-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #111;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  /* 飞行浮层照片 */
+  .fly-photo {
+    position: fixed;
+    z-index: 30;
+    border-radius: 4px;
+    overflow: hidden;
+    object-fit: cover;
+    pointer-events: none;
+    will-change: transform, opacity, width, height, top, left;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  }
+
+  /* 详情面板 */
+  .panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100dvh;
+    width: 440px;
+    z-index: 20;
+    background: rgba(12,12,14,0.72);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border-left: 1px solid rgba(255,255,255,0.06);
+    opacity: 0;
+    transform: translateX(24px);
+    visibility: hidden;
+    transition: opacity 500ms var(--ease-out-expo),
+                transform 500ms var(--ease-out-expo),
+                visibility 0s linear 500ms;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    will-change: transform, opacity;
+  }
+
+  .panel.open {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition: opacity 500ms var(--ease-out-expo),
+                transform 500ms var(--ease-out-expo),
+                visibility 0s linear 0s;
+  }
+
+  .panel.closing {
+    opacity: 0;
+    transform: translateX(24px);
+    visibility: hidden;
+    transition: opacity 300ms var(--ease-out-expo),
+                transform 300ms var(--ease-out-expo),
+                visibility 0s linear 300ms;
+  }
+
+  .panel-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 48px 32px 40px;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .panel-scroll::-webkit-scrollbar { display: none; }
+
+  .panel-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.06);
+    color: #F2EDE4;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 200ms ease;
+    outline: none;
+  }
+
+  .panel-close:hover { background: rgba(255,255,255,0.12); }
+  .panel-close:focus-visible { box-shadow: 0 0 0 2px rgba(242,237,228,0.5); }
+
+  .panel-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--ink);
+    padding-right: 40px;
+  }
+
+  .panel-cities {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  .panel-date {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .main-photo-wrap {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    position: relative;
+    aspect-ratio: 4 / 5;
+  }
+
+  .main-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    will-change: opacity;
+  }
+
+  .main-photo.loaded { opacity: 1; }
+
+  .main-caption {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .main-caption:empty { display: none; }
+
+  .panel-memory {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(242,237,228,0.72);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .thumbs {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+  }
+
+  .thumbs::-webkit-scrollbar { display: none; }
+
+  .thumb {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+    background: rgba(255,255,255,0.04);
+    padding: 0;
+    display: block;
+    opacity: 0.45;
+    transition: opacity 200ms ease;
+    outline: none;
+  }
+
+  .thumb:hover { opacity: 0.8; }
+  .thumb.active { opacity: 1; }
+  .thumb:focus-visible { box-shadow: 0 0 0 2px rgba(242,237,228,0.6); }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .error-msg {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    color: rgba(242,237,228,0.85);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    pointer-events: none;
+  }
+
+  /* ---------- 旅行页 ---------- */
+  body.is-trips .header { display: none; }
+
+  #trips-pane {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 480px;
+    z-index: 22;
+    background: rgba(10,10,11,0.86);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border-right: 1px solid rgba(255,255,255,0.06);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 48px 40px 64px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    opacity: 0;
+    transform: translateX(-24px);
+    visibility: hidden;
+    transition: opacity 300ms var(--ease-out-expo),
+                transform 300ms var(--ease-out-expo),
+                visibility 0s linear 300ms;
+    will-change: transform, opacity;
+  }
+
+  #trips-pane::-webkit-scrollbar { display: none; }
+
+  #trips-pane.open {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition: opacity 500ms var(--ease-out-expo),
+                transform 500ms var(--ease-out-expo),
+                visibility 0s linear 0s;
+  }
+
+  .trips-head .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: #8A8F98;
+    text-transform: uppercase;
+  }
+
+  .trips-head h2 {
+    margin-top: 10px;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 40px;
+    letter-spacing: 0.04em;
+    color: #F2EDE4;
+    line-height: 1.1;
+  }
+
+  .trips-head .stat {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #8A8F98;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .trips-head .stat span { color: #F2EDE4; }
+
+  .trips-body { margin-top: 40px; }
+
+  /* 列表视图容器 */
+  #trips-list {
+    transition: opacity 400ms var(--ease-out-expo), transform 400ms var(--ease-out-expo);
+  }
+
+  #trips-list.hide {
+    opacity: 0;
+    transform: translateX(-16px);
+    pointer-events: none;
+  }
+
+  /* 详情视图容器 */
+  #trips-detail {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 48px;
+    bottom: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    opacity: 0;
+    transform: translateX(16px);
+    pointer-events: none;
+    transition: opacity 400ms var(--ease-out-expo), transform 400ms var(--ease-out-expo);
+    padding-bottom: 64px;
+  }
+  #trips-detail::-webkit-scrollbar { display: none; }
+
+  #trips-detail.show {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* 组 */
+  .trip-group { margin-bottom: 40px; }
+  .trip-group:last-child { margin-bottom: 0; }
+
+  .trip-group-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    color: #F2EDE4;
+    letter-spacing: 0.02em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .trip-group-cards { margin-top: 16px; }
+
+  /* 卡片 */
+  .trip-card {
+    display: block;
+    margin-bottom: 28px;
+    padding: 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: background 300ms ease, box-shadow 300ms ease;
+  }
+
+  .trip-group-cards > .trip-card:last-child { margin-bottom: 0; }
+
+  .trip-card:hover { background: rgba(255,255,255,0.03); }
+
+  .trip-card.is-active {
+    background: rgba(255,255,255,0.04);
+  }
+
+  .trip-card.is-active.flash {
+    box-shadow: 0 0 0 1px rgba(242,237,228,0.35);
+  }
+
+  .trip-card:focus-visible {
+    box-shadow: 0 0 0 2px rgba(242,237,228,0.4);
+  }
+
+  .trip-cover {
+    aspect-ratio: 16 / 10;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #141416;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trip-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 600ms var(--ease-out-expo);
+  }
+
+  .trip-card:hover .trip-cover img {
+    transform: scale(1.03);
+  }
+
+  .trip-cover .cover-fallback {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: rgba(242,237,228,0.28);
+    text-align: center;
+    padding: 0 12px;
+  }
+
+  .trip-text { margin-top: 14px; }
+
+  .trip-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    color: #F2EDE4;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  .trip-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #8A8F98;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+  }
+
+  .trip-meta:empty { display: none; }
+
+  .trips-loading,
+  .trips-error {
+    font-size: 12px;
+    color: #8A8F98;
+    letter-spacing: 0.04em;
+  }
+
+  /* 详情视图内部 */
+  .detail-back {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: #8A8F98;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    font-family: var(--sans);
+    letter-spacing: 0.03em;
+    transition: color 200ms ease;
+    outline: none;
+  }
+
+  .detail-back:hover { color: #F2EDE4; }
+  .detail-back:focus-visible { color: #F2EDE4; text-decoration: underline; }
+
+  .detail-title {
+    margin-top: 24px;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: #F2EDE4;
+  }
+
+  .detail-meta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #8A8F98;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+  }
+
+  .detail-countries {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #8A8F98;
+    letter-spacing: 0.03em;
+  }
+
+  .detail-section-title {
+    margin: 32px 0 12px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: #8A8F98;
+    text-transform: uppercase;
+  }
+
+  .visit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .visit-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+  .visit-dates {
+    font-size: 13px;
+    color: #F2EDE4;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .visit-note {
+    font-size: 13px;
+    color: rgba(242,237,228,0.72);
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .stop-row {
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-family: var(--serif);
+    font-size: 16px;
+    color: #F2EDE4;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: color 200ms ease;
+  }
+
+  .stop-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .stop-row:hover { color: #E8C98A; }
+
+  .detail-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .detail-photo {
+    border-radius: 3px;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    background: rgba(255,255,255,0.04);
+    cursor: zoom-in;
+    display: block;
+    outline: none;
+  }
+
+  .detail-photo:focus-visible { box-shadow: 0 0 0 2px rgba(242,237,228,0.6); }
+
+  .detail-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 灯箱 */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(6,6,7,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  .lightbox.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 300ms ease, visibility 0s linear 0s;
+  }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 86vh;
+    object-fit: contain;
+    transform: scale(0.98);
+    transition: transform 300ms cubic-bezier(0.16,1,0.3,1);
+    display: block;
+  }
+
+  .lightbox.open img { transform: scale(1); }
+
+  .lb-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: #F2EDE4;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+  }
+
+  .lb-close:hover { background: rgba(255,255,255,0.16); }
+  .lb-close:focus-visible { box-shadow: 0 0 0 2px rgba(242,237,228,0.5); }
+
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: #F2EDE4;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+  }
+
+  .lb-nav:hover { background: rgba(255,255,255,0.16); }
+  .lb-nav:focus-visible { box-shadow: 0 0 0 2px rgba(242,237,228,0.5); }
+  .lb-prev { left: 24px; }
+  .lb-next { right: 24px; }
+
+  @media (max-width: 767px) {
+    .header {
+      top: 24px;
+      left: 24px;
+    }
+
+    .top-nav {
+      top: 20px;
+      right: 20px;
+    }
+
+    .panel {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: auto;
+      max-height: 78vh;
+      border-left: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px 16px 0 0;
+      transform: translateY(24px);
+    }
+
+    .panel.closing { transform: translateY(24px); }
+
+    .panel-scroll {
+      padding: 40px 24px 32px;
+    }
+
+    .panel-title { font-size: 26px; }
+
+    .main-photo-wrap { aspect-ratio: 4 / 5; }
+
+    /* 手机：上下布局 */
+    body.is-trips #globe {
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 42vh;
+      height: 42dvh;
+    }
+
+    #trips-pane {
+      top: 42vh;
+      top: 42dvh;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      border-right: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 28px 20px 48px;
+      transform: translateY(24px);
+    }
+
+    #trips-pane.open { transform: none; }
+
+    #trips-detail {
+      left: 20px;
+      right: 20px;
+      top: 28px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel, .panel.open, .panel.closing {
+      transition: none !important;
+    }
+    .main-photo { transition: none !important; }
+    .place-marker { transition: none !important; }
+    .marker-wrap { transition: none !important; }
+    #globe { transition: none !important; }
+    #trips-pane { transition: none !important; }
+    #trips-list { transition: none !important; }
+    #trips-detail { transition: none !important; }
+    .trip-card { transition: none !important; }
+    .trip-cover img { transition: none !important; }
+    .trip-card.is-active.flash { box-shadow: none !important; }
+    .lightbox, .lightbox img { transition: none !important; }
+    .lightbox img { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div id="globe"></div>
+
+  <div id="vignette"></div>
+
+  <div class="header" id="header">
+    <div class="eyebrow">OUR FOOTPRINTS</div>
+    <h1 id="site-title">我们的足迹</h1>
+    <div class="stats" id="site-subtitle"></div>
+    <div class="view-switch" id="view-switch" role="tablist" aria-label="视图切换">
+      <button type="button" id="view-world" class="active" role="tab" aria-selected="true">世界</button>
+      <button type="button" id="view-china" role="tab" aria-selected="false">中国</button>
+    </div>
+  </div>
+
+  <nav class="top-nav" id="top-nav" aria-label="页面导航">
+    <button type="button" id="nav-map" class="active">地图</button>
+    <button type="button" id="nav-trips">旅行</button>
+  </nav>
+
+  <aside class="panel" id="panel" aria-hidden="true">
+    <button class="panel-close" id="panel-close" aria-label="关闭">×</button>
+    <div class="panel-scroll" id="panel-scroll">
+      <div class="panel-title" id="panel-title"></div>
+      <div class="panel-cities" id="panel-cities" style="display:none;"></div>
+      <div class="panel-date" id="panel-date" style="display:none;"></div>
+      <div class="main-photo-wrap" id="main-photo-wrap">
+        <img class="main-photo" id="panel-main-photo" alt="">
+      </div>
+      <div class="main-caption" id="panel-main-caption"></div>
+      <div class="panel-memory" id="panel-memory" style="display:none;"></div>
+      <div class="thumbs" id="panel-thumbs"></div>
+    </div>
+  </aside>
+
+  <div id="trips-pane" aria-hidden="true">
+    <div id="trips-list">
+      <div class="trips-head">
+        <div class="eyebrow">OUR TRIPS</div>
+        <h2>旅行</h2>
+        <div class="stat" id="trips-count"></div>
+      </div>
+      <div class="trips-body" id="trips-body">
+        <div class="trips-loading" id="trips-loading">加载中…</div>
+      </div>
+    </div>
+    <div id="trips-detail" aria-hidden="true"></div>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-close" id="lb-close" aria-label="关闭">×</button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="上一张">‹</button>
+    <img id="lb-img" alt="">
+    <button class="lb-nav lb-next" id="lb-next" aria-label="下一张">›</button>
+  </div>
+
+  <script src="public/lib/globe.gl.min.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    const PREFIX = 'public/';
+
+    const prefersReducedMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const FOCUS_SEGMENT_1 = prefersReducedMotion ? 0 : 600;
+    const FOCUS_SEGMENT_2 = prefersReducedMotion ? 0 : 1000;
+    const RETURN_DURATION = prefersReducedMotion ? 0 : 1000;
+
+    const UK_CLUSTER_THRESHOLD = 0.8;
+    const UK_COUNTRIES = ['英国'];
+
+    const COUNTRY_CENTERS = {
+      '韩国': [36.5, 127.9], '法国': [46.6, 2.4], '冰岛': [64.9, -18.6],
+      '葡萄牙': [39.6, -8.0], '西班牙': [40.2, -3.6], '瑞士': [46.8, 8.2],
+      '泰国': [15.1, 101.0], '摩洛哥': [31.8, -7.1], '英国': [54.0, -2.5],
+      '意大利': [42.8, 12.5], '梵蒂冈': [41.9, 12.45], '希腊': [39.1, 22.0],
+      '马来西亚': [4.2, 102.0], '中国': [35.0, 105.0]
+    };
+
+    /* ---------- 全局状态 ---------- */
+    let globe = null;
+    let globeContainer = null;
+    let allPlaces = [];
+    let places = [];
+    let placesById = {};
+    let view = 'world';
+    let panelOpen = false;
+    let selectedPlaceId = null;
+    let hoveredPlaceId = null;
+    let autoRotateTimer = null;
+    let currentViewPoint = null;
+    let currentPlace = null;
+    let currentPhotos = [];
+    let currentPhotoIndex = 0;
+    let lastTriggerEl = null;
+    let lastClusterAltitude = null;
+
+    let worldCountries = null;
+    let chinaProvinces = null;
+    let chinaProvincesLoading = null;
+    let chinaProvincesFailed = false;
+
+    let arcsAll = [];
+    let arcsDimmed = false;
+
+    let cameraAnim = null;
+    let focusSequenceToken = 0;
+
+    let mainPhotoLoadToken = 0;
+
+    let flyOverlay = null;
+    let flyAnimToken = 0;
+    let markerFadeRaf = null;
+
+    // 旅行页状态
+    let tripsData = null;
+    let tripsLoadFailed = false;
+    let tripsLoadStarted = false;
+    let tripsLoadPromise = null;
+    let currentRoute = { page: 'map', tripId: null };
+    let tripInDetail = null; // 当前详情的 trip 对象
+    let firstTripsLoadDone = false;
+    let wasOnTrips = false;
+    let listScrollPos = 0;
+
+    // 灯箱
+    let lbPhotos = [];
+    let lbIndex = 0;
+    let lbReturnFocus = null;
+
+    const panel = document.getElementById('panel');
+    const panelScroll = document.getElementById('panel-scroll');
+    const panelTitle = document.getElementById('panel-title');
+    const panelCities = document.getElementById('panel-cities');
+    const panelDate = document.getElementById('panel-date');
+    const panelMemory = document.getElementById('panel-memory');
+    const mainPhotoWrap = document.getElementById('main-photo-wrap');
+    const panelMainPhoto = document.getElementById('panel-main-photo');
+    const panelMainCaption = document.getElementById('panel-main-caption');
+    const panelThumbs = document.getElementById('panel-thumbs');
+    const panelCloseBtn = document.getElementById('panel-close');
+    const siteTitle = document.getElementById('site-title');
+    const siteSubtitle = document.getElementById('site-subtitle');
+    const viewWorldBtn = document.getElementById('view-world');
+    const viewChinaBtn = document.getElementById('view-china');
+
+    const navMapBtn = document.getElementById('nav-map');
+    const navTripsBtn = document.getElementById('nav-trips');
+    const tripsPane = document.getElementById('trips-pane');
+    const tripsList = document.getElementById('trips-list');
+    const tripsDetail = document.getElementById('trips-detail');
+    const tripsBody = document.getElementById('trips-body');
+    const tripsLoading = document.getElementById('trips-loading');
+    const tripsCount = document.getElementById('trips-count');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const lbClose = document.getElementById('lb-close');
+    const lbPrev = document.getElementById('lb-prev');
+    const lbNext = document.getElementById('lb-next');
+
+    /* ---------- 缓动 ---------- */
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+    function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+
+    /* ---------- 相机补间 ---------- */
+    function normalizeLngDelta(from, to) {
+      let d = to - from;
+      while (d > 180) d -= 360;
+      while (d < -180) d += 360;
+      return d;
+    }
+
+    function cancelCameraAnimation() {
+      if (cameraAnim) {
+        cameraAnim.cancelled = true;
+        cancelAnimationFrame(cameraAnim.raf);
+        try { cameraAnim.resolve({ cancelled: true }); } catch (e) { /* ignore */ }
+        cameraAnim = null;
+      }
+    }
+
+    function animateCamera(target, duration, easing) {
+      if (!globe) return Promise.resolve({ cancelled: false });
+      cancelCameraAnimation();
+
+      const dur = prefersReducedMotion ? 0 : Math.max(0, duration);
+      const ease = easing || easeInOutCubic;
+
+      const start = globe.pointOfView();
+      const fromLat = start.lat;
+      const fromLng = start.lng;
+      const fromAlt = start.altitude;
+      const toLat = Number(target.lat);
+      const toLng = Number(target.lng);
+      const toAlt = Number(target.altitude);
+      const dLng = normalizeLngDelta(fromLng, toLng);
+
+      if (dur === 0) {
+        globe.pointOfView({ lat: toLat, lng: toLng, altitude: toAlt }, 0);
+        checkClusterThreshold();
+        return Promise.resolve({ cancelled: false });
+      }
+
+      return new Promise(function (resolve) {
+        const anim = { raf: 0, cancelled: false, resolve: resolve };
+        cameraAnim = anim;
+        const t0 = performance.now();
+
+        function frame(now) {
+          if (anim.cancelled) return;
+          const p = Math.min(1, (now - t0) / dur);
+          const e = ease(p);
+          const lat = fromLat + (toLat - fromLat) * e;
+          const lng = fromLng + dLng * e;
+          const alt = fromAlt + (toAlt - fromAlt) * e;
+          globe.pointOfView({ lat: lat, lng: lng, altitude: alt }, 0);
+          checkClusterThreshold();
+
+          if (p < 1) {
+            anim.raf = requestAnimationFrame(frame);
+          } else {
+            cameraAnim = null;
+            resolve({ cancelled: false });
+          }
+        }
+        anim.raf = requestAnimationFrame(frame);
+      });
+    }
+
+    /* ---------- 英国聚合阈值 ---------- */
+    function checkClusterThreshold() {
+      if (!globe || view !== 'world') return;
+      if (currentRoute.page === 'trips') return;
+      const alt = globe.pointOfView().altitude;
+      if (lastClusterAltitude === null) { lastClusterAltitude = alt; return; }
+      const wasAbove = lastClusterAltitude > UK_CLUSTER_THRESHOLD;
+      const isAbove = alt > UK_CLUSTER_THRESHOLD;
+      lastClusterAltitude = alt;
+      if (wasAbove !== isAbove) {
+        refreshMarkerData();
+      }
+    }
+
+    /* ---------- 工具 ---------- */
+    function fullPath(p) {
+      if (!p) return '';
+      if (/^(https?:)?\/\//.test(p) || p.startsWith('data:')) return p;
+      if (p.startsWith('public/')) return p;
+      return PREFIX + p;
+    }
+
+    function clearAutoRotateTimer() {
+      if (autoRotateTimer) {
+        clearTimeout(autoRotateTimer);
+        autoRotateTimer = null;
+      }
+    }
+
+    function stopAutoRotate() {
+      clearAutoRotateTimer();
+      if (globe && globe.controls()) {
+        globe.controls().autoRotate = false;
+      }
+    }
+
+    function canAutoRotate() {
+      return view === 'world' && !panelOpen && !selectedPlaceId && !hoveredPlaceId &&
+        !document.hidden && currentRoute.page !== 'trips';
+    }
+
+    function scheduleAutoRotate(delay) {
+      clearAutoRotateTimer();
+      if (!canAutoRotate()) return;
+      if (prefersReducedMotion) return;
+      autoRotateTimer = setTimeout(function () {
+        autoRotateTimer = null;
+        if (canAutoRotate() && globe && globe.controls()) {
+          globe.controls().autoRotate = true;
+        }
+      }, typeof delay === 'number' ? delay : 3000);
+    }
+
+    /* ---------- URL / 历史 ---------- */
+    function getPlaceIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('place');
+    }
+
+    function pushPlaceParam(id) {
+      try {
+        const url = new URL(window.location.href);
+        if (id) url.searchParams.set('place', id);
+        else url.searchParams.delete('place');
+        history.pushState({ placeId: id || null }, '', url.pathname + url.search + url.hash);
+      } catch (e) { /* ignore */ }
+    }
+
+    function replaceWithoutPlace() {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('place');
+        history.replaceState({ placeId: null }, '', url.pathname + url.search + url.hash);
+      } catch (e) { /* ignore */ }
+    }
+
+    /* ---------- 数据构建 ---------- */
+    function toMarker(p) {
+      return {
+        id: p.id,
+        name: p.name,
+        country: p.country,
+        province: p.province || null,
+        lat: Number(p.lat) || 0,
+        lng: Number(p.lng) || 0,
+        cover: p.cover,
+        photos: (p.photos || []).slice(),
+        date: p.date || null,
+        memory: p.memory || '',
+        scope: p.scope || 'world',
+        isCluster: false,
+        count: 1
+      };
+    }
+
+    function clusterByCountry(placesList, countries, altitude) {
+      const result = [];
+      const groups = {};
+
+      placesList.forEach(function (p) {
+        if (p.isCluster) { result.push(p); return; }
+        if (countries.indexOf(p.country) >= 0) {
+          if (!groups[p.country]) groups[p.country] = [];
+          groups[p.country].push(p);
+        } else {
+          result.push(p);
+        }
+      });
+
+      Object.keys(groups).forEach(function (country) {
+        const group = groups[country];
+        if (altitude > UK_CLUSTER_THRESHOLD && group.length > 1) {
+          let latSum = 0, lngSum = 0;
+          const mergedPhotos = [];
+          const cityNames = [];
+          group.forEach(function (p) {
+            latSum += p.lat;
+            lngSum += p.lng;
+            if (p.name) cityNames.push(p.name);
+            (p.photos || []).forEach(function (ph) {
+              mergedPhotos.push({
+                src: ph.src, thumb: ph.thumb, w: ph.w, h: ph.h,
+                caption: ph.caption || p.name
+              });
+            });
+          });
+          result.push({
+            id: 'cluster-' + (country === '英国' ? 'uk' : country),
+            name: country,
+            country: country,
+            lat: latSum / group.length,
+            lng: lngSum / group.length,
+            cover: group[0].cover,
+            photos: mergedPhotos,
+            date: null,
+            memory: '',
+            scope: 'world',
+            isCluster: true,
+            count: group.length,
+            cities: cityNames,
+            childIds: group.map(function (p) { return p.id; })
+          });
+        } else {
+          group.forEach(function (p) { result.push(p); });
+        }
+      });
+
+      return result;
+    }
+
+    function buildChinaAggregateMarker() {
+      const chinaPlaces = allPlaces.filter(function (p) { return p.scope === 'china'; });
+      if (!chinaPlaces.length) return null;
+      let latSum = 0, lngSum = 0;
+      const mergedPhotos = [];
+      let chinaCover = '';
+      const cityNames = [];
+      chinaPlaces.forEach(function (p, i) {
+        latSum += Number(p.lat) || 0;
+        lngSum += Number(p.lng) || 0;
+        if (i === 0) chinaCover = p.cover;
+        if (p.name) cityNames.push(p.name);
+        (p.photos || []).forEach(function (ph) {
+          mergedPhotos.push({
+            src: ph.src, thumb: ph.thumb, w: ph.w, h: ph.h,
+            caption: ph.caption || p.name
+          });
+        });
+      });
+      return {
+        id: 'china',
+        name: '中国',
+        country: '中国',
+        lat: latSum / chinaPlaces.length,
+        lng: lngSum / chinaPlaces.length,
+        cover: chinaCover,
+        photos: mergedPhotos,
+        date: null,
+        memory: '',
+        scope: 'world',
+        isCluster: true,
+        count: chinaPlaces.length,
+        cities: cityNames,
+        childIds: chinaPlaces.map(function (p) { return p.id; })
+      };
+    }
+
+    function buildWorldMarkers() {
+      const worldMarkers = [];
+      allPlaces.forEach(function (p) {
+        if (p.scope !== 'china') worldMarkers.push(toMarker(p));
+      });
+      const chinaAgg = buildChinaAggregateMarker();
+      if (chinaAgg) worldMarkers.push(chinaAgg);
+      const alt = globe ? globe.pointOfView().altitude : 1.15;
+      return clusterByCountry(worldMarkers, UK_COUNTRIES, alt);
+    }
+
+    function buildChinaMarkers() {
+      const result = [];
+      allPlaces.forEach(function (p) {
+        if (p.scope === 'china') result.push(toMarker(p));
+      });
+      return result;
+    }
+
+    function buildMarkersForView() {
+      if (view === 'china') return buildChinaMarkers();
+      return buildWorldMarkers();
+    }
+
+    function findVisiblePlaceById(id) {
+      if (!id) return null;
+      for (let i = 0; i < places.length; i++) {
+        if (places[i].id === id) return places[i];
+      }
+      return null;
+    }
+
+    function findRawPlaceById(id) {
+      for (let i = 0; i < allPlaces.length; i++) {
+        if (allPlaces[i].id === id) return allPlaces[i];
+      }
+      return null;
+    }
+
+    /* ---------- 去过国家集合 ---------- */
+    function getVisitedCountries() {
+      const set = new Set();
+      allPlaces.forEach(function (p) {
+        let c = p.country || '';
+        if (c === '梵蒂冈') c = '意大利';
+        if (c) set.add(c);
+      });
+      return set;
+    }
+
+    function getVisitedProvinces() {
+      const set = new Set();
+      allPlaces.forEach(function (p) {
+        if (p.scope === 'china' && p.province) set.add(p.province);
+      });
+      return set;
+    }
+
+    /* ---------- 陆地光点 ---------- */
+    function buildWorldHexData() {
+      if (!worldCountries || !worldCountries.features) return [];
+      const visited = getVisitedCountries();
+      return worldCountries.features.map(function (f) {
+        const name = f.properties && f.properties.name;
+        return {
+          type: 'Feature',
+          properties: { name: name, __fine: false, __visited: visited.has(name) },
+          geometry: f.geometry
+        };
+      });
+    }
+
+    function buildChinaHexData() {
+      const base = [];
+      if (worldCountries && worldCountries.features) {
+        worldCountries.features.forEach(function (f) {
+          const name = f.properties && f.properties.name;
+          if (name === '中国') return;
+          const visited = getVisitedCountries();
+          base.push({
+            type: 'Feature',
+            properties: { name: name, __fine: false, __visited: visited.has(name) },
+            geometry: f.geometry
+          });
+        });
+      }
+      if (chinaProvinces && chinaProvinces.features) {
+        const visitedProv = getVisitedProvinces();
+        chinaProvinces.features.forEach(function (f) {
+          const name = (f.properties && f.properties.name) || '';
+          let visited = false;
+          visitedProv.forEach(function (vp) {
+            if (name.startsWith(vp)) visited = true;
+          });
+          base.push({
+            type: 'Feature',
+            properties: { name: name, __fine: true, __visited: visited },
+            geometry: f.geometry
+          });
+        });
+      }
+      return base;
+    }
+
+    function applyHexData() {
+      if (!globe) return;
+      let data;
+      if (view === 'world') data = buildWorldHexData();
+      else data = buildChinaHexData();
+      globe.hexPolygonsData(data);
+    }
+
+    function hexColor(d) {
+      if (d.properties && d.properties.__visited) return 'rgba(232,201,138,0.95)';
+      return view === 'china' ? 'rgba(242,237,228,0.22)' : 'rgba(242,237,228,0.18)';
+    }
+
+    /* ---------- 光弧 ---------- */
+    function getPlaceCoordsForArc(id) {
+      for (let i = 0; i < allPlaces.length; i++) {
+        if (allPlaces[i].id === id) {
+          return {
+            lat: Number(allPlaces[i].lat) || 0,
+            lng: Number(allPlaces[i].lng) || 0
+          };
+        }
+      }
+      return null;
+    }
+
+    function buildArcsData() {
+      const pairs = [
+        ['jinan','london'], ['london','edinburgh'], ['london','iceland'],
+        ['london','france'], ['france','switzerland'], ['switzerland','italy'],
+        ['italy','greece'], ['spain','morocco'], ['jinan','korea'],
+        ['jinan','thailand'], ['thailand','malaysia']
+      ];
+      const out = [];
+      pairs.forEach(function (pair) {
+        const a = getPlaceCoordsForArc(pair[0]);
+        const b = getPlaceCoordsForArc(pair[1]);
+        if (!a || !b) return;
+        out.push({ startLat: a.lat, startLng: a.lng, endLat: b.lat, endLng: b.lng });
+      });
+      return out;
+    }
+
+    function arcColorFn() {
+      const alpha = arcsDimmed ? 0.18 : 1;
+      return [
+        'rgba(242,237,228,' + (0.05 * alpha) + ')',
+        'rgba(242,237,228,' + (0.55 * alpha) + ')',
+        'rgba(242,237,228,' + (0.05 * alpha) + ')'
+      ];
+    }
+
+    function applyArcs() {
+      if (!globe) return;
+      if (view === 'china') {
+        globe.arcsData([]);
+        return;
+      }
+      globe.arcsData(arcsAll);
+      globe.arcColor(arcColorFn);
+    }
+
+    function setArcsDimmed(dim) {
+      if (arcsDimmed === dim) return;
+      arcsDimmed = dim;
+      applyArcs();
+    }
+
+    /* ---------- 标记 DOM ---------- */
+    let lastClickedMarkerEl = null;
+
+    function createMarkerElement(place) {
+      const wrap = document.createElement('div');
+      wrap.className = 'marker-wrap';
+      wrap.style.opacity = '1';
+
+      const el = document.createElement('div');
+      el.className = 'place-marker';
+      if (place.id === selectedPlaceId) el.classList.add('is-selected');
+      el.dataset.markerId = place.id;
+      el.dataset.lat = String(place.lat);
+      el.dataset.lng = String(place.lng);
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', place.name || '地点');
+
+      const img = document.createElement('img');
+      img.className = 'marker-img';
+      img.src = fullPath(place.cover);
+      img.alt = '';
+      img.draggable = false;
+      img.decoding = 'async';
+      img.loading = 'lazy';
+      el.appendChild(img);
+
+      const label = document.createElement('span');
+      label.className = 'marker-label';
+      label.textContent = place.name;
+      el.appendChild(label);
+
+      if (place.isCluster && place.count > 1) {
+        const badge = document.createElement('span');
+        badge.className = 'marker-badge';
+        badge.textContent = String(place.count);
+        el.appendChild(badge);
+      }
+
+      el.addEventListener('mouseenter', function () {
+        hoveredPlaceId = place.id;
+        stopAutoRotate();
+      });
+
+      el.addEventListener('mouseleave', function () {
+        hoveredPlaceId = null;
+        if (!panelOpen && !selectedPlaceId) scheduleAutoRotate(3000);
+      });
+
+      function activate() {
+        if (currentRoute.page === 'trips') {
+          handleTripsMarkerClick(place);
+        } else {
+          handlePlaceClick(place, el);
+        }
+      }
+
+      el.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        activate();
+      });
+
+      el.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+          ev.preventDefault();
+          ev.stopPropagation();
+          activate();
+        }
+      });
+
+      wrap.appendChild(el);
+      if (tripInDetail) requestAnimationFrame(applyTripMarkerHighlight);
+      return wrap;
+    }
+
+    function refreshMarkerData() {
+      if (!globe) return;
+      places = buildMarkersForView();
+      globe.htmlElementsData(places);
+    }
+
+    /* ---------- 背面淡出 ---------- */
+    function startMarkerFadeLoop() {
+      if (markerFadeRaf !== null) return;
+      const tick = function () {
+        markerFadeRaf = requestAnimationFrame(tick);
+        if (!globe) return;
+        const pov = globe.pointOfView();
+        const camLat = pov.lat * Math.PI / 180;
+        const camLng = pov.lng * Math.PI / 180;
+        const cl = Math.cos(camLat);
+        const camX = cl * Math.cos(camLng);
+        const camY = cl * Math.sin(camLng);
+        const camZ = Math.sin(camLat);
+
+        const wraps = document.querySelectorAll('.marker-wrap');
+        wraps.forEach(function (wrap) {
+          const inner = wrap.firstElementChild;
+          if (!inner || !inner.dataset) return;
+          const lat = parseFloat(inner.dataset.lat);
+          const lng = parseFloat(inner.dataset.lng);
+          if (isNaN(lat) || isNaN(lng)) return;
+          const la = lat * Math.PI / 180;
+          const lo = lng * Math.PI / 180;
+          const cla = Math.cos(la);
+          const mx = cla * Math.cos(lo);
+          const my = cla * Math.sin(lo);
+          const mz = Math.sin(la);
+          const dot = mx * camX + my * camY + mz * camZ;
+          const op = clamp((dot - 0.05) / 0.25, 0, 1);
+          wrap.style.opacity = String(op);
+          if (dot <= 0.05) {
+            wrap.style.visibility = 'hidden';
+            wrap.style.pointerEvents = 'none';
+          } else {
+            wrap.style.visibility = '';
+            wrap.style.pointerEvents = '';
+          }
+        });
+      };
+      markerFadeRaf = requestAnimationFrame(tick);
+    }
+
+    /* ---------- 聚焦视觉态 ---------- */
+    function setFocusVisualState(on) {
+      if (on) document.body.classList.add('is-focusing');
+      else document.body.classList.remove('is-focusing');
+      const all = document.querySelectorAll('.place-marker');
+      all.forEach(function (el) {
+        if (on && el.dataset.markerId === selectedPlaceId) el.classList.add('is-selected');
+        else el.classList.remove('is-selected');
+      });
+      setArcsDimmed(!!on);
+    }
+
+    /* ---------- 聚焦序列 ---------- */
+    function runFocusSequence(place) {
+      const token = ++focusSequenceToken;
+      stopAutoRotate();
+      if (!panelOpen) currentViewPoint = globe.pointOfView();
+      selectedPlaceId = place.id;
+      currentPlace = place;
+      setFocusVisualState(true);
+
+      const start = globe.pointOfView();
+
+      animateCamera(
+        { lat: place.lat, lng: place.lng, altitude: start.altitude },
+        FOCUS_SEGMENT_1,
+        easeInOutCubic
+      ).then(function (r1) {
+        if (r1.cancelled || token !== focusSequenceToken) return;
+        return animateCamera(
+          { lat: place.lat, lng: place.lng, altitude: 0.9 },
+          FOCUS_SEGMENT_2,
+          easeOutCubic
+        ).then(function (r2) {
+          if (r2.cancelled || token !== focusSequenceToken) return;
+          if (selectedPlaceId === place.id) {
+            openPanel(place, lastClickedMarkerEl);
+          }
+        });
+      });
+    }
+
+    /* ---------- 点击标记（地图页） ---------- */
+    function handlePlaceClick(place, sourceEl) {
+      if (place.isCluster) {
+        stopAutoRotate();
+        focusSequenceToken++;
+        if (panelOpen) closePanel({ fromPopState: true, skipCamera: true });
+        selectedPlaceId = null;
+        currentPlace = null;
+        setFocusVisualState(false);
+        animateCamera(
+          { lat: place.lat, lng: place.lng, altitude: 0.5 },
+          1200,
+          easeInOutCubic
+        );
+        return;
+      }
+
+      const isSame = panelOpen && currentPlace && currentPlace.id === place.id;
+      if (isSame) return;
+
+      lastTriggerEl = sourceEl || null;
+      lastClickedMarkerEl = sourceEl || null;
+
+      if (!panelOpen) currentViewPoint = globe.pointOfView();
+      pushPlaceParam(place.id);
+      runFocusSequence(place);
+    }
+
+    /* ---------- 照片加载 ---------- */
+    function loadMainPhoto(photo) {
+      if (!photo) {
+        panelMainPhoto.removeAttribute('src');
+        panelMainPhoto.classList.remove('loaded');
+        return;
+      }
+      const token = ++mainPhotoLoadToken;
+      const thumbSrc = fullPath(photo.thumb || photo.src);
+      panelMainPhoto.src = thumbSrc;
+      panelMainPhoto.classList.add('loaded');
+
+      const hiSrc = fullPath(photo.src);
+      const loader = new Image();
+      loader.onload = function () {
+        if (token !== mainPhotoLoadToken) return;
+        panelMainPhoto.src = hiSrc;
+      };
+      loader.onerror = function () { /* ignore */ };
+      loader.src = hiSrc;
+
+      if (loader.complete && loader.naturalWidth) {
+        if (token === mainPhotoLoadToken) panelMainPhoto.src = hiSrc;
+      }
+    }
+
+    /* ---------- 飞行浮层 ---------- */
+    function cancelFlyOverlay() {
+      flyAnimToken++;
+      if (flyOverlay && flyOverlay.parentNode) {
+        flyOverlay.parentNode.removeChild(flyOverlay);
+      }
+      flyOverlay = null;
+    }
+
+    function getScreenStart(place, sourceEl) {
+      if (sourceEl && document.body.contains(sourceEl)) {
+        const inner = sourceEl.classList.contains('place-marker') ? sourceEl : sourceEl.querySelector('.place-marker');
+        if (inner) {
+          const r = inner.getBoundingClientRect();
+          if (r.width > 0 && r.height > 0) {
+            return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
+          }
+        }
+      }
+      if (globe && globe.getScreenCoords) {
+        try {
+          const sc = globe.getScreenCoords(place.lat, place.lng, 0.02);
+          if (sc && typeof sc.x === 'number') return { cx: sc.x, cy: sc.y };
+        } catch (e) { /* ignore */ }
+      }
+      return { cx: window.innerWidth / 2, cy: window.innerHeight / 2 };
+    }
+
+    function flyPhoto(place, photo, sourceEl, onDone) {
+      if (prefersReducedMotion) { onDone(); return; }
+      cancelFlyOverlay();
+      if (!photo) { onDone(); return; }
+
+      const token = flyAnimToken;
+      const start = getScreenStart(place, sourceEl);
+
+      panel.classList.add('open');
+      panel.style.opacity = '0';
+      panel.style.transform = 'translateX(24px)';
+      panel.setAttribute('aria-hidden', 'false');
+      void panel.offsetWidth;
+
+      const targetRect = mainPhotoWrap.getBoundingClientRect();
+      panelMainPhoto.style.visibility = 'hidden';
+
+      const img = document.createElement('img');
+      img.className = 'fly-photo';
+      img.src = fullPath(photo.src);
+      img.alt = '';
+      img.draggable = false;
+
+      const START_SIZE = 34;
+      const MID_SIZE = 120;
+
+      img.style.left = (start.cx - START_SIZE / 2) + 'px';
+      img.style.top = (start.cy - START_SIZE / 2) + 'px';
+      img.style.width = START_SIZE + 'px';
+      img.style.height = START_SIZE + 'px';
+      img.style.transform = 'scale(0.6)';
+      img.style.opacity = '0';
+      img.style.transition = 'width 260ms cubic-bezier(0.16,1,0.3,1), height 260ms cubic-bezier(0.16,1,0.3,1), left 260ms cubic-bezier(0.16,1,0.3,1), top 260ms cubic-bezier(0.16,1,0.3,1), opacity 260ms ease, transform 260ms cubic-bezier(0.16,1,0.3,1)';
+
+      document.body.appendChild(img);
+      flyOverlay = img;
+
+      requestAnimationFrame(function () {
+        if (token !== flyAnimToken) return;
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+        img.style.width = MID_SIZE + 'px';
+        img.style.height = MID_SIZE + 'px';
+        img.style.left = (start.cx - MID_SIZE / 2) + 'px';
+        img.style.top = (start.cy - MID_SIZE / 2) + 'px';
+      });
+
+      const stage1Dur = 280;
+      setTimeout(function () {
+        if (token !== flyAnimToken) return;
+        const tw = targetRect.width;
+        const th = targetRect.height;
+        const tl = targetRect.left;
+        const tt = targetRect.top + mainPhotoWrap.scrollTop;
+
+        img.style.transition = 'width 500ms cubic-bezier(0.16,1,0.3,1), height 500ms cubic-bezier(0.16,1,0.3,1), left 500ms cubic-bezier(0.16,1,0.3,1), top 500ms cubic-bezier(0.16,1,0.3,1)';
+        img.style.width = tw + 'px';
+        img.style.height = th + 'px';
+        img.style.left = tl + 'px';
+        img.style.top = tt + 'px';
+
+        panel.style.transition = 'opacity 500ms cubic-bezier(0.16,1,0.3,1), transform 500ms cubic-bezier(0.16,1,0.3,1)';
+        requestAnimationFrame(function () {
+          if (token !== flyAnimToken) return;
+          panel.style.opacity = '1';
+          panel.style.transform = 'translateX(0)';
+        });
+
+        setTimeout(function () {
+          if (token !== flyAnimToken) return;
+          panelMainPhoto.style.visibility = '';
+          if (flyOverlay && flyOverlay.parentNode) flyOverlay.parentNode.removeChild(flyOverlay);
+          flyOverlay = null;
+          onDone();
+        }, 520);
+      }, stage1Dur);
+    }
+
+    /* ---------- 打开面板 ---------- */
+    function openPanel(place, sourceEl) {
+      panelOpen = true;
+      currentPlace = place;
+      currentPhotos = (place.photos || []).slice();
+      currentPhotoIndex = 0;
+
+      panelTitle.textContent = place.name || '';
+
+      if (place.isCluster && place.cities && place.cities.length) {
+        panelCities.textContent = place.cities.join(' · ');
+        panelCities.style.display = '';
+      } else {
+        panelCities.textContent = '';
+        panelCities.style.display = 'none';
+      }
+
+      if (place.date) {
+        panelDate.textContent = place.date;
+        panelDate.style.display = '';
+      } else {
+        panelDate.textContent = '';
+        panelDate.style.display = 'none';
+      }
+
+      if (place.memory && place.memory.trim()) {
+        panelMemory.textContent = place.memory;
+        panelMemory.style.display = '';
+      } else {
+        panelMemory.textContent = '';
+        panelMemory.style.display = 'none';
+      }
+
+      renderPhotos();
+      panelScroll.scrollTop = 0;
+
+      if (prefersReducedMotion) {
+        panel.classList.remove('closing');
+        panel.style.opacity = '';
+        panel.style.transform = '';
+        panel.style.transition = '';
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        panelMainPhoto.style.visibility = '';
+      } else {
+        panel.classList.remove('closing');
+        panel.setAttribute('aria-hidden', 'false');
+        const coverPhoto = currentPhotos[0] || null;
+        flyPhoto(place, coverPhoto, sourceEl, function () {
+          panel.style.opacity = '';
+          panel.style.transform = '';
+          panel.style.transition = '';
+        });
+      }
+    }
+
+    /* ---------- 渲染照片 ---------- */
+    function renderPhotos() {
+      panelThumbs.textContent = '';
+
+      if (!currentPhotos.length) {
+        loadMainPhoto(null);
+        panelMainCaption.textContent = '';
+        return;
+      }
+
+      const photo = currentPhotos[currentPhotoIndex];
+      loadMainPhoto(photo);
+      panelMainPhoto.alt = currentPlace ? currentPlace.name : '';
+      panelMainCaption.textContent = photo.caption || '';
+
+      currentPhotos.forEach(function (p, idx) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'thumb' + (idx === currentPhotoIndex ? ' active' : '');
+        btn.setAttribute('aria-label', '第 ' + (idx + 1) + ' 张照片');
+
+        const img = document.createElement('img');
+        img.src = fullPath(p.thumb || p.src);
+        img.loading = 'lazy';
+        img.alt = '';
+        btn.appendChild(img);
+
+        btn.addEventListener('click', function () {
+          if (idx === currentPhotoIndex) return;
+          currentPhotoIndex = idx;
+          updateMainPhoto();
+        });
+
+        panelThumbs.appendChild(btn);
+      });
+
+      const active = panelThumbs.querySelector('.thumb.active');
+      if (active && active.scrollIntoView) {
+        requestAnimationFrame(function () {
+          active.scrollIntoView({ inline: 'center', block: 'nearest' });
+        });
+      }
+    }
+
+    function updateMainPhoto() {
+      if (!currentPhotos.length) return;
+      const photo = currentPhotos[currentPhotoIndex];
+      panelMainPhoto.classList.remove('loaded');
+      loadMainPhoto(photo);
+      requestAnimationFrame(function () {
+        panelMainPhoto.classList.add('loaded');
+      });
+      panelMainCaption.textContent = photo.caption || '';
+
+      const thumbs = panelThumbs.querySelectorAll('.thumb');
+      thumbs.forEach(function (t, i) {
+        t.classList.toggle('active', i === currentPhotoIndex);
+      });
+      const active = panelThumbs.querySelector('.thumb.active');
+      if (active && active.scrollIntoView) {
+        active.scrollIntoView({ inline: 'center', block: 'nearest' });
+      }
+    }
+
+    /* ---------- 关闭面板 ---------- */
+    function finishRestoreAfterClose(skipCamera) {
+      setFocusVisualState(false);
+      if (skipCamera || !currentViewPoint || !globe) {
+        scheduleAutoRotate(3000);
+        return;
+      }
+      const target = {
+        lat: currentViewPoint.lat,
+        lng: currentViewPoint.lng,
+        altitude: currentViewPoint.altitude
+      };
+      const token = ++focusSequenceToken;
+      animateCamera(target, RETURN_DURATION, easeInOutCubic).then(function (r) {
+        if (r.cancelled || token !== focusSequenceToken) return;
+        scheduleAutoRotate(3000);
+      });
+    }
+
+    function closePanel(opts) {
+      if (!panelOpen) return;
+      const fromPopState = opts && opts.fromPopState;
+      const skipCamera = opts && opts.skipCamera;
+
+      panelOpen = false;
+      selectedPlaceId = null;
+      currentPlace = null;
+
+      cancelFlyOverlay();
+      panelMainPhoto.style.visibility = '';
+
+      panel.classList.remove('open');
+      panel.style.opacity = '';
+      panel.style.transform = '';
+      panel.style.transition = '';
+      panel.classList.add('closing');
+      panel.setAttribute('aria-hidden', 'true');
+
+      if (!fromPopState) pushPlaceParam(null);
+
+      if (lastTriggerEl && document.body.contains(lastTriggerEl)) {
+        try { lastTriggerEl.focus({ preventScroll: true }); }
+        catch (e) { lastTriggerEl.focus(); }
+      }
+      lastTriggerEl = null;
+      lastClickedMarkerEl = null;
+
+      const exitDelay = prefersReducedMotion ? 0 : 300;
+      setTimeout(function () {
+        panel.classList.remove('closing');
+        finishRestoreAfterClose(skipCamera);
+      }, exitDelay);
+    }
+
+    /* ---------- 标题 ---------- */
+    function updateHeader(data) {
+      const list = (data && data.places) ? data.places : [];
+      const countries = new Set();
+      list.forEach(function (p) { if (p.country) countries.add(p.country); });
+      siteSubtitle.innerHTML = '去过 <span>' + countries.size + '</span> 个国家和地区 · <span>' + list.length + '</span> 个地方';
+    }
+
+    /* ---------- 尺寸 ---------- */
+    function resizeGlobe() {
+      if (!globe || !globeContainer) return;
+      const w = globeContainer.clientWidth || window.innerWidth;
+      const h = globeContainer.clientHeight || window.innerHeight;
+      globe.width(w);
+      globe.height(h);
+      const r = globe.renderer();
+      if (r && r.setPixelRatio) r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
+    }
+
+    /* ---------- 初始化地球 ---------- */
+    function initGlobe(markerData) {
+      globeContainer = document.getElementById('globe');
+      const w = globeContainer.clientWidth || window.innerWidth;
+      const h = globeContainer.clientHeight || window.innerHeight;
+
+      globe = Globe()(globeContainer)
+        .width(w)
+        .height(h)
+        .backgroundColor('#0A0A0B')
+        .showAtmosphere(true)
+        .atmosphereColor('#A9B8C8')
+        .atmosphereAltitude(0.1)
+        .htmlElementsData(markerData)
+        .htmlElement(function (d) { return createMarkerElement(d); })
+        .htmlAltitude(0.005)
+        .hexPolygonResolution(function (d) { return (d.properties && d.properties.__fine) ? 4 : 3; })
+        .hexPolygonMargin(0.4)
+        .hexPolygonUseDots(true)
+        .hexPolygonAltitude(0.004)
+        .hexPolygonColor(hexColor)
+        .hexPolygonsTransitionDuration(0)
+        .arcStroke(0.35)
+        .arcAltitudeAutoScale(0.35)
+        .arcDashLength(0.35)
+        .arcDashGap(0.65)
+        .arcDashAnimateTime(prefersReducedMotion ? 0 : 4000)
+        .arcDashInitialGap(function () { return Math.random(); })
+        .arcColor(arcColorFn);
+
+      const mat = globe.globeMaterial();
+      if (mat) {
+        if (mat.color && mat.color.set) mat.color.set('#0E0E10');
+        if (mat.emissive && mat.emissive.set) mat.emissive.set('#060607');
+        if ('shininess' in mat) mat.shininess = 0;
+      }
+
+      applyHexData();
+      arcsAll = buildArcsData();
+      applyArcs();
+
+      globe.pointOfView({ lat: 42, lng: 60, altitude: 1.15 }, 0);
+      lastClusterAltitude = 1.15;
+
+      const controls = globe.controls();
+      controls.minDistance = 120;
+      controls.maxDistance = 500;
+      controls.autoRotate = !prefersReducedMotion;
+      controls.autoRotateSpeed = 0.3;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+
+      controls.addEventListener('start', function () {
+        stopAutoRotate();
+        cancelCameraAnimation();
+      });
+
+      controls.addEventListener('end', function () {
+        if (!panelOpen && !selectedPlaceId && !hoveredPlaceId) scheduleAutoRotate(3000);
+      });
+
+      const renderer = globe.renderer();
+      if (renderer && renderer.setPixelRatio) {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
+      }
+
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(function () { resizeGlobe(); });
+        ro.observe(globeContainer);
+      }
+      window.addEventListener('resize', resizeGlobe);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', resizeGlobe);
+      }
+
+      startMarkerFadeLoop();
+    }
+
+    /* ---------- 中国省份懒加载 ---------- */
+    function loadChinaProvinces() {
+      if (chinaProvinces) return Promise.resolve(chinaProvinces);
+      if (chinaProvincesFailed) return Promise.reject(new Error('china provinces previously failed'));
+      if (chinaProvincesLoading) return chinaProvincesLoading;
+      // 省界数据：public/data/china-provinces.json，来自 ECharts 4.9.0 map/json/china.json（Apache License 2.0，https://github.com/apache/echarts/tree/4.9.0/map/json），符合国内标准地图（含藏南、阿克赛钦、台湾），解码后本地加载。
+      chinaProvincesLoading = fetch(PREFIX + 'data/china-provinces.json')
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          chinaProvinces = data;
+          chinaProvincesLoading = null;
+          return data;
+        })
+        .catch(function (err) {
+          chinaProvincesLoading = null;
+          chinaProvincesFailed = true;
+          throw err;
+        });
+      return chinaProvincesLoading;
+    }
+
+    /* ---------- 视图切换 ---------- */
+    function setView(next) {
+      if (next !== 'world' && next !== 'china') return;
+      if (view === next) return;
+
+      if (panelOpen) {
+        panelOpen = false;
+        selectedPlaceId = null;
+        currentPlace = null;
+        cancelFlyOverlay();
+        panel.classList.remove('open', 'closing');
+        panel.style.opacity = '';
+        panel.style.transform = '';
+        panel.style.transition = '';
+        panel.setAttribute('aria-hidden', 'true');
+        panelMainPhoto.style.visibility = '';
+        pushPlaceParam(null);
+        setFocusVisualState(false);
+        focusSequenceToken++;
+        cancelCameraAnimation();
+      }
+
+      view = next;
+
+      viewWorldBtn.classList.toggle('active', view === 'world');
+      viewChinaBtn.classList.toggle('active', view === 'china');
+      viewWorldBtn.setAttribute('aria-selected', view === 'world' ? 'true' : 'false');
+      viewChinaBtn.setAttribute('aria-selected', view === 'china' ? 'true' : 'false');
+
+      stopAutoRotate();
+      clearAutoRotateTimer();
+
+      if (view === 'world') {
+        lastClusterAltitude = globe.pointOfView().altitude;
+        places = buildWorldMarkers();
+        globe.htmlElementsData(places);
+        applyHexData();
+        applyArcs();
+        animateCamera(
+          { lat: 42, lng: 60, altitude: 1.15 },
+          prefersReducedMotion ? 0 : 1000,
+          easeInOutCubic
+        ).then(function () { scheduleAutoRotate(1200); });
+      } else {
+        lastClusterAltitude = null;
+        places = buildChinaMarkers();
+        globe.htmlElementsData(places);
+        applyArcs();
+
+        loadChinaProvinces().then(function () {
+          if (view !== 'china') return;
+          applyHexData();
+        }).catch(function (err) {
+          console.error('中国省份数据加载失败，退回世界数据:', err);
+          if (view === 'china') applyHexData();
+        });
+
+        animateCamera(
+          { lat: 33, lng: 112, altitude: 0.75 },
+          prefersReducedMotion ? 0 : 1000,
+          easeInOutCubic
+        );
+      }
+
+      // 旅行详情标记高亮刷新（如果正处于旅行页）
+      if (currentRoute.page === 'trips') applyTripMarkerHighlight();
+    }
+
+    /* ---------- 可见性 ---------- */
+    function bindVisibility() {
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          stopAutoRotate();
+          cancelCameraAnimation();
+        } else {
+          if (!panelOpen && !selectedPlaceId && !hoveredPlaceId) scheduleAutoRotate(3000);
+        }
+      });
+    }
+
+    /* ---------- 历史（?place=） ---------- */
+    function bindHistory() {
+      window.addEventListener('popstate', function () {
+        if (currentRoute.page === 'trips') return;
+        const id = getPlaceIdFromUrl();
+        if (id) {
+          let place = findVisiblePlaceById(id);
+          if (!place) {
+            const raw = findRawPlaceById(id);
+            if (raw) {
+              if (raw.scope === 'china' && view !== 'china') { setView('china'); place = findVisiblePlaceById(id); }
+              else if (raw.scope !== 'china' && view === 'china') { setView('world'); place = findVisiblePlaceById(id); }
+            }
+          }
+          if (place) {
+            if (!panelOpen || !currentPlace || currentPlace.id !== place.id) {
+              if (!panelOpen) {
+                currentViewPoint = globe ? globe.pointOfView() : null;
+                lastTriggerEl = null;
+                lastClickedMarkerEl = null;
+              }
+              runFocusSequence(place);
+            }
+          } else {
+            replaceWithoutPlace();
+            if (panelOpen) closePanel({ fromPopState: true });
+          }
+        } else {
+          if (panelOpen) closePanel({ fromPopState: true });
+        }
+      });
+    }
+
+    function handleDeepLink() {
+      const id = getPlaceIdFromUrl();
+      if (!id) return;
+      let place = findVisiblePlaceById(id);
+      if (!place) {
+        const raw = findRawPlaceById(id);
+        if (raw && raw.scope === 'china' && view !== 'china') { setView('china'); place = findVisiblePlaceById(id); }
+        else if (raw && raw.scope !== 'china' && view === 'china') { setView('world'); place = findVisiblePlaceById(id); }
+      }
+      if (!place) { replaceWithoutPlace(); return; }
+      currentViewPoint = globe.pointOfView();
+      lastTriggerEl = null;
+      lastClickedMarkerEl = null;
+      runFocusSequence(place);
+    }
+
+    /* ==================================================================
+       旅行页
+       ================================================================== */
+
+    function parseHash() {
+      const h = window.location.hash || '';
+      if (h === '#/trips') return { page: 'trips', tripId: null };
+      if (h.indexOf('#/trips/') === 0) {
+        const id = h.slice('#/trips/'.length);
+        return { page: 'trips', tripId: id ? decodeURIComponent(id) : null };
+      }
+      return { page: 'map', tripId: null };
+    }
+
+    function loadPlaceFirstPhoto(trip) {
+      if (!trip.places || !trip.places.length) return null;
+      for (let i = 0; i < trip.places.length; i++) {
+        const raw = placesById[trip.places[i]];
+        if (raw && raw.photos && raw.photos.length) return raw.photos[0];
+      }
+      return null;
+    }
+
+    function fmtMonthDay(ymd) {
+      // 'YYYY-MM-DD' -> 'MM.DD'
+      if (!ymd || ymd.length < 10) return '';
+      return ymd.slice(5, 7) + '.' + ymd.slice(8, 10);
+    }
+
+    function fmtYearMonthDay(ymd) {
+      if (!ymd || ymd.length < 10) return '';
+      return ymd.slice(0, 4) + '.' + ymd.slice(5, 7) + '.' + ymd.slice(8, 10);
+    }
+
+    function isLongDateStr(v) {
+      return typeof v === 'string' && v.length === 4;
+    }
+
+    function fmtDateRange(start, end) {
+      if (!start && !end) return '';
+      if (isLongDateStr(start) || isLongDateStr(end)) {
+        if (start && end && start !== end) return start + ' – ' + end;
+        return start || end || '';
+      }
+      if (start && end) {
+        const sy = start.slice(0, 4);
+        const ey = end.slice(0, 4);
+        if (sy === ey) return fmtYearMonthDay(start) + ' – ' + fmtMonthDay(end);
+        return fmtYearMonthDay(start) + ' – ' + fmtYearMonthDay(end);
+      }
+      return fmtYearMonthDay(start || end || '');
+    }
+
+    function buildTripMeta(trip) {
+      const parts = [];
+      if (trip.kind === 'trip') {
+        const r = fmtDateRange(trip.start, trip.end);
+        if (r) parts.push(r);
+        if (typeof trip.nights === 'number' && !isNaN(trip.nights)) parts.push(trip.nights + ' 晚');
+      } else if (trip.kind === 'long') {
+        if (trip.subtitle) parts.push(trip.subtitle);
+        else {
+          const r = fmtDateRange(trip.start, trip.end);
+          if (r) parts.push(r);
+        }
+        if (trip.stops && trip.stops.length) parts.push(trip.stops.length + ' 站');
+      } else if (trip.kind === 'collection') {
+        const n = (trip.places && trip.places.length) || 0;
+        if (n > 0) parts.push(n + ' 个城市');
+      }
+      return parts.join(' · ');
+    }
+
+    function groupTrips(trips) {
+      const yearGroups = {};
+      const longs = [];
+      trips.forEach(function (t) {
+        if (t.kind === 'long' || t.kind === 'collection') {
+          longs.push(t);
+        } else {
+          const y = (t.year != null) ? t.year : (t.start && t.start.length >= 4 ? parseInt(t.start.slice(0, 4), 10) : null);
+          const key = (y != null && !isNaN(y)) ? String(y) : 'null';
+          if (!yearGroups[key]) yearGroups[key] = [];
+          yearGroups[key].push(t);
+        }
+      });
+
+      function startSort(a, b) {
+        const av = a.start || '';
+        const bv = b.start || '';
+        if (av < bv) return -1;
+        if (av > bv) return 1;
+        return 0;
+      }
+
+      const yearKeys = Object.keys(yearGroups).filter(function (k) { return k !== 'null'; })
+        .sort(function (a, b) { return parseInt(a, 10) - parseInt(b, 10); });
+
+      const groups = [];
+      yearKeys.forEach(function (k) {
+        const arr = yearGroups[k].slice().sort(startSort);
+        groups.push({ label: k, trips: arr });
+      });
+      if (yearGroups['null']) {
+        const arr = yearGroups['null'].slice().sort(startSort);
+        if (arr.length) groups.push({ label: '其余', trips: arr });
+      }
+      if (longs.length) {
+        groups.push({ label: '长期', trips: longs.slice().sort(startSort) });
+      }
+      return groups;
+    }
+
+    function buildCoverEl(trip) {
+      const cover = document.createElement('div');
+      cover.className = 'trip-cover';
+      const photo = loadPlaceFirstPhoto(trip);
+      if (photo) {
+        const img = document.createElement('img');
+        img.src = fullPath(photo.thumb || photo.src);
+        img.alt = '';
+        img.loading = 'lazy';
+        cover.appendChild(img);
+      } else {
+        const fb = document.createElement('div');
+        fb.className = 'cover-fallback';
+        fb.textContent = (trip.countries || []).join('·') || '';
+        cover.appendChild(fb);
+      }
+      return cover;
+    }
+
+    function buildTripCard(trip) {
+      const card = document.createElement('article');
+      card.className = 'trip-card';
+      card.dataset.tripId = trip.id;
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+
+      card.appendChild(buildCoverEl(trip));
+
+      const text = document.createElement('div');
+      text.className = 'trip-text';
+
+      const title = document.createElement('div');
+      title.className = 'trip-title';
+      title.textContent = trip.title || '';
+      text.appendChild(title);
+
+      const meta = buildTripMeta(trip);
+      if (meta) {
+        const metaEl = document.createElement('div');
+        metaEl.className = 'trip-meta';
+        metaEl.textContent = meta;
+        text.appendChild(metaEl);
+      }
+
+      card.appendChild(text);
+
+      function go() {
+        location.hash = '#/trips/' + encodeURIComponent(trip.id);
+      }
+      card.addEventListener('click', go);
+      card.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+          ev.preventDefault();
+          go();
+        }
+      });
+
+      return card;
+    }
+
+    function renderTripsList() {
+      tripsBody.textContent = '';
+
+      if (tripsLoadFailed) {
+        const err = document.createElement('div');
+        err.className = 'trips-error';
+        err.textContent = '旅行数据加载失败';
+        tripsBody.appendChild(err);
+        tripsCount.innerHTML = '';
+        return;
+      }
+      if (!tripsData) {
+        const ld = document.createElement('div');
+        ld.className = 'trips-loading';
+        ld.textContent = '加载中…';
+        tripsBody.appendChild(ld);
+        return;
+      }
+
+      const trips = tripsData || [];
+      tripsCount.innerHTML = '<span>' + trips.length + '</span> 段旅程';
+
+      const groups = groupTrips(trips);
+      groups.forEach(function (g) {
+        const gEl = document.createElement('div');
+        gEl.className = 'trip-group';
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'trip-group-title';
+        titleEl.textContent = g.label;
+        gEl.appendChild(titleEl);
+
+        const cards = document.createElement('div');
+        cards.className = 'trip-group-cards';
+        g.trips.forEach(function (t) { cards.appendChild(buildTripCard(t)); });
+        gEl.appendChild(cards);
+
+        tripsBody.appendChild(gEl);
+      });
+    }
+
+    function ensureTripsLoaded() {
+      if (tripsLoadStarted) return tripsLoadPromise;
+      tripsLoadStarted = true;
+      tripsLoadPromise = fetch(PREFIX + 'data/trips.json')
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          tripsData = (data && data.trips) ? data.trips : [];
+          tripsLoadFailed = false;
+          firstTripsLoadDone = true;
+          renderTripsList();
+          return tripsData;
+        })
+        .catch(function (err) {
+          console.error('旅行数据加载失败:', err);
+          tripsLoadFailed = true;
+          tripsData = null;
+          firstTripsLoadDone = true;
+          renderTripsList();
+          throw err;
+        });
+      return tripsLoadPromise;
+    }
+
+    function findTripById(id) {
+      if (!tripsData) return null;
+      for (let i = 0; i < tripsData.length; i++) {
+        if (tripsData[i].id === id) return tripsData[i];
+      }
+      return null;
+    }
+
+    /* ---------- 地球联动：行程中心 ---------- */
+    function averageLngLats(points) {
+      if (!points.length) return null;
+      let latSum = 0;
+      let x = 0, y = 0;
+      points.forEach(function (p) {
+        latSum += p.lat;
+        const rad = p.lng * Math.PI / 180;
+        x += Math.cos(rad);
+        y += Math.sin(rad);
+      });
+      const lat = latSum / points.length;
+      let lng = Math.atan2(y, x) * 180 / Math.PI;
+      // span 用简单方式：考虑经纬度跨度（经度用最小跨度粗算）
+      const lngs = points.map(function (p) { return p.lng; });
+      const lats = points.map(function (p) { return p.lat; });
+      const minLng = Math.min.apply(null, lngs);
+      const maxLng = Math.max.apply(null, lngs);
+      const minLat = Math.min.apply(null, lats);
+      const maxLat = Math.max.apply(null, lats);
+      let spanLng = maxLng - minLng;
+      if (spanLng > 180) spanLng = 360 - spanLng;
+      const spanLat = maxLat - minLat;
+      const span = Math.max(spanLng, spanLat);
+      return { lat: lat, lng: lng, span: span, count: points.length };
+    }
+
+    function computeTripCenter(trip) {
+      // 优先 places
+      const pts = [];
+      if (trip.places && trip.places.length) {
+        trip.places.forEach(function (pid) {
+          const raw = placesById[pid];
+          if (raw) {
+            const lat = Number(raw.lat);
+            const lng = Number(raw.lng);
+            if (!isNaN(lat) && !isNaN(lng)) pts.push({ lat: lat, lng: lng });
+          }
+        });
+      }
+      if (pts.length) {
+        const avg = averageLngLats(pts);
+        return { lat: avg.lat, lng: avg.lng, span: avg.span, count: pts.length, source: 'places' };
+      }
+      // 回退 countries
+      const cpts = [];
+      (trip.countries || []).forEach(function (c) {
+        const cc = COUNTRY_CENTERS[c];
+        if (cc) cpts.push({ lat: cc[0], lng: cc[1] });
+      });
+      if (cpts.length) {
+        const avg = averageLngLats(cpts);
+        return { lat: avg.lat, lng: avg.lng, span: avg.span, count: cpts.length, source: 'countries' };
+      }
+      return null;
+    }
+
+    function tripAltitudeFor(trip, center) {
+      if (trip.kind === 'collection' && trip.countries && trip.countries.indexOf('中国') >= 0) return 0.8;
+      if (center.count <= 1) return 1.1;
+      const span = center.span || 0;
+      return Math.min(2.2, 1.1 + span / 40);
+    }
+
+    function focusTripOnGlobe(trip) {
+      if (!globe) return;
+      const center = computeTripCenter(trip);
+      if (!center) return;
+      stopAutoRotate();
+      const alt = tripAltitudeFor(trip, center);
+      animateCamera({ lat: center.lat, lng: center.lng, altitude: alt }, 1200, easeInOutCubic);
+    }
+
+    /* ---------- 标记高亮：属于该行程 ---------- */
+    function getTripPlaceIdSet(trip) {
+      const set = new Set();
+      if (trip && trip.places) trip.places.forEach(function (id) { set.add(id); });
+      return set;
+    }
+
+    function applyTripMarkerHighlight() {
+      const els = document.querySelectorAll('.place-marker');
+      if (!tripInDetail) {
+        document.body.classList.remove('trip-detail');
+        els.forEach(function (el) { el.classList.remove('is-trip-in'); });
+        return;
+      }
+      const trip = tripInDetail;
+      const ids = getTripPlaceIdSet(trip);
+      if (!ids.size) {
+        document.body.classList.remove('trip-detail');
+        els.forEach(function (el) { el.classList.remove('is-trip-in'); });
+        return;
+      }
+      document.body.classList.add('trip-detail');
+      els.forEach(function (el) {
+        const mid = el.dataset.markerId;
+        if (!mid) return;
+        let inTrip = ids.has(mid);
+        if (!inTrip) {
+          // 聚合点：任一子地点属于该行程
+          const vis = findVisiblePlaceById(mid);
+          if (vis && vis.isCluster && vis.childIds) {
+            inTrip = vis.childIds.some(function (cid) { return ids.has(cid); });
+          }
+        }
+        el.classList.toggle('is-trip-in', inTrip);
+      });
+    }
+
+    /* ---------- 地球标记点击（旅行页） ---------- */
+    function handleTripsMarkerClick(place) {
+      if (!tripsData) return;
+      const memberIds = [];
+      if (place.isCluster && place.childIds) {
+        place.childIds.forEach(function (id) { memberIds.push(id); });
+      } else {
+        memberIds.push(place.id);
+      }
+      let chosen = null;
+      // 优先 kind=trip
+      const trips = tripsData.slice();
+      for (let pass = 0; pass < 2 && !chosen; pass++) {
+        for (let i = 0; i < trips.length; i++) {
+          const t = trips[i];
+          if (pass === 0 && t.kind !== 'trip') continue;
+          const tIds = t.places || [];
+          let hit = false;
+          for (let j = 0; j < memberIds.length; j++) {
+            if (tIds.indexOf(memberIds[j]) >= 0) { hit = true; break; }
+          }
+          if (hit) { chosen = t; break; }
+        }
+      }
+      if (!chosen) return;
+
+      // 若在详情页先回到列表
+      const isInDetail = currentRoute.tripId != null;
+      const proceed = function () {
+        // 找到卡片并滚动高亮光晕
+        requestAnimationFrame(function () {
+          const card = tripsBody.querySelector('.trip-card[data-trip-id="' + cssEscape(chosen.id) + '"]');
+          if (card) {
+            if (card.scrollIntoView) {
+              card.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center' });
+            }
+            document.querySelectorAll('.trip-card.is-active').forEach(function (c) {
+              if (c !== card) c.classList.remove('is-active', 'flash');
+            });
+            card.classList.add('is-active');
+            card.classList.add('flash');
+            setTimeout(function () { card.classList.remove('flash'); }, 1200);
+          }
+          // 地球飞至标记
+          animateCamera({ lat: place.lat, lng: place.lng, altitude: 1.1 }, 1200, easeInOutCubic);
+        });
+      };
+
+      if (isInDetail) {
+        // 回到列表
+        location.hash = '#/trips';
+        setTimeout(proceed, 60);
+      } else {
+        proceed();
+      }
+    }
+
+    function cssEscape(s) {
+      if (window.CSS && CSS.escape) return CSS.escape(s);
+      return String(s).replace(/["\\]/g, '\\$&');
+    }
+
+    /* ---------- 详情视图 ---------- */
+    function fmtVisitsDate(v) {
+      const s = v.start || '';
+      const e = v.end || '';
+      if (!s && !e) return '';
+      if (isLongDateStr(s) || isLongDateStr(e)) {
+        if (s && e && s !== e) return s + ' – ' + e;
+        return s || e || '';
+      }
+      if (s && e) {
+        if (s.slice(0, 4) === e.slice(0, 4)) return fmtYearMonthDay(s) + ' – ' + fmtMonthDay(e);
+        return fmtYearMonthDay(s) + ' – ' + fmtYearMonthDay(e);
+      }
+      return fmtYearMonthDay(s || e);
+    }
+
+    function collectTripPhotos(trip) {
+      const out = [];
+      if (!trip.places) return out;
+      trip.places.forEach(function (pid) {
+        const raw = placesById[pid];
+        if (raw && raw.photos) {
+          raw.photos.forEach(function (ph) {
+            out.push(ph);
+          });
+        }
+      });
+      return out;
+    }
+
+    function buildDetailHTML(trip) {
+      tripsDetail.textContent = '';
+
+      const back = document.createElement('button');
+      back.className = 'detail-back';
+      back.type = 'button';
+      back.textContent = '← 全部旅行';
+      back.addEventListener('click', function () { location.hash = '#/trips'; });
+      tripsDetail.appendChild(back);
+
+      const title = document.createElement('div');
+      title.className = 'detail-title';
+      title.textContent = trip.title || '';
+      tripsDetail.appendChild(title);
+
+      const metaStr = buildTripMeta(trip);
+      if (metaStr) {
+        const metaEl = document.createElement('div');
+        metaEl.className = 'detail-meta';
+        metaEl.textContent = metaStr;
+        tripsDetail.appendChild(metaEl);
+      }
+
+      if (trip.countries && trip.countries.length) {
+        const cEl = document.createElement('div');
+        cEl.className = 'detail-countries';
+        cEl.textContent = trip.countries.join('·');
+        tripsDetail.appendChild(cEl);
+      }
+
+      // visits
+      if (trip.visits && trip.visits.length) {
+        const h = document.createElement('div');
+        h.className = 'detail-section-title';
+        h.textContent = '每一次';
+        tripsDetail.appendChild(h);
+
+        const wrap = document.createElement('div');
+        trip.visits.forEach(function (v) {
+          const row = document.createElement('div');
+          row.className = 'visit-row';
+          const d = document.createElement('div');
+          d.className = 'visit-dates';
+          d.textContent = fmtVisitsDate(v);
+          const n = document.createElement('div');
+          n.className = 'visit-note';
+          n.textContent = v.note || '';
+          row.appendChild(d);
+          row.appendChild(n);
+          wrap.appendChild(row);
+        });
+        tripsDetail.appendChild(wrap);
+      }
+
+      // stops
+      if (trip.stops && trip.stops.length) {
+        const h = document.createElement('div');
+        h.className = 'detail-section-title';
+        h.textContent = '几站';
+        tripsDetail.appendChild(h);
+
+        trip.stops.forEach(function (s) {
+          const row = document.createElement('div');
+          row.className = 'stop-row';
+          row.textContent = s.name || '';
+          row.addEventListener('click', function () {
+            if (!globe) return;
+            let lat, lng, alt = 1.1;
+            if (s.place && placesById[s.place]) {
+              lat = Number(placesById[s.place].lat);
+              lng = Number(placesById[s.place].lng);
+              if (isNaN(lat) || isNaN(lng)) return;
+            } else if (s.name && COUNTRY_CENTERS[s.name]) {
+              lat = COUNTRY_CENTERS[s.name][0];
+              lng = COUNTRY_CENTERS[s.name][1];
+              alt = 1.6;
+            } else {
+              return;
+            }
+            stopAutoRotate();
+            animateCamera({ lat: lat, lng: lng, altitude: alt }, 1200, easeInOutCubic);
+          });
+          tripsDetail.appendChild(row);
+        });
+      }
+
+      // photos
+      const photos = collectTripPhotos(trip);
+      if (photos.length) {
+        const h = document.createElement('div');
+        h.className = 'detail-section-title';
+        h.textContent = '照片';
+        tripsDetail.appendChild(h);
+
+        const grid = document.createElement('div');
+        grid.className = 'detail-photos';
+        photos.forEach(function (ph, idx) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'detail-photo';
+          const ar = (ph.w && ph.h) ? (ph.w / ph.h) : (4 / 5);
+          btn.style.aspectRatio = String(ar);
+
+          const img = document.createElement('img');
+          img.src = fullPath(ph.thumb || ph.src);
+          img.alt = ph.caption || '';
+          img.loading = 'lazy';
+          btn.appendChild(img);
+
+          btn.addEventListener('click', function () {
+            openLightbox(photos, idx, btn);
+          });
+
+          grid.appendChild(btn);
+        });
+        tripsDetail.appendChild(grid);
+      }
+    }
+
+    function enterTripDetail(tripId) {
+      if (!tripsData) {
+        // 未加载完成时先登记路由，加载完再处理
+        currentRoute = { page: 'trips', tripId: tripId };
+        return;
+      }
+      const trip = findTripById(tripId);
+      if (!trip) {
+        location.hash = '#/trips';
+        return;
+      }
+
+      // 记录列表滚动位置（仅第一次进入）
+      if (!tripInDetail) {
+        listScrollPos = tripsPane.scrollTop;
+      }
+
+      currentRoute = { page: 'trips', tripId: tripId };
+      tripInDetail = trip;
+      applyTripMarkerHighlight();
+
+      buildDetailHTML(trip);
+
+      // 切换视图
+      tripsDetail.setAttribute('aria-hidden', 'false');
+      tripsList.classList.add('hide');
+      tripsDetail.classList.add('show');
+      tripsPane.scrollTop = 0;
+      tripsDetail.scrollTop = 0;
+
+      focusTripOnGlobe(trip);
+    }
+
+    function leaveTripDetail() {
+      if (!tripInDetail) return;
+      tripInDetail = null;
+      currentRoute = { page: 'trips', tripId: null };
+      applyTripMarkerHighlight();
+
+      tripsDetail.classList.remove('show');
+      tripsDetail.setAttribute('aria-hidden', 'true');
+      tripsList.classList.remove('hide');
+
+      // 恢复列表滚动位置
+      requestAnimationFrame(function () {
+        tripsPane.scrollTop = listScrollPos;
+      });
+    }
+
+    /* ---------- 灯箱 ---------- */
+    function openLightbox(photos, idx, triggerEl) {
+      lbPhotos = photos;
+      lbIndex = idx;
+      lbReturnFocus = triggerEl || null;
+      updateLightbox();
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      try { lbClose.focus({ preventScroll: true }); } catch (e) { lbClose.focus(); }
+    }
+
+    function updateLightbox() {
+      if (!lbPhotos.length) return;
+      const ph = lbPhotos[lbIndex];
+      lbImg.src = fullPath(ph.src);
+      lbImg.alt = ph.caption || '';
+      const showNav = lbPhotos.length > 1;
+      lbPrev.style.display = showNav ? '' : 'none';
+      lbNext.style.display = showNav ? '' : 'none';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      if (lbReturnFocus && document.body.contains(lbReturnFocus)) {
+        try { lbReturnFocus.focus({ preventScroll: true }); } catch (e) { lbReturnFocus.focus(); }
+      }
+      lbReturnFocus = null;
+      lbPhotos = [];
+    }
+
+    function lbStep(dir) {
+      if (lbPhotos.length <= 1) return;
+      lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+      updateLightbox();
+    }
+
+    /* ---------- 路由 ---------- */
+    function applyRoute() {
+      const r = parseHash();
+
+      if (r.page === 'map') {
+        // 离开旅行页
+        if (wasOnTrips) {
+          wasOnTrips = false;
+          document.body.classList.remove('is-trips');
+          tripsPane.classList.remove('open');
+          tripsPane.setAttribute('aria-hidden', 'true');
+          tripInDetail = null;
+          currentRoute = { page: 'map', tripId: null };
+          applyTripMarkerHighlight();
+          // 恢复地球尺寸并恢复自转
+          resizeGlobe();
+          scheduleAutoRotate(1200);
+          navMapBtn.classList.add('active');
+          navTripsBtn.classList.remove('active');
+        }
+        // 返回地图页：重新处理 ?place= （如果 hash 变回地图），无 hash 时不额外处理
+        return;
+      }
+
+      // 旅行页路由
+      currentRoute = r;
+
+      if (panelOpen) {
+        // 进入旅行页先关闭照片面板（不回写历史）
+        panelOpen = false;
+        selectedPlaceId = null;
+        currentPlace = null;
+        cancelFlyOverlay();
+        panelMainPhoto.style.visibility = '';
+        panel.classList.remove('open', 'closing');
+        panel.style.opacity = '';
+        panel.style.transform = '';
+        panel.style.transition = '';
+        panel.setAttribute('aria-hidden', 'true');
+        setFocusVisualState(false);
+        focusSequenceToken++;
+        cancelCameraAnimation();
+        replaceWithoutPlace();
+      }
+
+      const enteringTrips = !wasOnTrips;
+      if (!wasOnTrips) {
+        wasOnTrips = true;
+        document.body.classList.add('is-trips');
+        tripsPane.classList.add('open');
+        tripsPane.setAttribute('aria-hidden', 'false');
+        navMapBtn.classList.remove('active');
+        navTripsBtn.classList.add('active');
+
+        // 若当前中国视角，切回世界
+        if (view === 'china') {
+          setView('world');
+        }
+        stopAutoRotate();
+        // 更新地球尺寸
+        requestAnimationFrame(function () { resizeGlobe(); });
+      }
+
+      ensureTripsLoaded().then(function () {
+        if (!tripsLoadFailed) {
+          if (r.tripId) {
+            enterTripDetail(r.tripId);
+          } else {
+            if (tripInDetail) leaveTripDetail();
+            // 刚从地图页进入旅行列表：拉远，让整颗地球完整出现在右侧
+            if (enteringTrips && globe) {
+              const pov = globe.pointOfView();
+              if (pov.altitude < 1.8) {
+                animateCamera({ lat: pov.lat, lng: pov.lng, altitude: 1.9 }, prefersReducedMotion ? 0 : 1000, easeInOutCubic);
+              }
+            }
+          }
+        }
+        applyTripMarkerHighlight();
+      }).catch(function () {
+        if (r.tripId) location.hash = '#/trips';
+      });
+    }
+
+    function onHashChange() {
+      applyRoute();
+    }
+
+    /* ---------- 事件 ---------- */
+    function bindEvents() {
+      panelCloseBtn.addEventListener('click', function () { closePanel(); });
+
+      viewWorldBtn.addEventListener('click', function () { setView('world'); });
+      viewChinaBtn.addEventListener('click', function () { setView('china'); });
+
+      navMapBtn.addEventListener('click', function () {
+        location.hash = '';
+      });
+      navTripsBtn.addEventListener('click', function () {
+        if (parseHash().page === 'trips') return;
+        location.hash = '#/trips';
+      });
+
+      window.addEventListener('hashchange', onHashChange);
+
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', function () { lbStep(-1); });
+      lbNext.addEventListener('click', function () { lbStep(1); });
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        // 灯箱优先
+        if (lightbox.classList.contains('open')) {
+          if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); return; }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); lbStep(-1); return; }
+          if (e.key === 'ArrowRight') { e.preventDefault(); lbStep(1); return; }
+          return;
+        }
+
+        if (e.key === 'Escape') {
+          if (currentRoute.page === 'trips' && currentRoute.tripId) {
+            e.preventDefault();
+            location.hash = '#/trips';
+            return;
+          }
+          if (panelOpen) {
+            e.preventDefault();
+            closePanel();
+          }
+          return;
+        }
+
+        if (!panelOpen) return;
+
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          if (currentPhotos.length <= 1) return;
+          e.preventDefault();
+          if (e.key === 'ArrowLeft') {
+            currentPhotoIndex = (currentPhotoIndex - 1 + currentPhotos.length) % currentPhotos.length;
+          } else {
+            currentPhotoIndex = (currentPhotoIndex + 1) % currentPhotos.length;
+          }
+          updateMainPhoto();
+        }
+      });
+    }
+
+    /* ---------- 错误提示 ---------- */
+    function showError() {
+      const div = document.createElement('div');
+      div.className = 'error-msg';
+      div.textContent = '数据加载失败，请刷新重试';
+      document.body.appendChild(div);
+    }
+
+    /* ---------- 启动 ---------- */
+    function fetchJson(path) {
+      return fetch(PREFIX + path).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      });
+    }
+
+    function start() {
+      const initialRoute = parseHash();
+      // 首次加载为旅行路由：忽略 ?place=
+      if (initialRoute.page === 'trips') {
+        try {
+          const url = new URL(window.location.href);
+          if (url.searchParams.has('place')) {
+            url.searchParams.delete('place');
+            history.replaceState({ placeId: null }, '', url.pathname + url.search + url.hash);
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      Promise.all([
+        fetchJson('data/places.json'),
+        // 国家数据：public/data/world-countries.json，来自 Natural Earth 1:110m Admin 0 Countries（公有领域，https://www.naturalearthdata.com/）；其中中国轮廓替换为上面 ECharts 省份数据的合并，相邻国家已扣除重叠部分。本地加载。
+        fetchJson('data/world-countries.json').catch(function (err) {
+          console.error('世界国家数据加载失败，陆地光点为空:', err);
+          return null;
+        })
+      ]).then(function (results) {
+        const data = results[0];
+        worldCountries = results[1];
+
+        allPlaces = data.places || [];
+        placesById = {};
+        allPlaces.forEach(function (p) { placesById[p.id] = p; });
+        updateHeader(data);
+
+        view = 'world';
+        places = (function () {
+          const worldMarkers = [];
+          allPlaces.forEach(function (p) {
+            if (p.scope !== 'china') worldMarkers.push(toMarker(p));
+          });
+          const chinaAgg = buildChinaAggregateMarker();
+          if (chinaAgg) worldMarkers.push(chinaAgg);
+          return clusterByCountry(worldMarkers, UK_COUNTRIES, 1.15);
+        })();
+
+        initGlobe(places);
+        bindEvents();
+        bindVisibility();
+        bindHistory();
+
+        const r = parseHash();
+        if (r.page === 'trips') {
+          applyRoute();
+        } else {
+          handleDeepLink();
+          applyRoute(); // 保证初始导航状态一致
+        }
+      }).catch(function (err) {
+        console.error('加载数据失败:', err);
+        showError();
+        // 尽量仍能进旅行页
+        try {
+          bindEvents();
+          applyRoute();
+        } catch (e) { /* ignore */ }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
+  </script>
+</body>
+</html>
