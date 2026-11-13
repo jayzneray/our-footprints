@@ -14,7 +14,9 @@
      "src": "photos/london/01.webp",
      "thumb": "photos/london/01-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.4,
+     "titleBelow": true
     },
     {
      "src": "photos/london/02.webp",
@@ -69,7 +71,9 @@
      "src": "photos/birmingham/02.webp",
      "thumb": "photos/birmingham/02-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.43,
+     "titleBelow": true
     },
     {
      "src": "photos/birmingham/03.webp",
@@ -167,7 +171,9 @@
      "src": "photos/wales/05.webp",
      "thumb": "photos/wales/05-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.55,
+     "titleBelow": true
     },
     {
      "src": "photos/wales/06.webp",
@@ -210,7 +216,9 @@
      "src": "photos/edinburgh/04.webp",
      "thumb": "photos/edinburgh/04-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.835,
+     "titleBelow": true
     },
     {
      "src": "photos/edinburgh/05.webp",
@@ -241,7 +249,8 @@
      "src": "photos/iceland/01.webp",
      "thumb": "photos/iceland/01-thumb.webp",
      "w": 1333,
-     "h": 2000
+     "h": 2000,
+     "titleBelow": true
     },
     {
      "src": "photos/iceland/02.webp",
@@ -308,7 +317,9 @@
      "src": "photos/greece/04.webp",
      "thumb": "photos/greece/04-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.9,
+     "titleBelow": true
     },
     {
      "src": "photos/greece/05.webp",
@@ -430,7 +441,8 @@
      "src": "photos/morocco/07.webp",
      "thumb": "photos/morocco/07-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.88
     },
     {
      "src": "photos/morocco/08.webp",
@@ -455,7 +467,9 @@
      "src": "photos/vatican/01.webp",
      "thumb": "photos/vatican/01-thumb.webp",
      "w": 810,
-     "h": 1448
+     "h": 1448,
+     "focusY": 0.6,
+     "titleBelow": true
     },
     {
      "src": "photos/vatican/02.webp",
@@ -522,7 +536,9 @@
      "src": "photos/france/06.webp",
      "thumb": "photos/france/06-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.5,
+     "titleBelow": true
     }
    ],
    "date": null,
@@ -565,7 +581,9 @@
      "src": "photos/thailand/05.webp",
      "thumb": "photos/thailand/05-thumb.webp",
      "w": 1279,
-     "h": 1706
+     "h": 1706,
+     "focusY": 0.45,
+     "titleBelow": true
     },
     {
      "src": "photos/thailand/06.webp",
@@ -590,7 +608,9 @@
      "src": "photos/switzerland/01.webp",
      "thumb": "photos/switzerland/01-thumb.webp",
      "w": 2000,
-     "h": 1750
+     "h": 1750,
+     "focusY": 0.52,
+     "titleBelow": true
     },
     {
      "src": "photos/switzerland/02.webp",
@@ -700,7 +720,9 @@
      "src": "photos/korea/03.webp",
      "thumb": "photos/korea/03-thumb.webp",
      "w": 1510,
-     "h": 2000
+     "h": 2000,
+     "focusY": 0.5,
+     "titleBelow": true
     },
     {
      "src": "photos/korea/04.webp",
@@ -884,7 +906,8 @@
      "src": "photos/jinan/01.webp",
      "thumb": "photos/jinan/01-thumb.webp",
      "w": 1500,
-     "h": 2000
+     "h": 2000,
+     "titleBelow": true
     },
     {
      "src": "photos/jinan/02.webp",

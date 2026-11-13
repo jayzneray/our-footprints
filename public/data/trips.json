@@ -1,297 +1,306 @@
 {
-  "trips": [
+ "trips": [
+  {
+   "id": "2019-korea",
+   "title": "韩国的回忆",
+   "start": "2019-07-11",
+   "end": "2019-07-13",
+   "nights": 2,
+   "countries": [
+    "韩国"
+   ],
+   "places": [
+    "korea"
+   ],
+   "kind": "trip",
+   "year": 2019,
+   "cover": "photos/korea/03.webp"
+  },
+  {
+   "id": "2024-paris-winter",
+   "title": "巴黎的冬天",
+   "start": "2024-02-11",
+   "end": "2024-02-18",
+   "nights": 7,
+   "countries": [
+    "法国"
+   ],
+   "places": [],
+   "kind": "trip",
+   "year": 2024
+  },
+  {
+   "id": "2024-iceland",
+   "title": "冰岛，冰与火之岛",
+   "start": "2024-03-29",
+   "end": "2024-04-03",
+   "nights": 5,
+   "countries": [
+    "冰岛"
+   ],
+   "places": [
+    "iceland"
+   ],
+   "kind": "trip",
+   "year": 2024
+  },
+  {
+   "id": "2024-iberia-may",
+   "title": "伊比利亚的五月",
+   "start": "2024-05-01",
+   "end": "2024-05-08",
+   "nights": 7,
+   "countries": [
+    "葡萄牙",
+    "西班牙"
+   ],
+   "places": [],
+   "kind": "trip",
+   "year": 2024
+  },
+  {
+   "id": "2024-switzerland",
+   "title": "瑞士的初夏",
+   "start": "2024-06-01",
+   "end": "2024-06-06",
+   "nights": 5,
+   "countries": [
+    "瑞士"
+   ],
+   "places": [
+    "switzerland"
+   ],
+   "kind": "trip",
+   "year": 2024
+  },
+  {
+   "id": "2024-thailand",
+   "title": "泰兰德公主",
+   "start": "2024-06-18",
+   "end": "2024-06-21",
+   "nights": 3,
+   "countries": [
+    "泰国"
+   ],
+   "places": [
+    "thailand"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "cover": "photos/thailand/05.webp"
+  },
+  {
+   "id": "2024-morocco",
+   "title": "摩洛哥的第一次约会",
+   "start": "2024-12-23",
+   "end": "2024-12-27",
+   "nights": 4,
+   "countries": [
+    "摩洛哥"
+   ],
+   "places": [
+    "morocco"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "cover": "photos/morocco/07.webp"
+  },
+  {
+   "id": "2025-wales",
+   "title": "威尔士小分队",
+   "start": "2025-01-15",
+   "end": "2025-01-19",
+   "nights": 4,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "wales"
+   ],
+   "kind": "trip",
+   "year": 2025,
+   "cover": "photos/wales/05.webp"
+  },
+  {
+   "id": "2025-france",
+   "title": "浪漫法兰西",
+   "start": "2025-02-20",
+   "end": "2025-02-25",
+   "nights": 5,
+   "countries": [
+    "法国"
+   ],
+   "places": [
+    "france"
+   ],
+   "kind": "trip",
+   "year": 2025,
+   "cover": "photos/france/06.webp"
+  },
+  {
+   "id": "2025-italy-spring",
+   "title": "意大利之春",
+   "start": "2025-03-06",
+   "end": "2025-03-11",
+   "nights": 5,
+   "countries": [
+    "意大利",
+    "梵蒂冈"
+   ],
+   "places": [
+    "italy",
+    "vatican"
+   ],
+   "kind": "trip",
+   "year": 2025,
+   "cover": "photos/vatican/01.webp"
+  },
+  {
+   "id": "2025-greece",
+   "title": "希腊的蓝与白",
+   "start": "2025-04-22",
+   "end": "2025-04-28",
+   "nights": 6,
+   "countries": [
+    "希腊"
+   ],
+   "places": [
+    "greece"
+   ],
+   "kind": "trip",
+   "year": 2025,
+   "cover": "photos/greece/04.webp"
+  },
+  {
+   "id": "2025-spain-summer",
+   "title": "仲夏西班牙",
+   "start": "2025-06-19",
+   "end": "2025-06-25",
+   "nights": 6,
+   "countries": [
+    "西班牙"
+   ],
+   "places": [
+    "spain"
+   ],
+   "kind": "trip",
+   "year": 2025
+  },
+  {
+   "id": "2025-car-day",
+   "title": "提车日记",
+   "start": "2025-07-20",
+   "end": "2025-07-22",
+   "nights": 2,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "birmingham"
+   ],
+   "kind": "trip",
+   "year": 2025,
+   "cover": "photos/birmingham/02.webp"
+  },
+  {
+   "id": "2026-sea-honeymoon",
+   "title": "东南亚蜜月",
+   "start": "2026-06-12",
+   "end": "2026-06-20",
+   "nights": 8,
+   "countries": [
+    "马来西亚"
+   ],
+   "places": [
+    "malaysia"
+   ],
+   "kind": "trip",
+   "year": 2026
+  },
+  {
+   "id": "uk-years",
+   "title": "在英国的日子",
+   "start": "2024",
+   "end": "2026",
+   "nights": null,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "london",
+    "exeter"
+   ],
+   "kind": "long",
+   "year": null,
+   "stops": [
     {
-      "id": "2019-korea",
-      "title": "韩国的回忆",
-      "start": "2019-07-11",
-      "end": "2019-07-13",
-      "nights": 2,
-      "countries": [
-        "韩国"
-      ],
-      "places": [
-        "korea"
-      ],
-      "kind": "trip",
-      "year": 2019
+     "name": "伦敦",
+     "place": "london"
     },
     {
-      "id": "2024-paris-winter",
-      "title": "巴黎的冬天",
-      "start": "2024-02-11",
-      "end": "2024-02-18",
-      "nights": 7,
-      "countries": [
-        "法国"
-      ],
-      "places": [],
-      "kind": "trip",
-      "year": 2024
-    },
-    {
-      "id": "2024-iceland",
-      "title": "冰岛，冰与火之岛",
-      "start": "2024-03-29",
-      "end": "2024-04-03",
-      "nights": 5,
-      "countries": [
-        "冰岛"
-      ],
-      "places": [
-        "iceland"
-      ],
-      "kind": "trip",
-      "year": 2024
-    },
-    {
-      "id": "2024-iberia-may",
-      "title": "伊比利亚的五月",
-      "start": "2024-05-01",
-      "end": "2024-05-08",
-      "nights": 7,
-      "countries": [
-        "葡萄牙",
-        "西班牙"
-      ],
-      "places": [],
-      "kind": "trip",
-      "year": 2024
-    },
-    {
-      "id": "2024-switzerland",
-      "title": "瑞士的初夏",
-      "start": "2024-06-01",
-      "end": "2024-06-06",
-      "nights": 5,
-      "countries": [
-        "瑞士"
-      ],
-      "places": [
-        "switzerland"
-      ],
-      "kind": "trip",
-      "year": 2024
-    },
-    {
-      "id": "2024-thailand",
-      "title": "泰兰德公主",
-      "start": "2024-06-18",
-      "end": "2024-06-21",
-      "nights": 3,
-      "countries": [
-        "泰国"
-      ],
-      "places": [
-        "thailand"
-      ],
-      "kind": "trip",
-      "year": 2024
-    },
-    {
-      "id": "2024-morocco",
-      "title": "摩洛哥的第一次约会",
-      "start": "2024-12-23",
-      "end": "2024-12-27",
-      "nights": 4,
-      "countries": [
-        "摩洛哥"
-      ],
-      "places": [
-        "morocco"
-      ],
-      "kind": "trip",
-      "year": 2024
-    },
-    {
-      "id": "2025-wales",
-      "title": "威尔士小分队",
-      "start": "2025-01-15",
-      "end": "2025-01-19",
-      "nights": 4,
-      "countries": [
-        "英国"
-      ],
-      "places": [
-        "wales"
-      ],
-      "kind": "trip",
-      "year": 2025
-    },
-    {
-      "id": "2025-france",
-      "title": "浪漫法兰西",
-      "start": "2025-02-20",
-      "end": "2025-02-25",
-      "nights": 5,
-      "countries": [
-        "法国"
-      ],
-      "places": [
-        "france"
-      ],
-      "kind": "trip",
-      "year": 2025
-    },
-    {
-      "id": "2025-italy-spring",
-      "title": "意大利之春",
-      "start": "2025-03-06",
-      "end": "2025-03-11",
-      "nights": 5,
-      "countries": [
-        "意大利",
-        "梵蒂冈"
-      ],
-      "places": [
-        "italy",
-        "vatican"
-      ],
-      "kind": "trip",
-      "year": 2025
-    },
-    {
-      "id": "2025-greece",
-      "title": "希腊的蓝与白",
-      "start": "2025-04-22",
-      "end": "2025-04-28",
-      "nights": 6,
-      "countries": [
-        "希腊"
-      ],
-      "places": [
-        "greece"
-      ],
-      "kind": "trip",
-      "year": 2025
-    },
-    {
-      "id": "2025-spain-summer",
-      "title": "仲夏西班牙",
-      "start": "2025-06-19",
-      "end": "2025-06-25",
-      "nights": 6,
-      "countries": [
-        "西班牙"
-      ],
-      "places": [
-        "spain"
-      ],
-      "kind": "trip",
-      "year": 2025
-    },
-    {
-      "id": "2025-car-day",
-      "title": "提车日记",
-      "start": "2025-07-20",
-      "end": "2025-07-22",
-      "nights": 2,
-      "countries": [
-        "英国"
-      ],
-      "places": [
-        "birmingham"
-      ],
-      "kind": "trip",
-      "year": 2025
-    },
-    {
-      "id": "2026-sea-honeymoon",
-      "title": "东南亚蜜月",
-      "start": "2026-06-12",
-      "end": "2026-06-20",
-      "nights": 8,
-      "countries": [
-        "马来西亚"
-      ],
-      "places": [
-        "malaysia"
-      ],
-      "kind": "trip",
-      "year": 2026
-    },
-    {
-      "id": "uk-years",
-      "title": "在英国的日子",
-      "start": "2024",
-      "end": "2026",
-      "nights": null,
-      "countries": [
-        "英国"
-      ],
-      "places": [
-        "london",
-        "exeter"
-      ],
-      "kind": "long",
-      "year": null,
-      "stops": [
-        {
-          "name": "伦敦",
-          "place": "london"
-        },
-        {
-          "name": "埃克塞特",
-          "place": "exeter"
-        }
-      ]
-    },
-    {
-      "id": "china",
-      "title": "中国",
-      "start": null,
-      "end": null,
-      "nights": null,
-      "countries": [
-        "中国"
-      ],
-      "places": [
-        "jinan",
-        "qinhuangdao",
-        "xuzhou",
-        "suzhou",
-        "nanchang",
-        "fuzhou-jx"
-      ],
-      "kind": "collection",
-      "year": null
-    },
-    {
-      "id": "edinburgh-again",
-      "title": "爱丁堡，一去再去",
-      "start": "2024-08-04",
-      "end": "2025-12-20",
-      "nights": null,
-      "countries": [
-        "英国"
-      ],
-      "places": [
-        "edinburgh"
-      ],
-      "kind": "long",
-      "year": null,
-      "subtitle": "去了 4 次",
-      "visits": [
-        {
-          "start": "2024-08-04",
-          "end": "2024-08-07",
-          "note": "嘉怡陪妹妹"
-        },
-        {
-          "start": "2024-09-12",
-          "end": "2024-09-17",
-          "note": "政兴的苏格兰之旅"
-        },
-        {
-          "start": "2024-12-17",
-          "end": "2024-12-22",
-          "note": "政兴"
-        },
-        {
-          "start": "2025-12-17",
-          "end": "2025-12-20",
-          "note": "嘉怡陪爸妈"
-        }
-      ]
+     "name": "埃克塞特",
+     "place": "exeter"
     }
-  ]
+   ]
+  },
+  {
+   "id": "china",
+   "title": "中国",
+   "start": null,
+   "end": null,
+   "nights": null,
+   "countries": [
+    "中国"
+   ],
+   "places": [
+    "jinan",
+    "qinhuangdao",
+    "xuzhou",
+    "suzhou",
+    "nanchang",
+    "fuzhou-jx"
+   ],
+   "kind": "collection",
+   "year": null
+  },
+  {
+   "id": "edinburgh-again",
+   "title": "爱丁堡，一去再去",
+   "start": "2024-08-04",
+   "end": "2025-12-20",
+   "nights": null,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "edinburgh"
+   ],
+   "kind": "long",
+   "year": null,
+   "subtitle": "去了 4 次",
+   "visits": [
+    {
+     "start": "2024-08-04",
+     "end": "2024-08-07",
+     "note": "嘉怡陪妹妹"
+    },
+    {
+     "start": "2024-09-12",
+     "end": "2024-09-17",
+     "note": "政兴的苏格兰之旅"
+    },
+    {
+     "start": "2024-12-17",
+     "end": "2024-12-22",
+     "note": "政兴"
+    },
+    {
+     "start": "2025-12-17",
+     "end": "2025-12-20",
+     "note": "嘉怡陪爸妈"
+    }
+   ],
+   "cover": "photos/edinburgh/04.webp"
+  }
+ ]
 }
