@@ -45,3 +45,11 @@ Musopen 曾在 FAQ 中出于礼貌请求：不要直接贩售其录音牟利，�
 - Laurens Goedhart 演奏的 Debussy《Clair de lune》：[Commons 文件](https://commons.wikimedia.org/wiki/File:Clair_de_lune_(Claude_Debussy)_Suite_bergamasque.ogg)。作曲为公有领域，**录音为 CC BY**（需署名）。中段高潮较明显，不太适合长时间当背景，故未用作备选。若日后改用，必须在网站署名。
 - 从 YouTube 导入 Commons 的《Clair de Lune by Claude Debussy (1905, piano solo).opus》：只标明了作曲公有领域，演奏录音权利不清，未采用。
 - Kevin MacLeod 演奏的《Gymnopédie No. 1》：CC BY 3.0，可用但需署名；主推已有许可更干净的公有领域演奏，故未采用。
+
+---
+
+## v9 新增资源
+
+- **字体**：Noto Serif CJK SC（思源宋体，Adobe / Google，SIL Open Font License 1.1），只打包了网站用到的字；Cormorant Garamond（Christian Thalmann，SIL Open Font License 1.1）。
+- **地图**：Natural Earth 1:10m Admin 0 Countries（公有领域），通过 world-atlas 获取，已裁剪简化；中国轮廓沿用 `public/data/world-countries.json` 中的 ECharts 4.9.0 版本（Apache License 2.0）。
+- topojson-client 3.1.0（Mike Bostock，ISC 许可）：public/lib/topojson-client.min.js，用来读取 TopoJSON 地图。
