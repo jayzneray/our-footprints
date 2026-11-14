@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>我们的足迹 · 改版效果稿 v6</title>
+<title>我们的足迹</title>
+<meta name="description" content="我们一起走过的地方">
+<link rel="icon" href="public/favicon.svg">
 <style>
-@font-face { font-family:'TravelSerif'; src:url('../public/fonts/noto-serif-sc-500-subset.woff') format('woff'); font-weight:500; font-display:swap; }
+@font-face { font-family:'TravelSerif'; src:url('public/fonts/noto-serif-sc-500-subset.woff') format('woff'); font-weight:500; font-display:swap; }
 :root{
   --bg:#12100E; --ink:#EDE6DA; --muted:#8C8378; --faint:#2A2622; --line:rgba(237,230,218,.10); --accent:#C9A27A;
   --serif:'TravelSerif','Noto Serif SC','Noto Serif CJK SC','Source Han Serif SC','Songti SC',serif;
@@ -14,29 +16,54 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.82) contrast(.93) brightness(.9) sepia(.1)}
-/* film grain */
+:focus-visible{outline:1px solid var(--accent);outline-offset:3px}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 
 /* top bar */
-.top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:30px var(--pad);font-size:12px;letter-spacing:.24em;color:rgba(237,230,218,.62);transition:background .4s var(--ease)}
-.top .mark{font-family:var(--serif);font-weight:500;letter-spacing:.3em;opacity:0;transition:opacity .4s var(--ease)}
-body.scrolled .top{background:rgba(18,16,14,.86);backdrop-filter:blur(10px);padding-top:22px;padding-bottom:22px}
+.top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:30px var(--pad);font-size:12px;letter-spacing:.24em;color:rgba(237,230,218,.62);transition:background .4s var(--ease),padding .4s var(--ease)}
+.top .mark{font-family:var(--serif);font-weight:500;letter-spacing:.3em;opacity:0;transition:opacity .4s var(--ease);cursor:pointer}
+body.scrolled .top{background:rgba(18,16,14,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding-top:22px;padding-bottom:22px}
 body.scrolled .top .mark{opacity:1}
-.switch{display:flex;gap:22px;font-family:var(--serif);font-weight:500}
-.switch span{padding-bottom:5px;cursor:pointer}
+.switch{display:flex;gap:22px;font-family:var(--serif);font-weight:500;align-items:center}
+.switch span{padding-bottom:5px;cursor:pointer;transition:color .3s var(--ease)}
+.switch span:hover{color:var(--ink)}
 .switch .on{color:var(--ink);border-bottom:1px solid var(--accent)}
+
+/* music toggle */
+.detail-bar .music-toggle{margin-left:auto}
+.detail-bar .dnav + .music-toggle{margin-left:16px}
+body.view-china .top{background:rgba(18,16,14,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding-top:22px;padding-bottom:22px}
+body.view-china .top .mark{opacity:1}
+.music-toggle{margin-left:16px;padding:8px;display:none;align-items:center;justify-content:center;gap:3px;height:32px;width:32px;background:transparent;border:0;cursor:pointer;position:relative;border-radius:2px}
+.music-toggle:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
+.music-toggle.visible{display:flex}
+.music-toggle .bar{width:2px;height:14px;background:#EDE6DA;opacity:.7;border-radius:1px;transform-origin:center;transform:scaleY(.22);transition:transform .2s var(--ease),opacity .2s var(--ease);display:block}
+.music-toggle:hover .bar{opacity:1}
+.music-toggle .mt-lbl{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin-right:6px;font-size:11px;letter-spacing:.2em;color:rgba(237,230,218,.7);opacity:0;transition:opacity .2s var(--ease);pointer-events:none;white-space:nowrap;font-family:var(--sans,"Noto Sans SC",sans-serif)}
+.music-toggle:hover .mt-lbl{opacity:1}
+.music-toggle.playing .bar{animation:musicBars 1.1s ease-in-out infinite}
+.music-toggle.playing .bar:nth-child(1){animation-delay:0s}
+.music-toggle.playing .bar:nth-child(2){animation-delay:.18s}
+.music-toggle.playing .bar:nth-child(3){animation-delay:.36s}
+.music-toggle.playing .bar:nth-child(4){animation-delay:.54s}
+@keyframes musicBars{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
 
 /* hero */
 .hero{position:relative;height:100vh;min-height:620px;overflow:hidden}
-.hero img{object-position:50% 74%;transform:scale(1.02)}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,16,14,.35) 0%,rgba(18,16,14,0) 22%,rgba(18,16,14,0) 52%,rgba(18,16,14,.78) 100%)}
-.hero-text{position:absolute;left:var(--pad);bottom:84px;z-index:2}
+.hero .hero-img-wrap{position:absolute;inset:0;overflow:hidden}
+.hero img{object-position:50% 74%;transform:scale(1.06);transition:transform 1.6s var(--ease);will-change:transform}
+.hero.loaded img{transform:scale(1.02)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(18,16,14,.75) 0%,rgba(18,16,14,0) 45%),linear-gradient(to bottom,rgba(18,16,14,.45) 0%,rgba(18,16,14,0) 20%);pointer-events:none}
+.hero-text{position:absolute;left:var(--pad);bottom:84px;z-index:2;opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.hero.loaded .hero-text{opacity:1;transform:none}
 .hero h1{margin:0;font-family:var(--serif);font-weight:500;font-size:62px;letter-spacing:.16em;line-height:1;color:#F1EBE0}
-.hero p{margin:26px 0 0;font-size:14px;letter-spacing:.22em;color:rgba(237,230,218,.7)}
-.hero .cap{position:absolute;right:var(--pad);bottom:88px;z-index:2;font-size:11px;letter-spacing:.24em;color:rgba(237,230,218,.5);text-align:right;line-height:2}
-.hero .cue{position:absolute;left:50%;bottom:0;width:1px;height:56px;background:rgba(237,230,218,.32);z-index:2}
+.hero p{margin:26px 0 0;font-size:14px;letter-spacing:.22em;color:#EDE6DA;opacity:.85;text-shadow:0 1px 12px rgba(18,16,14,.6)}
+.hero .cap{position:absolute;right:var(--pad);bottom:88px;z-index:2;font-size:11px;letter-spacing:.24em;color:rgba(237,230,218,.78);text-align:right;line-height:2;text-shadow:0 1px 12px rgba(18,16,14,.6)}
+.hero .cue{position:absolute;left:50%;bottom:0;width:1px;height:56px;background:rgba(237,230,218,.32);z-index:2;cursor:pointer}
 
 /* index intro */
 .intro{display:grid;grid-template-columns:repeat(12,1fr);gap:0 24px;padding:150px var(--pad) 40px;align-items:end}
@@ -51,12 +78,17 @@ body.scrolled .top .mark{opacity:1}
 
 /* trips */
 .trip{display:grid;grid-template-columns:repeat(12,1fr);gap:0 24px;padding:96px var(--pad) 0;align-items:end}
-.trip figure{margin:0;overflow:hidden;background:#1A1714}
+.trip figure{margin:0;overflow:hidden;background:#1A1714;cursor:pointer}
+.trip figure .img-wrap{position:relative;width:100%;height:100%;overflow:hidden}
+.trip figure img{transition:transform .9s var(--ease)}
+.trip figure:hover img{transform:scale(1.03)}
 .t-no{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:22px}
-.t-title{margin:0;font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.35;letter-spacing:.06em}
+.t-title{margin:0;font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.35;letter-spacing:.06em;cursor:pointer;transition:color .4s var(--ease)}
+.t-title:hover{color:#F1EBE0}
 .t-meta{margin-top:18px;font-size:12px;letter-spacing:.18em;color:var(--muted);line-height:2}
 .t-meta b{font-weight:400;color:rgba(237,230,218,.78)}
-.t-more{display:inline-block;margin-top:30px;font-size:11px;letter-spacing:.3em;color:rgba(237,230,218,.62);border-bottom:1px solid rgba(201,162,122,.6);padding-bottom:6px}
+.t-more{display:inline-block;margin-top:30px;font-size:11px;letter-spacing:.3em;color:rgba(237,230,218,.62);border-bottom:1px solid rgba(201,162,122,.6);padding-bottom:6px;cursor:pointer;transition:color .3s var(--ease),border-color .3s var(--ease)}
+.t-more:hover{color:var(--ink);border-color:var(--accent)}
 
 .L figure{grid-column:1/8;aspect-ratio:4/5}
 .L .txt{grid-column:9/13;padding-bottom:12px}
@@ -68,11 +100,12 @@ body.scrolled .top .mark{opacity:1}
 .Ml .txt{grid-column:8/12;align-self:start;padding-top:120px}
 .S figure{grid-column:8/11;aspect-ratio:3/4;grid-row:1}
 .S .txt{grid-column:3/7;grid-row:1;padding-bottom:12px}
-.T{padding-top:72px}
+.T{padding-top:72px;cursor:pointer}
 .T .txt{grid-column:5/12;display:grid;grid-template-columns:90px 1fr auto;align-items:baseline;border-top:1px solid var(--line);padding-top:26px}
 .T .t-no{margin:0}
 .T .t-title{font-size:24px}
 .T .t-meta{margin:0;text-align:right}
+.T .t-title:hover{color:#F1EBE0}
 
 /* divider */
 .turn{padding:150px var(--pad) 130px;text-align:center}
@@ -81,37 +114,220 @@ body.scrolled .top .mark{opacity:1}
 .turn p{margin:30px 0 0;font-size:11px;letter-spacing:.34em;color:var(--muted)}
 
 /* full-bleed */
-.bleed{position:relative;margin-top:0;height:84vh;min-height:560px;overflow:hidden}
+.bleed{position:relative;margin-top:0;height:84vh;min-height:560px;overflow:hidden;cursor:pointer}
 .bleed img{object-position:50% 56%}
+.hero .img-wrap,.bleed .img-wrap{position:absolute;inset:0;height:100%}
+.hero .hero-img-wrap,.bleed .img-wrap{z-index:0}
+.hero::after,.bleed::after{z-index:1}
+.hero p{font-weight:500}
+.bleed .txt{z-index:3}
 .bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,16,14,0) 55%,rgba(18,16,14,.72) 100%)}
 .bleed .txt{position:absolute;left:var(--pad);bottom:64px;z-index:2}
 .bleed .t-title{font-size:44px}
+.bleed .t-title:hover{color:#F1EBE0}
 
 /* places archive */
 .archive{padding:200px var(--pad) 120px}
 .archive .lab{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:40px}
 .arch{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.arch .arch-item{cursor:pointer}
 .arch figure{margin:0 0 22px;aspect-ratio:4/5;overflow:hidden}
-.arch .t-title{font-size:24px}
+.arch figure .img-wrap{position:relative;width:100%;height:100%;overflow:hidden}
+.arch figure img{transition:transform .9s var(--ease)}
+.arch .arch-item:hover figure img{transform:scale(1.03)}
+.arch .t-title{font-size:24px;cursor:pointer}
+.arch .arch-item:hover .t-title{color:#F1EBE0}
 .end{padding:120px var(--pad) 140px;text-align:center;font-family:var(--serif);font-weight:500;font-size:16px;letter-spacing:.4em;color:var(--muted)}
 
+/* lqip wrapper */
+.img-wrap{position:relative;overflow:hidden;background-color:#1A1714;background-size:cover;background-position:center}
+.img-wrap img{position:relative;z-index:1;opacity:0;transition:opacity .5s var(--ease)}
+.img-wrap img.loaded{opacity:1}
+
 /* mini globe */
-.mini{position:fixed;right:40px;bottom:36px;z-index:30;display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-body.scrolled .mini{opacity:1;transform:none}
-.mini .lbl{text-align:right;text-shadow:0 0 12px rgba(18,16,14,.9)}
+.mini{position:fixed;right:32px;bottom:28px;z-index:30;display:none;flex-direction:column;align-items:center;gap:8px;opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease);pointer-events:none}
+body.scrolled .mini{opacity:1;transform:none;pointer-events:auto;display:flex}
+body.detail .mini{display:none!important}
+.mini .lbl{text-align:center;text-shadow:0 1px 10px rgba(18,16,14,.9);transition:opacity .2s;order:2;padding:0;background:none;border-radius:0}
 .mini .c{font-family:var(--serif);font-weight:500;font-size:15px;letter-spacing:.2em;color:var(--ink)}
 .mini .n{margin-top:6px;font-size:10px;letter-spacing:.28em;color:var(--muted)}
-.mini canvas{width:120px;height:120px}
+.mini .canvas-wrap{order:1;transition:width .5s var(--ease),height .5s var(--ease);width:120px;height:120px;position:relative}
+.mini.grow .canvas-wrap{width:var(--gs,220px);height:var(--gs,220px)}
+.mini canvas{width:100%;height:100%;cursor:pointer;display:block}
 
+/* reveal */
+.js-reveal .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.js-reveal .reveal.on{opacity:1;transform:none}
+
+/* page transitions */
+#app{transition:opacity .28s var(--ease)}
+#app.leaving{opacity:0}
+#app.entering{opacity:0}
+#app.entered{opacity:1;transition-duration:.32s}
+
+/* detail */
+.detail-bar{position:fixed;top:0;left:0;right:0;z-index:40;height:56px;display:flex;justify-content:space-between;align-items:center;padding:0 var(--pad);background:rgba(10,9,8,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:12px;letter-spacing:.16em;color:rgba(242,237,228,.55)}
+.detail-bar a{transition:color .3s var(--ease);white-space:nowrap}
+.detail-bar a:hover{color:var(--ink)}
+.detail-bar .dnav{display:flex;gap:28px;align-items:center;margin-left:auto}
+.detail-bar .dnav a{max-width:44vw;overflow:hidden;text-overflow:ellipsis}
+.detail-cover{position:relative;height:78vh;min-height:480px;overflow:hidden}
+.detail-cover .img-wrap{position:absolute;inset:0}
+.detail-cover img{object-fit:cover}
+.detail-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,16,14,.15) 0%,rgba(18,16,14,0) 40%,rgba(18,16,14,.82) 100%);z-index:1}
+.detail-cover .dtxt{position:absolute;left:var(--pad);bottom:60px;z-index:2}
+.detail-head{padding:160px var(--pad) 40px}
+.detail-head .kicker{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:26px}
+.detail-head h1{margin:0;font-family:var(--serif);font-weight:500;font-size:48px;line-height:1.3;letter-spacing:.06em;color:#F1EBE0}
+.detail-cover h1{margin:0;font-family:var(--serif);font-weight:500;font-size:48px;line-height:1.3;letter-spacing:.06em;color:#F1EBE0}
+.detail-cover .kicker{font-size:11px;letter-spacing:.3em;color:rgba(242,237,228,.6);margin-bottom:26px}
+.detail-meta{margin-top:20px;font-size:12px;letter-spacing:.18em;color:var(--muted);line-height:2}
+
+/* stats row */
+.stats-row{display:flex;gap:72px;padding:48px var(--pad);border-top:1px solid var(--line);margin:0 var(--pad);padding-left:0;padding-right:0;flex-wrap:wrap}
+.stats-row .stat{}
+.stats-row .stat .num{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.1;letter-spacing:.02em;color:var(--ink)}
+.stats-row .stat .lab{margin-top:8px;font-size:11px;letter-spacing:.24em;color:var(--muted)}
+
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:48px var(--pad);border-top:1px solid var(--line);margin:0 var(--pad);padding-left:0;padding-right:0}
+.facts .f-lab{font-size:10px;letter-spacing:.3em;color:var(--muted);margin-bottom:12px}
+.facts .f-val{font-size:14px;letter-spacing:.08em;color:rgba(237,230,218,.86);line-height:1.8}
+.visits-list{padding:0 var(--pad) 20px}
+.visits-list .v-row{display:grid;grid-template-columns:220px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--line)}
+.visits-list .v-date{font-size:12px;letter-spacing:.16em;color:var(--muted)}
+.visits-list .v-note{font-size:14px;letter-spacing:.06em;color:rgba(237,230,218,.86)}
+.visits-list .v-text{margin:10px 0 0;font-size:14px;line-height:2;letter-spacing:.03em;color:rgba(237,230,218,.62);max-width:40em}
+.stops-line{padding:0 var(--pad) 40px;font-size:14px;letter-spacing:.08em;color:rgba(237,230,218,.86)}
+.stops-line .s-lab{font-size:10px;letter-spacing:.3em;color:var(--muted);display:block;margin-bottom:14px}
+.photos-sec{padding:120px var(--pad)}
+.photos-sec .place-lab{font-size:11px;letter-spacing:.3em;color:var(--muted);margin:0 0 26px}
+.photos-sec .place-block{margin-bottom:40px}
+.photos-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.photos-grid .p-item{margin:0;overflow:hidden;cursor:pointer;background:#1A1714;opacity:0;transition:opacity .7s var(--ease)}
+.photos-grid .p-item.loaded{opacity:1}
+.photos-grid .p-item:nth-child(3n+1){grid-column:1/8}
+.photos-grid .p-item:nth-child(3n+2){grid-column:9/13}
+.photos-grid .p-item:nth-child(3n){grid-column:3/11}
+.photos-grid .p-item img{transition:transform .9s var(--ease)}
+.photos-grid .p-item:hover img{transform:scale(1.03)}
+.place-info{padding:20px var(--pad) 0}
+.place-info .pi-title{font-family:var(--serif);font-weight:500;font-size:20px;letter-spacing:.08em;margin:0 0 14px;color:rgba(237,230,218,.9)}
+.place-info .pi-date{font-size:11px;letter-spacing:.2em;color:var(--muted);margin-bottom:10px}
+.place-info .pi-memory{font-size:14px;line-height:2;letter-spacing:.04em;color:rgba(237,230,218,.72);max-width:640px}
+.detail-foot{padding:120px var(--pad) 140px;border-top:1px solid var(--line);margin:0 var(--pad);padding-left:0;padding-right:0}
+.detail-foot .dnav2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:120px}
+.detail-foot .dnav2 a{display:block}
+.detail-foot .dnav2 .d-lab{font-size:10px;letter-spacing:.3em;color:var(--muted);margin-bottom:16px}
+.detail-foot .dnav2 .d-title{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.4;letter-spacing:.06em;color:rgba(237,230,218,.86);transition:color .3s var(--ease)}
+.detail-foot .dnav2 a:hover .d-title{color:var(--ink)}
+.detail-foot .dnav2 .d-right{text-align:right}
+.detail-end{text-align:center;font-family:var(--serif);font-weight:500;font-size:16px;letter-spacing:.4em;color:var(--muted)}
+
+/* itinerary */
+.itin-sec{padding:60px var(--pad) 100px;border-top:1px solid var(--line);margin:0 var(--pad);padding-left:0;padding-right:0}
+.itin-sec .itin-lab{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:40px}
+.itin-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:0 24px}
+.itin-days{grid-column:1/7}
+.itin-map{grid-column:8/13;position:sticky;top:88px;height:calc(100vh - 120px);align-self:start}
+.itin-map svg{width:100%;height:100%;display:block;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 80%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 80%,transparent 100%)}
+.itin-day{min-height:60vh;padding-bottom:40px}
+.itin-day.nophoto{min-height:0;padding-bottom:28px}
+.itin-day .day-kick{font-size:11px;letter-spacing:.26em;color:var(--muted);margin-bottom:14px}
+.itin-day .day-city{font-family:var(--serif);font-weight:500;font-size:30px;letter-spacing:.06em;color:var(--ink);margin:0 0 12px}
+.itin-day .day-transport{font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:14px}
+.itin-day .day-title{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.08em;color:rgba(241,235,224,.92);margin-bottom:12px}
+.itin-day .day-note{font-size:14px;line-height:2;letter-spacing:.03em;color:rgba(237,230,218,.66);margin-bottom:10px;max-width:34em}
+.itin-day .day-meta{font-size:11px;letter-spacing:.18em;color:var(--muted);margin-bottom:26px}
+.itin-day .day-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.itin-day .day-photos .dp{position:relative;aspect-ratio:1/1;cursor:pointer}
+.itin-day .day-photos .dp.wide{grid-column:1/3;aspect-ratio:16/10}
+.itin-day .day-photos .img-wrap{width:100%;height:100%}
+.itin-day .day-photos img{transition:transform .7s var(--ease)}
+.itin-day .day-photos .dp:hover img{transform:scale(1.03)}
+
+.itin-day.cur .day-city{color:var(--accent)}
+
+/* detail map */
+.dmap{width:100%;height:100%}
+.dmap .country{fill:rgba(237,230,218,.045);stroke:rgba(237,230,218,.15);stroke-width:.5;vector-effect:non-scaling-stroke}
+.dmap .country.trip{fill:#2A241E;stroke:rgba(237,230,218,.22);stroke-width:.6}
+.dmap .leg{fill:none;stroke:rgba(201,162,122,.28);stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.dmap .leg.done{stroke:var(--accent)}
+.dmap .city-dot{fill:var(--accent)}
+.dmap .city-ring{fill:none;stroke:var(--accent);stroke-width:1;opacity:0}
+.dmap .city-lbl{font-family:var(--serif);font-size:13px;fill:rgba(237,230,218,.85);letter-spacing:.06em;paint-order:stroke;stroke:rgba(18,16,14,.85);stroke-width:3px;stroke-linejoin:round}
+.dmap .city-dot.cur{fill:var(--accent)}
+.dmap .city-lbl.cur{fill:var(--accent)}
+.dmap .city-leader{stroke:rgba(237,230,218,.35);stroke-width:1;fill:none;vector-effect:non-scaling-stroke}
+/* china view */
+.china-head{padding:150px var(--pad) 40px}
+.china-head .lab{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:24px}
+.china-head h2{margin:0;font-family:var(--serif);font-weight:500;font-size:44px;letter-spacing:.06em;line-height:1.35;color:#F1EBE0}
+.china-map-wrap{padding:40px var(--pad) 60px;display:flex;justify-content:center}
+.china-map{width:100%;max-width:760px}
+.china-map svg{width:100%;height:auto;display:block}
+.china-map .prov{fill:rgba(237,230,218,.05);stroke:rgba(237,230,218,.10);stroke-width:.6;transition:fill .3s var(--ease)}
+.china-map .prov.visited{fill:rgba(201,162,122,.28);stroke:rgba(201,162,122,.55)}
+.china-map .city-dot{fill:var(--accent);transition:r .3s var(--ease)}
+.china-map .city-dot.hl{r:5}
+.china-map .city-lbl{font-family:var(--serif);font-size:13px;fill:#EDE6DA;letter-spacing:.08em;cursor:pointer;transition:fill .3s var(--ease)}
+.china-map .city-lbl.hl{fill:var(--accent)}
+.china-cards{padding:40px var(--pad) 120px}
+.china-card{display:grid;grid-template-columns:repeat(12,1fr);gap:0 24px;padding:96px 0 0;align-items:end}
+.china-card figure{margin:0;overflow:hidden;cursor:pointer;background:#1A1714}
+.china-card figure .img-wrap{width:100%;height:100%}
+.china-card figure img{transition:transform .9s var(--ease)}
+.china-card:hover figure img{transform:scale(1.03)}
+.china-card .txt{}
+.china-card .t-title{font-size:34px}
+.china-card .t-meta{margin-top:18px}
+.china-card.L figure{grid-column:1/8;aspect-ratio:4/5}
+.china-card.L .txt{grid-column:9/13;padding-bottom:12px}
+.china-card.Lr figure{grid-column:6/13;aspect-ratio:4/5;grid-row:1}
+.china-card.Lr .txt{grid-column:1/5;grid-row:1;padding-bottom:12px}
+.china-card.M figure{grid-column:7/12;aspect-ratio:3/4;grid-row:1}
+.china-card.M .txt{grid-column:2/6;grid-row:1;align-self:start;padding-top:120px}
+.china-card.Ml figure{grid-column:2/7;aspect-ratio:3/4}
+.china-card.Ml .txt{grid-column:8/12;align-self:start;padding-top:120px}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:#0A0A0B;opacity:0;pointer-events:none;transition:opacity .25s var(--ease);display:flex;align-items:center;justify-content:center}
+.lb.open{opacity:1;pointer-events:auto}
+.lb .lb-img-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:5vh 4vw}
+.lb .lb-img-wrap img{max-width:92vw;max-height:90vh;width:auto;height:auto;object-fit:contain;filter:saturate(.9) contrast(.95) brightness(.95);opacity:0;transition:opacity .2s var(--ease)}
+.lb .lb-img-wrap img.show{opacity:1}
+.lb .lb-close{position:absolute;top:20px;right:24px;font-size:20px;color:rgba(242,237,228,.45);cursor:pointer;line-height:1;z-index:3;transition:color .2s;padding:8px}
+.lb .lb-close:hover{color:rgba(242,237,228,1)}
+.lb .lb-prev,.lb .lb-next{position:absolute;top:50%;transform:translateY(-50%);font-size:28px;font-weight:300;color:rgba(242,237,228,.45);cursor:pointer;z-index:3;transition:color .2s;padding:14px;line-height:1;user-select:none}
+.lb .lb-prev{left:28px} .lb .lb-next{right:28px}
+.lb .lb-prev:hover,.lb .lb-next:hover{color:rgba(242,237,228,1)}
+.lb .lb-cap{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.12em;color:rgba(242,237,228,.4);z-index:3;white-space:nowrap}
+
+/* states */
+.load-error{padding:120px var(--pad);text-align:center;color:var(--muted);font-size:13px;letter-spacing:.2em}
+.hidden{display:none !important}
+
+/* reserved companion zone for the corner globe (desktop): list content stops short of it */
+@media (min-width:1024px){
+  :root{--gz:196px}
+  .intro,.trip,.archive{padding-right:calc(var(--pad) + var(--gz))}
+  .year{margin-right:calc(var(--pad) + var(--gz))}
+  .T .txt{grid-column:3/13}
+  .T .t-title{white-space:nowrap}
+}
 @media (max-width:640px){
   :root{--pad:22px}
   .top{padding:22px var(--pad);font-size:11px}
-  .switch{gap:16px}
+  body.scrolled .top .mark{display:none}
+  .switch{gap:16px;margin-left:auto}
+  .itin-grid{display:flex;flex-direction:column}
+  .itin-map{order:-1}
+  .detail-bar .music-toggle{margin-left:auto!important}
   .hero{height:88vh;min-height:0}
   .hero img{object-position:50% 50%}
   .hero-text{bottom:58px}
   .hero h1{font-size:44px;letter-spacing:.12em}
-  .hero p{font-size:12px;letter-spacing:.14em;margin-top:18px}
+  .hero p{font-size:13px;letter-spacing:.14em;margin-top:18px}
   .hero .cap{display:none}
   .hero .cue{height:36px}
   .intro{display:block;padding:72px var(--pad) 10px}
@@ -130,102 +346,2942 @@ body.scrolled .mini{opacity:1;transform:none}
   .turn{padding:130px var(--pad) 110px}
   .turn h2{font-size:22px;letter-spacing:.3em}
   .arch{grid-template-columns:1fr}
-  .mini{right:16px;bottom:16px;gap:12px}
-  .mini canvas{width:72px;height:72px}
+  .mini{right:16px;bottom:16px;gap:10px}
+  .mini .canvas-wrap{width:72px;height:72px}
+  .mini.grow .canvas-wrap{width:72px;height:72px}
+  .mini .c{font-size:13px}
+  .mini .n{font-size:9px;margin-top:4px}
+  .music-toggle{padding:6px}
+  .detail-bar{height:52px;justify-content:flex-start}
+  .detail-bar .dnav{display:none}
+  .detail-cover{height:62vh;min-height:380px}
+  .detail-cover h1{font-size:30px}
+  .detail-head{padding-top:120px}
+  .detail-head h1{font-size:30px}
+  .stats-row{gap:36px;padding:36px 0}
+  .stats-row .stat .num{font-size:28px}
+  .facts{grid-template-columns:1fr 1fr;padding:36px 0}
+  .visits-list .v-row{grid-template-columns:1fr;gap:8px}
+  .photos-sec{padding:72px var(--pad)}
+  .photos-grid{grid-template-columns:1fr;gap:6px}
+  .photos-grid .p-item:nth-child(n){grid-column:1/1}
+  .detail-foot{padding:72px 0 100px}
+  .detail-foot .dnav2{grid-template-columns:1fr;gap:40px;margin-bottom:80px}
+  .detail-foot .dnav2 .d-right{text-align:left}
+  .detail-foot .dnav2 .d-title{font-size:24px}
+  .china-head{padding-top:110px}
+  .china-head h2{font-size:28px}
+  .china-card{display:block;padding-top:56px}
+  .china-card figure{margin-bottom:22px}
+  .china-card.M .txt,.china-card.Ml .txt{padding-top:0}
+  .lb .lb-prev,.lb .lb-next{display:none}
+  .lb .lb-img-wrap img{max-height:80vh}
+  .lb .lb-close{top:14px;right:16px}
+  .place-info{padding-left:0;padding-right:0}
+  /* itinerary mobile */
+  .itin-sec{padding:30px 0 60px;margin:0;border-top:1px solid var(--line)}
+  .itin-sec .itin-lab{padding-left:var(--pad)}
+  .itin-grid{display:flex;flex-direction:column;position:relative}
+  .itin-map{position:sticky;top:52px;height:32vh;width:100%;z-index:5;background:var(--bg);margin-bottom:20px;padding:0}
+  .itin-days{padding:0 var(--pad)}
+  .itin-day{min-height:0;padding-bottom:32px}
+  .itin-day .day-photos{grid-template-columns:1fr}
+  .itin-day .day-photos .dp.wide{grid-column:1/2;aspect-ratio:4/3}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero img{transition:none;transform:scale(1.02)}
+  .hero-text{transition:none;opacity:1;transform:none}
+  .js-reveal .reveal{opacity:1;transform:none;transition:none}
+  .mini{transition:none}
+  .mini .canvas-wrap{transition:none}
+  #app{transition:none}
+  .img-wrap img{transition:none}
 }
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="mark">我们的足迹</div>
-  <nav class="switch"><span class="on">世界</span><span>中国</span></nav>
+<header class="top" id="topbar">
+  <div class="mark" id="mark">我们的足迹</div>
+  <nav class="switch" id="switch">
+    <span data-view="world">世界</span>
+    <span data-view="china">中国</span>
+    <button class="music-toggle" id="musicToggle" aria-label="背景音乐" aria-pressed="false">
+      <span class="mt-lbl">音乐</span>
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+  </nav>
 </header>
 
-<section class="hero">
-  <img src="../public/photos/morocco/03.webp" alt="">
-  <div class="hero-text">
-    <h1>我们的足迹</h1>
-    <p>去过 13 个国家和地区 · 22 个地方</p>
-  </div>
-  <div class="cap">摩洛哥<br>2024 年 12 月</div>
-  <div class="cue"></div>
-</section>
+<nav class="detail-bar hidden" id="detailBar">
+  <a href="#" id="backLink">← 全部旅行</a>
+  <div class="dnav" id="detailNav"></div>
+  <button class="music-toggle" id="musicToggleDetail" aria-label="背景音乐" aria-pressed="false">
+    <span class="mt-lbl">音乐</span>
+    <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+  </button>
+</nav>
 
-<main id="seq"></main>
+<main id="app"></main>
 
-<div class="mini" id="mini"><div class="lbl"><div class="c" id="miniC">摩洛哥</div><div class="n" id="miniN">07 / 14</div></div><canvas id="globe" width="224" height="224"></canvas></div>
+<div class="mini" id="mini">
+  <div class="canvas-wrap"><canvas id="globe" width="480" height="480"></canvas></div>
+  <div class="lbl" id="miniLbl"><div class="c" id="miniC">摩洛哥</div><div class="n" id="miniN">07 / 14</div></div>
+</div>
 
-<script src="../public/lib/d3.min.js"></script>
+<div class="lb" id="lb">
+  <div class="lb-img-wrap"><img id="lbImg" alt=""></div>
+  <button class="lb-close" id="lbClose" aria-label="关闭">×</button>
+  <button class="lb-prev" id="lbPrev" aria-label="上一张">‹</button>
+  <button class="lb-next" id="lbNext" aria-label="下一张">›</button>
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+<script src="public/lib/d3.min.js"></script>
 <script>
-// Only real data: trips.json + chosen lead photos from public/photos
-const LEAD = {
+(function(){
+'use strict';
+
+// ---------- constants ----------
+var LEAD = {
   '2019-korea':['korea/03','M'], '2024-iceland':['iceland/04','L'], '2024-switzerland':['switzerland/05','M'],
   '2024-thailand':['thailand/05','S'], '2024-morocco':['morocco/07','B'], '2025-wales':['wales/06','L'],
   '2025-france':['france/06','M'], '2025-italy-spring':['vatican/01','Lr'], '2025-greece':['greece/04','Ml'],
   '2025-spain-summer':['spain/04','L'], '2025-car-day':['birmingham/02','Ml'], '2026-sea-honeymoon':['malaysia/03','M']
 };
-const ARCH = {'uk-years':'london/06','edinburgh-again':'edinburgh/01','china':'qinhuangdao/04'};
-const pad = n => String(n).padStart(2,'0');
-const d = s => s.split('-'); 
-function dateLine(t){
-  if(!t.start) return '';
-  const [y1,m1,d1]=d(t.start), e=t.end?d(t.end):null;
-  if(!e) return `${y1}.${m1}.${d1}`;
-  return `${y1}.${m1}.${d1} — ${e[0]!==y1?e[0]+'.':''}${e[1]}.${e[2]}`;
-}
-fetch('../public/data/trips.json').then(r=>r.json()).then(({trips})=>{
-  const seq = trips.filter(t=>t.kind==='trip').sort((a,b)=>a.start.localeCompare(b.start));
-  const longs = trips.filter(t=>t.kind!=='trip');
-  const N = seq.length; let html = `<section class="intro"><div class="lab">旅程 · 按时间</div><p class="lede">2019 — 2026<br>${N} 段旅程</p></section>`;
-  let year=null;
-  seq.forEach((t,i)=>{
-    const y = t.start.slice(0,4);
-    if(y!==year){ year=y; const c=seq.filter(x=>x.start.startsWith(y)).length;
-      html += `<div class="year"><div class="num">${y}</div><div class="meta">${c} 段旅程</div></div>`; }
-    if(t.id==='2024-morocco') html += `<section class="turn" id="turn"><div class="rule"></div><h2>从这里开始，是我们</h2><p>2024 年 12 月 · 摩洛哥</p></section>`;
-    const lead = LEAD[t.id];
-    const meta = [dateLine(t), t.nights?`${t.nights} 晚`:''].filter(Boolean).join(' · ');
-    const txt = `<div class="txt"><div class="t-no">${pad(i+1)}</div><h3 class="t-title">${t.title}</h3><div class="t-meta"><b>${t.countries.join(' · ')}</b><br>${meta}</div>${lead?'<span class="t-more">看照片</span>':''}</div>`;
-    if(!lead){ html += `<article class="trip T" data-c="${t.countries[0]}" data-i="${i+1}"><div class="txt"><div class="t-no">${pad(i+1)}</div><h3 class="t-title">${t.title}</h3><div class="t-meta"><b>${t.countries.join(' · ')}</b>　${meta}</div></div></article>`; return; }
-    const img = `<figure><img src="../public/photos/${lead[0]}.webp" alt="" loading="eager"></figure>`;
-    if(lead[1]==='B') html += `<article class="bleed" id="morocco" data-c="${t.countries[0]}" data-i="${i+1}">${img.replace('<figure>','').replace('</figure>','')}${txt}</article>`;
-    else html += `<article class="trip ${lead[1]}" data-c="${t.countries[0]}" data-i="${i+1}">${img}${txt}</article>`;
-  });
-  html += `<section class="archive"><div class="lab">常去的地方</div><div class="arch">` + longs.map(t=>{
-    const sub = t.subtitle || (t.places.length>1&&t.id==='china'?`${t.places.length} 座城市`: (t.start&&t.end?`${t.start} — ${t.end}`:''));
-    return `<div data-c="${t.countries[0]}"><figure><img src="../public/photos/${ARCH[t.id]}.webp" alt=""></figure><h3 class="t-title">${t.title}</h3>${sub?`<div class="t-meta">${sub}</div>`:''}</div>`;}).join('') + `</div></section><div class="end">下一站，还没决定</div>`;
-  document.getElementById('seq').innerHTML = html;
-  setupGlobe(N);
-});
-addEventListener('scroll',()=>document.body.classList.toggle('scrolled', scrollY>innerHeight*0.6),{passive:true});
+var ARCH_IMG = {'uk-years':'london/06','edinburgh-again':'edinburgh/01','china':'qinhuangdao/04'};
+var VATICAN_MAP = '意大利';
+var WORLD_FALLBACK = {lat:31.8, lng:-7.1};
 
-function setupGlobe(N){
-  fetch('../public/data/world-countries.json').then(r=>r.json()).then(geo=>{
-    const visited = new Set(['韩国','法国','冰岛','葡萄牙','西班牙','瑞士','泰国','摩洛哥','英国','意大利','希腊','马来西亚','中国']);
-    const cv=document.getElementById('globe'), ctx=cv.getContext('2d'), S=224, R=104;
-    const proj=d3.geoOrthographic().scale(R).translate([S/2,S/2]).clipAngle(90);
-    // land dots
-    const feats=geo.features, dots=[];
-    for(let lat=-80;lat<=84;lat+=3.2){ const step=3.2/Math.max(.25,Math.cos(lat*Math.PI/180));
-      for(let lng=-180;lng<180;lng+=step){ const f=feats.find(f=>d3.geoContains(f,[lng,lat])); if(f) dots.push([lng,lat,f.properties.name]); } }
-    let cur='摩洛哥';
-    function draw(){
-      const c=d3.geoCentroid(feats.find(f=>f.properties.name===cur)); proj.rotate([-c[0],-c[1]*0.6]);
-      ctx.clearRect(0,0,S,S);
-      ctx.beginPath(); ctx.arc(S/2,S/2,R,0,7); ctx.fillStyle='rgba(18,16,14,.78)'; ctx.fill(); ctx.strokeStyle='rgba(237,230,218,.10)'; ctx.lineWidth=1; ctx.stroke();
-      const rot=proj.rotate();
-      for(const [lng,lat,n] of dots){ if(d3.geoDistance([lng,lat],[-rot[0],-rot[1]])>Math.PI/2) continue;
-        const [x,y]=proj([lng,lat]); const on=n===cur, v=visited.has(n);
-        ctx.fillStyle= on?'#C9A27A': v?'rgba(237,230,218,.55)':'rgba(237,230,218,.2)';
-        ctx.beginPath(); ctx.arc(x,y,on?2.4:1.6,0,7); ctx.fill(); }
+// ---------- utils ----------
+function pad(n){ return String(n).padStart(2,'0'); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function photoURL(src){ if(!src) return ''; return 'public/' + src; }
+function thumbURL(src){ if(!src) return ''; if(/\.webp$/.test(src)) return 'public/' + src.replace(/\.webp$/,'-thumb.webp'); return photoURL(src); }
+function globeCountry(name){ if(!name) return ''; return name === '梵蒂冈' ? VATICAN_MAP : name; }
+function normDate(s){
+  if(!s) return null;
+  var parts = s.split('-').map(function(x){return parseInt(x,10);});
+  return {y:parts[0], m:parts[1]||1, d:parts[2]||1, raw:s, hasMonth:parts.length>1, hasDay:parts.length>2};
+}
+function fmtRange(start, end){
+  var a = normDate(start), b = normDate(end);
+  if(!a) return '';
+  function seg(n){
+    if(n.hasDay) return n.y + '.' + pad(n.m) + '.' + pad(n.d);
+    if(n.hasMonth) return n.y + '.' + pad(n.m);
+    return String(n.y);
+  }
+  if(!b) return seg(a);
+  var out = seg(a) + ' — ';
+  if(b.y !== a.y) out += seg(b);
+  else if(b.hasDay) out += pad(b.m) + '.' + pad(b.d);
+  else if(b.hasMonth) out += pad(b.m);
+  else out += String(b.y);
+  return out;
+}
+function nightsText(n){ return (n==null) ? '' : (n + ' 晚'); }
+function metaLine(t){
+  var parts = [];
+  if(t.countries && t.countries.length) parts.push(t.countries.join(' · '));
+  var r = fmtRange(t.start, t.end);
+  if(r) parts.push(r);
+  var nt = nightsText(t.nights);
+  if(nt) parts.push(nt);
+  return parts;
+}
+function tripPhotos(trip, placesMap){
+  if(!trip || !trip.places) return [];
+  var out = [];
+  trip.places.forEach(function(pid){
+    var p = placesMap[pid];
+    if(p && p.photos) out = out.concat(p.photos);
+  });
+  return out;
+}
+
+// calendar day diff, inclusive
+function inclusiveDays(start, end){
+  var a = normDate(start), b = normDate(end);
+  if(!a || !b) return null;
+  if(!a.hasDay || !b.hasDay) return null;
+  var da = Date.UTC(a.y, a.m-1, a.d);
+  var db = Date.UTC(b.y, b.m-1, b.d);
+  var diff = Math.round((db - da)/86400000);
+  if(isNaN(diff) || diff < 0) return null;
+  return diff + 1;
+}
+function nightsBetween(start, end){
+  var a = normDate(start), b = normDate(end);
+  if(!a || !b) return null;
+  if(!a.hasDay || !b.hasDay) return null;
+  var da = Date.UTC(a.y, a.m-1, a.d);
+  var db = Date.UTC(b.y, b.m-1, b.d);
+  var diff = Math.round((db - da)/86400000);
+  if(isNaN(diff) || diff < 0) return null;
+  return diff;
+}
+
+// ---------- state ----------
+var STATE = {
+  trips: [], places: {}, placesList: [], placesMap: {},
+  worldGeo: null, chinaGeo: null,
+  tripSeq: [],
+  homeScroll: 0, chinaScroll: 0,
+  currentView: 'world',
+  returnView: 'world',
+  coverPhotosMap: {},
+  story: {}, // tripId -> {route, days}
+  storyLoaded: false
+};
+
+// ---------- data load ----------
+function loadJSON(url){
+  return fetch(url).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); });
+}
+function loadOptionalJSON(url){
+  return fetch(url).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); });
+}
+
+var storyPath = 'data/trips-story.json';
+try {
+  var sp = new URLSearchParams(location.search).get('story');
+  if(sp) storyPath = sp;
+} catch(e){}
+
+Promise.all([
+  loadJSON('public/data/trips.json'),
+  loadJSON('public/data/places.json'),
+  loadJSON('public/data/world-countries.json'),
+  loadJSON('public/data/china-provinces.json'),
+  loadOptionalJSON(storyPath).catch(function(){ return null; })
+]).then(function(res){
+  STATE.trips = res[0].trips || [];
+  STATE.placesList = (res[1].places || []);
+  STATE.placesMap = {};
+  STATE.placesList.forEach(function(p){ STATE.placesMap[p.id] = p; });
+  STATE.worldGeo = res[2];
+  STATE.chinaGeo = res[3];
+  STATE.tripSeq = STATE.trips.filter(function(t){return t.kind==='trip';}).slice().sort(function(a,b){
+    return (a.start||'').localeCompare(b.start||'');
+  });
+  if(res[4]){
+    try { STATE.story = normalizeStory(res[4]); STATE.storyLoaded = true; } catch(e){ STATE.story = {}; }
+  }
+  // assign photos per trip story
+  Object.keys(STATE.story).forEach(function(tid){
+    var trip = STATE.trips.find(function(t){return t.id===tid;});
+    if(!trip) return;
+    var tp = tripPhotos(trip, STATE.placesMap);
+    assignDayPhotos({trip:trip, tripPhotos:tp}, STATE.story[tid].days);
+  });
+  initGlobe();
+  initReveal();
+  animateRoute(function(){ router(); });
+}).catch(function(err){
+  console.error(err);
+  document.getElementById('app').innerHTML = '<div class="load-error">加载失败，请刷新</div>';
+});
+
+// ---------- story normalizer ----------
+function normalizeStory(raw){
+  var out = {};
+  if(!raw) return out;
+  var tripsObj = null;
+  if(Array.isArray(raw)) tripsObj = raw;
+  else if(raw.trips){
+    if(Array.isArray(raw.trips)) tripsObj = raw.trips;
+    else if(typeof raw.trips === 'object') tripsObj = raw.trips;
+  } else if(typeof raw === 'object'){
+    // top-level keyed
+    var keys = Object.keys(raw);
+    if(keys.length && keys.every(function(k){ return raw[k] && typeof raw[k]==='object'; })){
+      tripsObj = {};
+      keys.forEach(function(k){ tripsObj[k] = raw[k]; });
     }
-    draw();
-    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting&&e.target.dataset.c){ cur=e.target.dataset.c;
-      document.getElementById('miniC').textContent=cur; document.getElementById('miniN').textContent=e.target.dataset.i?`${String(e.target.dataset.i).padStart(2,'0')} / ${N}`:'常去'; draw(); }}),{rootMargin:'-45% 0px -45% 0px'});
-    document.querySelectorAll('[data-c]').forEach(el=>io.observe(el));
-    window.__ready=true;
+  }
+  if(!tripsObj) return out;
+  
+  function processTrip(id, t){
+    if(!t || typeof t !== 'object') return;
+    var routeSrc = t.route || t.cities || [];
+    if(!Array.isArray(routeSrc)) routeSrc = [];
+    var route = [];
+    routeSrc.forEach(function(s, i){
+      if(!s) return;
+      var city = s.city || s.name || '';
+      var lat = s.lat;
+      var lng = s.lng;
+      var r = {
+        city: city,
+        lat: (typeof lat === 'number' && isFinite(lat)) ? lat : null,
+        lng: (typeof lng === 'number' && isFinite(lng)) ? lng : null,
+        transport: s.transport || s.arrive_by || '',
+        days: Array.isArray(s.days) ? s.days : (s.day != null ? [s.day] : (s.days != null ? [s.days] : [])),
+        day: (s.day != null) ? s.day : (Array.isArray(s.days) ? s.days[0] : (s.days != null ? s.days : null)),
+        note: s.note || ''
+      };
+      route.push(r);
+    });
+    
+    var moments = Array.isArray(t.moments) ? t.moments : null;
+    if(moments && !route.length){
+      var seen = {};
+      moments.forEach(function(m){
+        if(!m || seen[m.city]) return; seen[m.city] = 1;
+        route.push({city: m.city || '', lat: typeof m.lat === 'number' ? m.lat : null, lng: typeof m.lng === 'number' ? m.lng : null, transport: '', days: [], day: null, note: ''});
+      });
+    }
+    var daysSrc = t.days || t.itinerary || (moments ? moments.map(function(m){ return {city: m.city, lat: m.lat, lng: m.lng, text: m.text, label: m.season || ''}; }) : []);
+    if(!Array.isArray(daysSrc)) daysSrc = [];
+    var days = [];
+    daysSrc.forEach(function(d, i){
+      if(!d) return;
+      var city = d.city || d.name || '';
+      var lat = d.lat, lng = d.lng;
+      if((typeof lat !== 'number' || !isFinite(lat)) || (typeof lng !== 'number' || !isFinite(lng))){
+        // lookup from route
+        for(var ri=0;ri<route.length;ri++){
+          if(route[ri].city === city && route[ri].lat != null){
+            if(typeof lat !== 'number' || !isFinite(lat)) lat = route[ri].lat;
+            if(typeof lng !== 'number' || !isFinite(lng)) lng = route[ri].lng;
+            break;
+          }
+        }
+      }
+      var note = d.note || d.text || d.summary || '';
+      var photos = d.photos || null;
+      var place = d.place || '';
+      var dn = (d.day != null) ? d.day : (d.n != null ? d.n : i+1);
+      var stopIdx = -1, tr = d.transport || '';
+      for(var si=0; si<route.length; si++){ if(route[si].days.indexOf(dn) >= 0 && route[si].city === city){ stopIdx = si; break; } }
+      if(stopIdx < 0){ for(var sj=0; sj<route.length; sj++){ if(route[sj].city === city){ stopIdx = sj; break; } } }
+      if(!tr && stopIdx >= 0 && route[stopIdx].days[0] === dn) tr = route[stopIdx].transport || '';
+      days.push({
+        label: d.label || '',
+        stop: stopIdx,
+        title: d.title || '',
+        weather: d.weather || '',
+        stay: d.stay || '',
+        day: (d.day != null) ? d.day : (d.n != null ? d.n : i+1),
+        date: d.date || '',
+        city: city,
+        lat: (typeof lat === 'number' && isFinite(lat)) ? lat : null,
+        lng: (typeof lng === 'number' && isFinite(lng)) ? lng : null,
+        note: note,
+        transport: tr,
+        photos: photos,
+        place: place
+      });
+    });
+    
+    var derivedDays = false;
+    if(!days.length && route.length && !(Array.isArray(t.visits) && t.visits.length)){
+      derivedDays = true;
+      route.forEach(function(r, i){
+        days.push({
+          day: (r.day != null) ? r.day : (i+1),
+          date: '',
+          city: r.city,
+          lat: r.lat,
+          lng: r.lng,
+          note: r.note || '',
+          transport: r.transport || '',
+          stop: i,
+          photos: null,
+          place: ''
+        });
+      });
+    }
+    
+    out[id] = {route: route, days: days, derivedDays: derivedDays, visits: Array.isArray(t.visits) ? t.visits : [], summary: t.summary || ''};
+  }
+  
+  if(Array.isArray(tripsObj)){
+    tripsObj.forEach(function(t){
+      if(!t) return;
+      var id = t.id || t.tripId || t.trip;
+      if(!id) return;
+      processTrip(id, t);
+    });
+  } else {
+    Object.keys(tripsObj).forEach(function(id){
+      processTrip(id, tripsObj[id]);
+    });
+  }
+  return out;
+}
+
+// assign photos per day
+function assignDayPhotos(trip, days){
+  if(!days || !days.length) return;
+  var tripPhotosArr = trip.tripPhotos || [];
+  var assigned = new Set();
+  var photosByDay = days.map(function(){ return []; });
+  
+  // 1) explicit day.photos
+  days.forEach(function(d, i){
+    if(!d.photos) return;
+    if(Array.isArray(d.photos)){
+      d.photos.forEach(function(p){
+        if(typeof p === 'number'){
+          if(p >= 0 && p < tripPhotosArr.length && !assigned.has(p)){
+            photosByDay[i].push(tripPhotosArr[p]);
+            assigned.add(p);
+          }
+        } else if(typeof p === 'string'){
+          // match by src
+          for(var pi=0;pi<tripPhotosArr.length;pi++){
+            if(tripPhotosArr[pi].src === p && !assigned.has(pi)){
+              photosByDay[i].push(tripPhotosArr[pi]);
+              assigned.add(pi);
+              break;
+            }
+          }
+        }
+      });
+    }
+  });
+  
+  // 2) by place id / city name, split evenly across consecutive days in that city
+  // build consecutive groups per city/place
+  var groups = [];
+  var curGroup = null;
+  days.forEach(function(d, i){
+    var key = d.place || d.city;
+    if(!key) { curGroup = null; return; }
+    if(curGroup && curGroup.key === key){
+      curGroup.indices.push(i);
+    } else {
+      curGroup = {key: key, indices: [i]};
+      groups.push(curGroup);
+    }
+  });
+  
+  // for each place, find matching place id
+  var placeByName = {};
+  Object.keys(STATE.placesMap).forEach(function(pid){
+    var p = STATE.placesMap[pid];
+    placeByName[p.name] = pid;
+  });
+  
+  groups.forEach(function(g){
+    var placeId = g.key;
+    if(!STATE.placesMap[placeId]){
+      // try by name
+      var alt = placeByName[g.key];
+      if(alt) placeId = alt; else return;
+    }
+    var place = STATE.placesMap[placeId];
+    if(!place || !place.photos) return;
+    // indices of these photos in tripPhotosArr
+    var tripPhotoIndices = [];
+    tripPhotosArr.forEach(function(tp, idx){
+      for(var pi=0;pi<place.photos.length;pi++){
+        if(place.photos[pi].src === tp.src){ tripPhotoIndices.push(idx); break; }
+      }
+    });
+    tripPhotoIndices = tripPhotoIndices.filter(function(i){ return !assigned.has(i); });
+    if(!tripPhotoIndices.length) return;
+    // split evenly
+    var n = g.indices.length;
+    var per = Math.floor(tripPhotoIndices.length / n);
+    var rem = tripPhotoIndices.length - per*n;
+    var cursor = 0;
+    g.indices.forEach(function(dayIdx, gi){
+      var cnt = per + (gi < rem ? 1 : 0);
+      for(var k=0;k<cnt;k++){
+        var pIdx = tripPhotoIndices[cursor++];
+        if(pIdx != null && !assigned.has(pIdx)){
+          photosByDay[dayIdx].push(tripPhotosArr[pIdx]);
+          assigned.add(pIdx);
+        }
+      }
+    });
+  });
+  
+  // 3) remaining round-robin to days with none, else last day
+  var remaining = [];
+  tripPhotosArr.forEach(function(tp, i){
+    if(!assigned.has(i)) remaining.push(i);
+  });
+  if(remaining.length){
+    var emptyDays = [];
+    photosByDay.forEach(function(list, i){ if(!list.length) emptyDays.push(i); });
+    if(emptyDays.length){
+      remaining.forEach(function(pIdx, k){
+        var dayIdx = emptyDays[k % emptyDays.length];
+        photosByDay[dayIdx].push(tripPhotosArr[pIdx]);
+        assigned.add(pIdx);
+      });
+    } else {
+      var lastIdx = days.length-1;
+      remaining.forEach(function(pIdx){
+        photosByDay[lastIdx].push(tripPhotosArr[pIdx]);
+        assigned.add(pIdx);
+      });
+    }
+  }
+  
+  // write back
+  days.forEach(function(d, i){ d.photos = photosByDay[i]; });
+}
+
+// ---------- page transitions ----------
+function animateRoute(cb){
+  var app = document.getElementById('app');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ cb(); return; }
+  app.classList.add('leaving');
+  setTimeout(function(){
+    cb();
+    app.classList.remove('leaving');
+    app.classList.add('entering');
+    // scroll restore happens in router while hidden
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        app.classList.remove('entering');
+        app.classList.add('entered');
+        setTimeout(function(){ app.classList.remove('entered'); }, 350);
+      });
+    });
+  }, 280);
+}
+
+// ---------- reveal ----------
+var revealIO = null;
+function initReveal(){
+  document.documentElement.classList.add('js-reveal');
+  revealIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('on'); revealIO.unobserve(e.target); }
+    });
+  }, {threshold:0.08});
+}
+function attachReveal(root){
+  if(!revealIO) return;
+  var els = root.querySelectorAll('.reveal');
+  var vh = window.innerHeight;
+  els.forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if(r.top < vh * 0.95 && r.bottom > 0){ el.classList.add('on'); }
+    else revealIO.observe(el);
   });
 }
+
+// ---------- router ----------
+function parseHash(){
+  var h = location.hash || '';
+  if(h === '' || h === '#/' || h === '#') return {view:'world'};
+  if(h === '#/china') return {view:'china'};
+  var m = h.match(/^#\/trip\/(.+)$/);
+  if(m) return {view:'detail', id:decodeURIComponent(m[1])};
+  return {view:'world'};
+}
+
+function setScrollPos(view, y){
+  if(view==='world') STATE.homeScroll = y;
+  else if(view==='china') STATE.chinaScroll = y;
+}
+function getScrollPos(view){
+  return view==='china' ? STATE.chinaScroll : STATE.homeScroll;
+}
+
+function router(){
+  var route = parseHash();
+  document.body.classList.remove('detail');
+  document.getElementById('detailBar').classList.add('hidden');
+  document.getElementById('topbar').classList.remove('hidden');
+  document.getElementById('detailBar').classList.add('hidden');
+
+  if(route.view === 'world'){
+    STATE.currentView = 'world';
+    document.body.classList.remove('view-china');
+    document.getElementById('switch').querySelectorAll('span').forEach(function(s){
+      s.classList.toggle('on', s.dataset.view === 'world');
+    });
+    renderHome();
+    window.scrollTo(0, STATE.homeScroll || 0);
+    updateScrolled();
+  } else if(route.view === 'china'){
+    STATE.currentView = 'china';
+    document.body.classList.add('view-china');
+    document.getElementById('switch').querySelectorAll('span').forEach(function(s){
+      s.classList.toggle('on', s.dataset.view === 'china');
+    });
+    renderChina();
+    window.scrollTo(0, STATE.chinaScroll || 0);
+    updateScrolled();
+  } else if(route.view === 'detail'){
+    document.body.classList.remove('view-china');
+    STATE.returnView = STATE.currentView === 'china' ? 'china' : 'world';
+    renderDetail(route.id);
+    window.scrollTo(0, 0);
+    updateScrolled();
+  }
+  syncMusicVolume();
+}
+
+function navigate(hash){
+  if(location.hash === hash) { router(); return; }
+  location.hash = hash;
+}
+
+window.addEventListener('hashchange', function(){
+  var prevRoute = STATE.currentView;
+  if(!document.body.classList.contains('detail')){
+    setScrollPos(prevRoute, window.scrollY);
+  }
+  animateRoute(function(){ router(); });
+});
+
+// ---------- top bar ----------
+function updateScrolled(){
+  var on = window.scrollY > window.innerHeight * 0.6;
+  document.body.classList.toggle('scrolled', on);
+}
+var scrollRaf = null;
+window.addEventListener('scroll', function(){
+  if(scrollRaf) return;
+  scrollRaf = requestAnimationFrame(function(){
+    scrollRaf = null;
+    updateScrolled();
+    doParallax();
+    if(!document.body.classList.contains('detail') && !document.getElementById('app').classList.contains('leaving')) setScrollPos(STATE.currentView, window.scrollY);
+    // mobile route trigger
+    checkMobileRoute();
+  });
+}, {passive:true});
+
+// parallax
+var heroEl = null, heroImg = null;
+function doParallax(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(window.matchMedia('(max-width:640px)').matches) return;
+  // trip figures parallax
+  var app = document.getElementById('app');
+  if(!app) return;
+  var vh = window.innerHeight;
+  app.querySelectorAll('.trip figure .img-wrap, .bleed img, .china-card figure .img-wrap').forEach(function(w){
+    var img = w.tagName === 'IMG' ? w : w.querySelector('img');
+    if(!img) return;
+    var r = w.getBoundingClientRect();
+    if(r.bottom < 0 || r.top > vh) return;
+    var center = r.top + r.height/2;
+    var p = (center - vh/2) / (vh/2 + r.height/2); // -1..1
+    var ty = p * 18; // +18..-18
+    img.style.transform = 'translateY(' + (-ty) + 'px) scale(1.06)';
+  });
+  // hero parallax
+  if(heroImg && heroEl){
+    var y = window.scrollY;
+    if(y <= heroEl.offsetHeight){
+      heroImg.style.transform = 'translateY(' + (y * 0.25) + 'px) scale(1.02)';
+    }
+  }
+}
+
+// switch
+document.getElementById('switch').addEventListener('click', function(e){
+  var t = e.target.closest('span');
+  if(!t) return;
+  if(t.dataset.view === 'world') navigate('#/');
+  else if(t.dataset.view === 'china') navigate('#/china');
+});
+document.getElementById('mark').addEventListener('click', function(){ navigate('#/'); });
+
+// back link
+document.getElementById('backLink').addEventListener('click', function(e){
+  e.preventDefault();
+  var back = STATE.returnView === 'china' ? '#/china' : '#/';
+  navigate(back);
+});
+
+// ---------- LQIP helper ----------
+function wrapImg(src, alt, opts){
+  opts = opts || {};
+  var thumb = opts.thumb || thumbURL(src.replace(/^public\//,''));
+  var full = /^public\//.test(src) ? src : 'public/' + src;
+  var thumbPath = /^public\//.test(thumb) ? thumb : 'public/' + thumb;
+  var cls = opts.cls || '';
+  var style = opts.style || '';
+  var loading = opts.loading || 'lazy';
+  var fetchpri = opts.fetchpriority ? ' fetchpriority="' + opts.fetchpriority + '"' : '';
+  return '<div class="img-wrap ' + cls + '" style="background-image:url(\'' + thumbPath + '\');' + style + '">' +
+    '<img src="' + full + '" alt="' + esc(alt) + '" loading="' + loading + '"' + fetchpri + ' data-lqip="1" decoding="async">' +
+    '</div>';
+}
+
+function attachLQIP(root){
+  root.querySelectorAll('img[data-lqip]').forEach(function(img){
+    function done(){ img.classList.add('loaded'); }
+    if(img.complete && img.naturalWidth){ done(); }
+    else {
+      img.addEventListener('load', done, {once:true});
+      img.addEventListener('error', done, {once:true});
+    }
+  });
+}
+
+// ---------- HOME ----------
+function renderHome(){
+  var seq = STATE.tripSeq;
+  var N = seq.length;
+  var ledeCount = N;
+  var html = '';
+
+  // hero
+  html += '<section class="hero" id="hero">';
+  html += '<div class="hero-img-wrap">' + wrapImg('photos/morocco/03.webp','摩洛哥',{loading:'eager', fetchpriority:'high'}) + '</div>';
+  html += '<div class="hero-text"><h1>我们的足迹</h1><p>去过 13 个国家和地区 · 22 个地方</p></div>';
+  html += '<div class="cap">摩洛哥<br>2024 年 12 月</div>';
+  html += '<div class="cue" id="heroCue"></div>';
+  html += '</section>';
+
+  // intro
+  html += '<section class="intro"><div class="lab">旅程 · 按时间</div>';
+  html += '<p class="lede">2019 — 2026<br>' + ledeCount + ' 段旅程</p></section>';
+
+  // trips by year
+  var currentYear = null;
+  seq.forEach(function(t, i){
+    var y = (t.start || '').slice(0,4);
+    if(y && y !== currentYear){
+      currentYear = y;
+      var countYear = seq.filter(function(x){ return (x.start||'').slice(0,4) === y; }).length;
+      html += '<div class="year reveal"><div class="num">' + esc(y) + '</div><div class="meta">' + countYear + ' 段旅程</div></div>';
+    }
+    if(t.id === '2024-morocco'){
+      html += '<section class="turn reveal"><div class="rule"></div><h2>从这里开始，是我们</h2><p>2024 年 12 月 · 摩洛哥</p></section>';
+    }
+    html += renderTripArticle(t, i, N);
+  });
+
+  // archive
+  var longs = STATE.trips.filter(function(t){ return t.kind !== 'trip'; });
+  var order = ['uk-years','edinburgh-again','china'];
+  longs.sort(function(a,b){ return order.indexOf(a.id) - order.indexOf(b.id); });
+  html += '<section class="archive"><div class="lab">常去的地方</div><div class="arch">';
+  longs.forEach(function(t){
+    var img = ARCH_IMG[t.id];
+    var sub = '';
+    if(t.id === 'edinburgh-again') sub = t.subtitle || '';
+    else if(t.id === 'uk-years') sub = '2024 — 2026';
+    else if(t.id === 'china') sub = (t.places ? t.places.length : 0) + ' 座城市';
+    var href = t.id === 'china' ? '#/china' : ('#/trip/' + t.id);
+    var story = STATE.story[t.id];
+    html += '<div class="arch-item reveal" data-c="' + esc(globeCountry((t.countries&&t.countries[0])||'')) + '" data-trip-id="' + esc(t.id) + '">';
+    html += '<a href="' + href + '"><figure>' + wrapImg('photos/' + img + '.webp', t.title, {loading:'lazy'}) + '</figure>';
+    html += '<h3 class="t-title">' + esc(t.title) + '</h3>';
+    if(sub) html += '<div class="t-meta">' + esc(sub) + '</div>';
+    html += '</a></div>';
+  });
+  html += '</div></section>';
+
+  // end
+  html += '<div class="end">下一站，还没决定</div>';
+
+  var app = document.getElementById('app');
+  app.innerHTML = html;
+
+  heroEl = document.getElementById('hero');
+  heroImg = heroEl ? heroEl.querySelector('img') : null;
+  requestAnimationFrame(function(){ if(heroEl) heroEl.classList.add('loaded'); });
+
+  attachLQIP(app);
+
+  app.querySelectorAll('[data-trip-id]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if(e.target.closest('a')) return;
+      e.preventDefault();
+      navigate('#/trip/' + encodeURIComponent(el.getAttribute('data-trip-id')));
+    });
+  });
+
+  // hero cue
+  var cue = document.getElementById('heroCue');
+  if(cue){
+    cue.addEventListener('click', function(){ scrollToFirstYear(); });
+  }
+
+  attachReveal(app);
+  updateScrolled();
+  doParallax();
+
+  setGlobeActive('摩洛哥', (findTripIndex('2024-morocco')+1), N);
+  setupGlobeObserver();
+  setupHeroScrollHijack();
+  setupTripHover();
+  window.__ready = true;
+}
+
+function findTripIndexByCountry(c){
+  for(var i=STATE.tripSeq.length-1;i>=0;i--){ var t=STATE.tripSeq[i]; if((t.countries||[]).some(function(x){return globeCountry(x)===c;})) return i; }
+  return -1;
+}
+function findTripIndex(id){
+  for(var i=0;i<STATE.tripSeq.length;i++) if(STATE.tripSeq[i].id===id) return i;
+  return 0;
+}
+
+function renderTripArticle(t, i, N){
+  var lead = LEAD[t.id];
+  var num = pad(i+1);
+  var tripPhotosArr = tripPhotos(t, STATE.placesMap);
+  var hasPhotos = tripPhotosArr.length > 0;
+  var meta = metaLine(t);
+
+  if(!lead && !hasPhotos){
+    var metaStr = (t.countries||[]).join(' · ');
+    var dateStr = fmtRange(t.start, t.end);
+    return '<article class="trip T reveal" data-trip-id="' + esc(t.id) + '" data-c="' + esc(globeCountry((t.countries&&t.countries[0])||'')) + '" data-i="' + (i+1) + '">' +
+      '<div class="txt">' +
+      '<div class="t-no">' + num + '</div>' +
+      '<h3 class="t-title">' + esc(t.title) + '</h3>' +
+      '<div class="t-meta"><b>' + esc(metaStr) + '</b>　' + esc(dateStr) + '</div>' +
+      '</div></article>';
+  }
+
+  if(!lead && hasPhotos){
+    var cycle = ['L','M','Lr','Ml'];
+    var lay = cycle[i % 4];
+    lead = [tripPhotosArr[0].src.replace(/^photos\//,'').replace(/\.webp$/,''), lay];
+  }
+
+  var layout = lead[1];
+  var imgPath = lead[0];
+  var fullImg = photoURL(imgPath);
+
+  var titleBlock = '<div class="txt">' +
+    '<div class="t-no">' + num + '</div>' +
+    '<h3 class="t-title" data-trip-id="' + esc(t.id) + '">' + esc(t.title) + '</h3>' +
+    '<div class="t-meta"><b>' + esc((t.countries||[]).join(' · ')) + '</b><br>' + esc(meta.slice(1).join(' · ')) + '</div>' +
+    '<span class="t-more" data-trip-id="' + esc(t.id) + '">看照片</span>' +
+    '</div>';
+
+  if(layout === 'B'){
+    return '<article class="bleed reveal" data-trip-id="' + esc(t.id) + '" data-c="' + esc(globeCountry((t.countries&&t.countries[0])||'')) + '" data-i="' + (i+1) + '">' +
+      wrapImg('photos/' + imgPath + '.webp', t.title, {loading:'eager'}) +
+      titleBlock +
+      '</article>';
+  } else {
+    return '<article class="trip ' + layout + ' reveal" data-trip-id="' + esc(t.id) + '" data-c="' + esc(globeCountry((t.countries&&t.countries[0])||'')) + '" data-i="' + (i+1) + '">' +
+      '<figure data-trip-id="' + esc(t.id) + '">' + wrapImg('photos/' + imgPath + '.webp', t.title, {loading:'lazy'}) + '</figure>' +
+      titleBlock +
+      '</article>';
+  }
+}
+
+// ---------- hero scroll hijack ----------
+var heroScrollLock = false;
+function scrollToFirstYear(){
+  if(heroScrollLock) return;
+  var target = document.querySelector('.year');
+  if(!target) return;
+  heroScrollLock = true;
+  var startY = window.scrollY;
+  var endY = target.getBoundingClientRect().top + window.scrollY - 64;
+  var t0 = performance.now();
+  var dur = 900;
+  function frame(now){
+    var p = Math.min(1, (now - t0)/dur);
+    var e = p<0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
+    window.scrollTo(0, startY + (endY-startY)*e);
+    if(p < 1){ requestAnimationFrame(frame); }
+    else { heroScrollLock = false; }
+  }
+  requestAnimationFrame(frame);
+}
+function setupHeroScrollHijack(){
+  var home = parseHash().view === 'world';
+  if(!home) return;
+  var handler = function(e){
+    if(heroScrollLock) { e.preventDefault(); return; }
+    if(window.scrollY > window.innerHeight * 0.5) return;
+    if(document.body.classList.contains('detail')) return;
+    if(e.type === 'wheel' && e.deltaY > 0){ e.preventDefault(); scrollToFirstYear(); }
+    if(e.type === 'keydown'){
+      var k = e.key;
+      if(k === 'PageDown' || k === ' ' || k === 'ArrowDown'){
+        e.preventDefault(); scrollToFirstYear();
+      }
+    }
+  };
+  if(!window.__heroWheelBound){
+    window.__heroWheelBound = true;
+    window.addEventListener('wheel', handler, {passive:false});
+    window.addEventListener('keydown', handler);
+  }
+  // touch
+  var sy = 0, sxt = 0;
+  window.addEventListener('touchstart', function(e){
+    if(window.scrollY > window.innerHeight * 0.5) return;
+    if(e.touches.length === 1){
+      sy = e.touches[0].clientY;
+      sxt = e.touches[0].clientX;
+    }
+  }, {passive:true});
+  window.addEventListener('touchend', function(e){
+    if(heroScrollLock) return;
+    if(window.scrollY > window.innerHeight * 0.5) return;
+    if(!e.changedTouches.length) return;
+    var dy = e.changedTouches[0].clientY - sy;
+    var dx = e.changedTouches[0].clientX - sxt;
+    if(dy < -50 && Math.abs(dy) > Math.abs(dx)){
+      scrollToFirstYear();
+    }
+  }, {passive:true});
+}
+
+// ---------- CHINA ----------
+function renderChina(){
+  var chinaPlaces = STATE.placesList.filter(function(p){ return p.scope === 'china'; });
+  var cities = chinaPlaces.length;
+  var provSet = {};
+  chinaPlaces.forEach(function(p){ if(p.province) provSet[p.province] = 1; });
+  var provCount = Object.keys(provSet).length;
+
+  var html = '';
+  html += '<section class="china-head"><div class="lab">中国</div>';
+  html += '<h2>' + cities + ' 座城市 · ' + provCount + ' 个省份</h2></section>';
+  html += '<div class="china-map-wrap"><div class="china-map" id="chinaMap"></div></div>';
+  html += '<div class="china-cards" id="chinaCards"></div>';
+
+  var app = document.getElementById('app');
+  app.innerHTML = html;
+
+  drawChinaMap(chinaPlaces);
+
+  var cardsHtml = '';
+  var layouts = ['L','M','Ml','Lr'];
+  chinaPlaces.forEach(function(p, i){
+    var lay = layouts[i % 4];
+    var coverFull = p.cover ? photoURL(p.cover.replace(/-thumb\.webp$/, '.webp')) : '';
+    if(p.cover && /-thumb\.webp$/.test(p.cover)) coverFull = photoURL(p.cover.replace(/-thumb\.webp$/, '.webp'));
+    else if(p.cover) coverFull = photoURL(p.cover);
+    var photoCount = (p.photos && p.photos.length) || 0;
+    var metaTxt = (p.province || '') + ' · ' + photoCount + ' 张照片';
+    cardsHtml += '<article class="china-card ' + lay + ' reveal" data-city-id="' + esc(p.id) + '" data-c="中国">';
+    if(coverFull){
+      var rel = coverFull.replace(/^public\//,'');
+      cardsHtml += '<figure data-city-id="' + esc(p.id) + '">' + wrapImg(rel, p.name, {loading:'lazy'}) + '</figure>';
+    } else {
+      cardsHtml += '<figure data-city-id="' + esc(p.id) + '"></figure>';
+    }
+    cardsHtml += '<div class="txt"><h3 class="t-title" data-city-id="' + esc(p.id) + '">' + esc(p.name) + '</h3>';
+    cardsHtml += '<div class="t-meta">' + esc(metaTxt) + '</div></div>';
+    cardsHtml += '</article>';
+  });
+  document.getElementById('chinaCards').innerHTML = cardsHtml;
+
+  attachLQIP(app);
+
+  app.querySelectorAll('[data-city-id]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      var cid = el.getAttribute('data-city-id');
+      var p = STATE.placesMap[cid];
+      if(!p) return;
+      var photos = (p.photos||[]).map(function(ph){ return Object.assign({}, ph, {src: photoURL(ph.src)}); });
+      if(!photos.length) return;
+      openLightbox(photos, 0, '中国 · ' + p.name);
+    });
+  });
+
+  attachReveal(app);
+  updateScrolled();
+  setGlobeActive('中国', null, null);
+  setupGlobeObserver();
+  window.__ready = true;
+}
+
+function drawChinaMap(chinaPlaces){
+  var el = document.getElementById('chinaMap');
+  if(!el || !STATE.chinaGeo) return;
+  var W = 760, H = 560;
+  var svg = d3.select(el).append('svg')
+    .attr('viewBox', '0 0 ' + W + ' ' + H)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  var projection = d3.geoMercator();
+  var path = d3.geoPath(projection);
+  try { projection.fitExtent([[10,10],[W-10,H-10]], STATE.chinaGeo); } catch(e){}
+
+  var visitedProv = {};
+  chinaPlaces.forEach(function(p){ if(p.province) visitedProv[p.province] = 1; });
+
+  svg.append('g').selectAll('path')
+    .data(STATE.chinaGeo.features || [])
+    .enter().append('path')
+    .attr('class', function(d){
+      var n = d.properties && d.properties.name;
+      return 'prov' + (visitedProv[n] ? ' visited' : '');
+    })
+    .attr('d', path);
+
+  var cityG = svg.append('g');
+  chinaPlaces.forEach(function(p, i){
+    if(p.lat == null || p.lng == null) return;
+    var pt;
+    try { pt = projection([p.lng, p.lat]); } catch(e){ return; }
+    if(!pt) return;
+    var g = cityG.append('g').attr('data-city-id', p.id);
+    var dot = g.append('circle')
+      .attr('class', 'city-dot')
+      .attr('cx', pt[0]).attr('cy', pt[1]).attr('r', 3);
+    var right = (i % 2 === 0);
+    var lx = pt[0] + (right ? 9 : -9);
+    var lbl = g.append('text')
+      .attr('class', 'city-lbl')
+      .attr('x', lx).attr('y', pt[1] + 4)
+      .attr('text-anchor', right ? 'start' : 'end')
+      .attr('data-city-id', p.id)
+      .text(p.name);
+
+    g.style('cursor','pointer');
+    g.on('mouseenter', function(){
+      dot.attr('r', 5);
+      lbl.classed('hl', true);
+      var card = document.querySelector('.china-card[data-city-id="' + p.id + '"]');
+      if(card){ card.querySelector('.t-title').style.color = 'var(--accent)'; }
+    }).on('mouseleave', function(){
+      dot.attr('r', 3);
+      lbl.classed('hl', false);
+      var card = document.querySelector('.china-card[data-city-id="' + p.id + '"]');
+      if(card){ card.querySelector('.t-title').style.color = ''; }
+    }).on('click', function(){
+      var card = document.querySelector('.china-card[data-city-id="' + p.id + '"]');
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  });
+}
+
+// ---------- DETAIL ----------
+function renderDetail(id){
+  var trip = STATE.trips.find(function(t){ return t.id === id; });
+  if(!trip){ navigate('#/'); return; }
+
+  document.body.classList.add('detail');
+  document.getElementById('detailBar').classList.remove('hidden');
+  document.getElementById('topbar').classList.add('hidden');
+
+  var isTrip = trip.kind === 'trip';
+  var idx = isTrip ? findTripIndex(id) : -1;
+  var N = STATE.tripSeq.length;
+  var prevTrip = (isTrip && idx > 0) ? STATE.tripSeq[idx-1] : null;
+  var nextTrip = (isTrip && idx < N-1 && idx >= 0) ? STATE.tripSeq[idx+1] : null;
+
+  var navHtml = '';
+  if(prevTrip) navHtml += '<a href="#/trip/' + encodeURIComponent(prevTrip.id) + '">‹ ' + esc(prevTrip.title) + '</a>';
+  if(nextTrip) navHtml += '<a href="#/trip/' + encodeURIComponent(nextTrip.id) + '">' + esc(nextTrip.title) + ' ›</a>';
+  document.getElementById('detailNav').innerHTML = navHtml;
+
+  var photos = tripPhotos(trip, STATE.placesMap);
+  var hasPhotos = photos.length > 0;
+  var story = STATE.story[id];
+  var hasStory = story && story.days && story.days.length > 0;
+
+  var coverSrc = '';
+  var focusY = null;
+  if(hasPhotos){
+    if(trip.cover){ coverSrc = photoURL(trip.cover); }
+    else { coverSrc = photoURL(photos[0].src); focusY = photos[0].focusY; }
+  }
+
+  var kicker = isTrip ? (pad(idx+1) + ' / ' + N) : (trip.subtitle || '');
+  var metaParts = metaLine(trip);
+
+  var html = '';
+
+  if(hasPhotos && coverSrc){
+    var objPos = focusY != null ? ('50% ' + (focusY*100) + '%') : '50% 50%';
+    var relCover = coverSrc.replace(/^public\//,'');
+    html += '<section class="detail-cover">';
+    html += wrapImg(relCover, trip.title, {loading:'eager', fetchpriority:'high', style:'position:absolute;inset:0;'});
+    html += '<div class="dtxt">';
+    if(kicker) html += '<div class="kicker">' + esc(kicker) + '</div>';
+    html += '<h1>' + esc(trip.title) + '</h1>';
+    if(metaParts.length) html += '<div class="detail-meta">' + esc(metaParts.join(' · ')) + '</div>';
+    html += '</div></section>';
+  } else {
+    html += '<section class="detail-head">';
+    if(kicker) html += '<div class="kicker">' + esc(kicker) + '</div>';
+    html += '<h1>' + esc(trip.title) + '</h1>';
+    if(metaParts.length) html += '<div class="detail-meta">' + esc(metaParts.join(' · ')) + '</div>';
+    html += '</section>';
+  }
+
+  // stats row
+  var stats = [];
+  if(isTrip){
+    var days = inclusiveDays(trip.start, trip.end);
+    if(days == null && trip.nights != null) days = trip.nights + 1;
+    if(days != null) stats.push({num:days, lab:'天'});
+  }
+  if(trip.nights != null) stats.push({num:trip.nights, lab:'晚'});
+  // 座城市
+  var locatedCities = 0;
+  if(story){
+    var citySet = {};
+    story.route.forEach(function(r){ if(r.lat != null && r.city) citySet[r.city] = 1; });
+    locatedCities = Object.keys(citySet).length;
+  }
+  if(locatedCities) stats.push({num:locatedCities, lab:'座城市'});
+  else if(trip.places && trip.places.length) stats.push({num:trip.places.length, lab:'座城市'});
+  if(hasPhotos) stats.push({num:photos.length, lab:'张照片'});
+
+  if(stats.length){
+    html += '<div class="stats-row">';
+    stats.forEach(function(s){
+      html += '<div class="stat"><div class="num">' + esc(s.num) + '</div><div class="lab">' + esc(s.lab) + '</div></div>';
+    });
+    html += '</div>';
+  }
+
+  // itinerary
+  if(hasStory){
+    html += renderItinerary(trip, story);
+  }
+
+  // legacy facts row (only if no story)
+  if(!hasStory){
+    var factRows = [];
+    var placeNames = (trip.places || []).map(function(pid){ var p = STATE.placesMap[pid]; return p ? p.name : null; }).filter(Boolean);
+    if(placeNames.length) factRows.push({lab:'地点', val: placeNames.join('、')});
+    if(hasPhotos) factRows.push({lab:'照片', val: photos.length + ' 张'});
+    if(trip.nights != null) factRows.push({lab:'天数', val: (trip.nights + 1) + ' 天'});
+    if(trip.kind === 'collection'){
+      var provs = (trip.places||[]).map(function(pid){ var p = STATE.placesMap[pid]; return p && p.province; }).filter(Boolean);
+      var uniq = provs.filter(function(v,i){return provs.indexOf(v)===i;});
+      if(uniq.length) factRows.push({lab:'省份', val: uniq.join('、')});
+    }
+    if(factRows.length){
+      html += '<div class="facts">';
+      factRows.forEach(function(f){
+        html += '<div><div class="f-lab">' + esc(f.lab) + '</div><div class="f-val">' + esc(f.val) + '</div></div>';
+      });
+      html += '</div>';
+    }
+  }
+
+  // edinburgh visits
+  if(trip.visits && trip.visits.length){
+    html += '<div class="visits-list">';
+    trip.visits.forEach(function(v){
+      html += '<div class="v-row"><div class="v-date">' + esc(fmtRange(v.start, v.end)) + '</div>';
+      var sv = ((STATE.story[trip.id] || {}).visits || []).find(function(x){ return x && x.start === v.start; });
+      html += '<div class="v-note">' + esc(v.note || '') + (sv && sv.text ? '<p class="v-text">' + esc(sv.text) + '</p>' : '') + '</div></div>';
+    });
+    html += '</div>';
+  }
+
+  // uk-years stops
+  if(trip.stops && trip.stops.length){
+    html += '<div class="stops-line"><span class="s-lab">停靠</span>' + esc(trip.stops.map(function(s){return s.name;}).join(' → ')) + '</div>';
+  }
+
+  // place info + photos (legacy grid) - only when NO story (story has its own photos)
+  if(!hasStory && trip.places && trip.places.length){
+    html += '<section class="photos-sec">';
+    trip.places.forEach(function(pid){
+      var p = STATE.placesMap[pid];
+      if(!p) return;
+      var ph = p.photos || [];
+      var hasMem = p.memory && p.memory.length;
+      var hasDate = p.date;
+      if(hasMem || hasDate){
+        html += '<div class="place-info">';
+        html += '<h4 class="pi-title">' + esc(p.name) + '</h4>';
+        if(hasDate) html += '<div class="pi-date">' + esc(p.date) + '</div>';
+        if(hasMem) html += '<div class="pi-memory">' + esc(p.memory) + '</div>';
+        html += '</div>';
+      }
+      if(ph.length){
+        if(trip.places.length > 1){
+          html += '<div class="place-block"><div class="place-lab">' + esc(p.name) + '</div>';
+        } else {
+          html += '<div class="place-block">';
+        }
+        html += '<div class="photos-grid">';
+        ph.forEach(function(photo, pi){
+          var asp = (photo.w && photo.h) ? (photo.w + '/' + photo.h) : '4/5';
+          var fullSrc = photo.src;
+          var thumbSrc = photo.thumb || (photo.src ? photo.src.replace(/\.webp$/,'-thumb.webp') : '');
+          html += '<figure class="p-item" data-photo-i="' + pi + '" data-place="' + esc(p.id) + '" style="aspect-ratio:' + asp + '">';
+          html += wrapImg(fullSrc, p.name, {thumb: thumbSrc ? 'public/'+thumbSrc : '', loading:'lazy'});
+          html += '</figure>';
+        });
+        html += '</div></div>';
+      }
+    });
+    html += '</section>';
+  }
+
+  // footer nav
+  html += '<div class="detail-foot">';
+  if(prevTrip || nextTrip){
+    html += '<div class="dnav2">';
+    if(prevTrip){
+      html += '<a href="#/trip/' + encodeURIComponent(prevTrip.id) + '"><div class="d-lab">‹ 上一段</div>';
+      html += '<div class="d-title">' + esc(prevTrip.title) + '</div></a>';
+    } else { html += '<div></div>'; }
+    if(nextTrip){
+      html += '<a href="#/trip/' + encodeURIComponent(nextTrip.id) + '" class="d-right"><div class="d-lab">下一段 ›</div>';
+      html += '<div class="d-title">' + esc(nextTrip.title) + '</div></a>';
+    } else { html += '<div></div>'; }
+    html += '</div>';
+  }
+  html += '<div class="detail-end">下一站，还没决定</div>';
+  html += '</div>';
+
+  document.getElementById('app').innerHTML = html;
+  document.title = trip.title + ' · 我们的足迹';
+
+  attachLQIP(document.getElementById('app'));
+
+  // legacy photo grid click handlers
+  document.querySelectorAll('.p-item').forEach(function(fig){
+    fig.addEventListener('click', function(){
+      var pid = fig.getAttribute('data-place');
+      var p = STATE.placesMap[pid];
+      if(!p) return;
+      var idxInPlace = parseInt(fig.getAttribute('data-photo-i'),10);
+      var full = tripPhotos(trip, STATE.placesMap);
+      var offset = 0;
+      for(var i=0;i<(trip.places||[]).length;i++){
+        if(trip.places[i] === pid) break;
+        var pp = STATE.placesMap[trip.places[i]];
+        if(pp && pp.photos) offset += pp.photos.length;
+      }
+      var fullIdx = offset + idxInPlace;
+      var list = full.map(function(ph){ return Object.assign({}, ph, {src: photoURL(ph.src), thumb: thumbURL(ph.thumb||ph.src)}); });
+      openLightbox(list, fullIdx, trip.title);
+    });
+  });
+
+  // day photo click handlers
+  document.querySelectorAll('[data-day-photo]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var di = parseInt(el.getAttribute('data-day-photo'),10);
+      var pi = parseInt(el.getAttribute('data-photo-idx'),10);
+      openStoryDayPhoto(trip, story, di, pi);
+    });
+  });
+
+  if(hasStory){
+    setupDetailMap(trip, story);
+    setupDayObserver();
+  }
+
+  attachReveal(document.getElementById('app'));
+  setupDetailKeyboard(prevTrip, nextTrip);
+  setupDetailSwipe(prevTrip, nextTrip);
+  window.__ready = true;
+}
+
+// ---------- itinerary render ----------
+function renderItinerary(trip, story){
+  var html = '<section class="itin-sec">';
+  html += '<div class="itin-lab">' + (story.days[0] && story.days[0].label ? '片段 · ' + story.days.length : '行程 · ' + story.days.length + ' 天') + '</div>';
+  html += '<div class="itin-grid">';
+  html += '<div class="itin-days">';
+  story.days.forEach(function(d, i){
+    var cityName = d.city || '';
+    var kicker = d.label ? d.label : ('第 ' + (d.day || (i+1)) + ' 天');
+    if(d.date){
+      var nd = normDate(d.date);
+      if(nd) kicker += ' · ' + (nd.m) + '.' + pad(nd.d);
+    }
+    var transportLine = '';
+    if(d.transport){
+      var fromCity = '';
+      if(i > 0) fromCity = story.days[i-1].city || '';
+      transportLine = d.transport + (fromCity ? ' · 从 ' + fromCity : '');
+    }
+    var photoList = d.photos || [];
+    var hasPhoto = photoList.length > 0;
+    html += '<div class="itin-day' + (hasPhoto ? '' : ' nophoto') + '" data-day="' + i + '"' + (d.lat!=null ? ' data-lat="'+d.lat+'" data-lng="'+d.lng+'"' : '') + '>';
+    html += '<div class="day-kick">' + esc(kicker) + '</div>';
+    if(cityName) html += '<h3 class="day-city">' + esc(cityName) + '</h3>';
+    if(transportLine) html += '<div class="day-transport">' + esc(transportLine) + '</div>';
+    if(d.title) html += '<div class="day-title">' + esc(d.title) + '</div>';
+    if(d.note) html += '<div class="day-note">' + esc(d.note) + '</div>';
+    var dm = [d.weather, d.stay].filter(Boolean).join(' · ');
+    if(dm) html += '<div class="day-meta">' + esc(dm) + '</div>';
+    if(hasPhoto){
+      html += '<div class="day-photos">';
+      var wide = (photoList.length % 2 === 1);
+      photoList.forEach(function(ph, pi){
+        var src = ph.src || '';
+        var thumb = ph.thumb || (src ? src.replace(/\.webp$/,'-thumb.webp') : '');
+        var cls = 'dp' + (wide && pi === 0 ? ' wide' : '');
+        html += '<div class="' + cls + '" data-day-photo="' + i + '" data-photo-idx="' + pi + '">';
+        html += wrapImg(src, cityName, {thumb: thumb ? 'public/'+thumb : '', loading:'lazy'});
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  html += '<div class="itin-map"><div class="dmap" id="dmap"></div></div>';
+  html += '</div></section>';
+  return html;
+}
+
+function openStoryDayPhoto(trip, story, di, pi){
+  // build full trip photo list
+  var full = tripPhotos(trip, STATE.placesMap);
+  // find the day photo in full list
+  var d = story.days[di];
+  if(!d || !d.photos) return;
+  var ph = d.photos[pi];
+  if(!ph) return;
+  var fullIdx = 0;
+  for(var i=0;i<full.length;i++){
+    if(full[i].src === ph.src){ fullIdx = i; break; }
+  }
+  var list = full.map(function(p){ return Object.assign({}, p, {src: photoURL(p.src), thumb: thumbURL(p.thumb||p.src)}); });
+  openLightbox(list, fullIdx, trip.title);
+}
+
+// ---------- detail map ----------
+var detailMapState = {proj:null, g:null, svg:null, routePts:[], cityDots:[], legs:[], currentDay:-1, tween:null};
+
+function placeLabels(items, obstacles, bounds){
+  // Generic greedy label placer in screen pixels
+  if(!items || !items.length) return [];
+  var segs = (obstacles && obstacles.segments) || [];
+  var dots = (obstacles && obstacles.dots) || [];
+  var boxes = (obstacles && obstacles.boxes) || [];
+  var bx0 = bounds.x0 + 4, by0 = bounds.y0 + 4, bx1 = bounds.x1 - 4, by1 = bounds.y1 - 4;
+
+  // segment–rect intersection
+  function segRectIntersect(x1,y1,x2,y2, r){
+    // Liang-Barsky
+    var dx = x2 - x1, dy = y2 - y1;
+    var t0 = 0, t1 = 1;
+    var p = [-dx, dx, -dy, dy];
+    var q = [x1 - r.x0, r.x1 - x1, y1 - r.y0, r.y1 - y1];
+    for(var i=0;i<4;i++){
+      if(p[i] === 0){
+        if(q[i] < 0) return false;
+      } else {
+        var t = q[i] / p[i];
+        if(p[i] < 0){ if(t > t1) return false; if(t > t0) t0 = t; }
+        else { if(t < t0) return false; if(t < t1) t1 = t; }
+      }
+    }
+    return true;
+  }
+
+  function rectsOverlap(a, b, gap){
+    gap = gap || 0;
+    return !(a.x1 + gap < b.x0 || a.x0 - gap > b.x1 || a.y1 + gap < b.y0 || a.y0 - gap > b.y1);
+  }
+
+  function buildCandidates(item){
+    var r = item.r || 3;
+    var w = item.w || 40, h = item.h || 11;
+    var x = item.x, y = item.y;
+    var pref = item.pref || 'right';
+    var off1 = r + 6, off2 = r + 18;
+    var cands = [];
+    function push(side, dist, leader){
+      var box, ax, ay, anchor;
+      if(side === 'right'){
+        ax = x + dist; ay = y; anchor = 'start';
+        box = {x0: ax, y0: ay - h/2, x1: ax + w, y1: ay + h/2};
+      } else if(side === 'left'){
+        ax = x - dist; ay = y; anchor = 'end';
+        box = {x0: ax - w, y0: ay - h/2, x1: ax, y1: ay + h/2};
+      } else if(side === 'above'){
+        ax = x; ay = y - dist - h/2; anchor = 'middle';
+        box = {x0: ax - w/2, y0: ay - h/2, x1: ax + w/2, y1: ay + h/2};
+      } else { // below
+        ax = x; ay = y + dist + h/2; anchor = 'middle';
+        box = {x0: ax - w/2, y0: ay - h/2, x1: ax + w/2, y1: ay + h/2};
+      }
+      cands.push({x:ax, y:ay, anchor:anchor, leader:leader, box:box, side:side});
+    }
+    var other = pref === 'right' ? 'left' : 'right';
+    push(pref, off1, false);
+    push(other, off1, false);
+    push('above', off1 - r + (r), false); // ensure gap: dist = r+4 effectively via off? use r+4
+    // Recompute above/below with correct offset r+4:
+    // (push above/below uses dist as center offset; use r+4 gap meaning bottom at y-r-4 => center at y-r-4-h/2)
+    cands[cands.length-2].y = y - r - 4 - h/2;
+    cands[cands.length-2].box = {x0: x - w/2, y0: y - r - 4 - h, x1: x + w/2, y1: y - r - 4};
+    push('below', 0, false);
+    cands[cands.length-1].y = y + r + 4 + h/2;
+    cands[cands.length-1].box = {x0: x - w/2, y0: y + r + 4, x1: x + w/2, y1: y + r + 4 + h};
+    // double-distance leaders
+    push(pref, off2, true);
+    push(other, off2, true);
+    push('above', 0, true);
+    cands[cands.length-1].y = y - r - 18 - h/2;
+    cands[cands.length-1].box = {x0: x - w/2, y0: y - r - 18 - h, x1: x + w/2, y1: y - r - 18};
+    push('below', 0, true);
+    cands[cands.length-1].y = y + r + 18 + h/2;
+    cands[cands.length-1].box = {x0: x - w/2, y0: y + r + 18, x1: x + w/2, y1: y + r + 18 + h};
+    return cands;
+  }
+
+  function countConflicts(cand, item, placed){
+    var c = 0;
+    var box = cand.box;
+    // bounds
+    if(box.x0 < bx0 || box.y0 < by0 || box.x1 > bx1 || box.y1 > by1) c += 1;
+    // placed labels
+    for(var i=0;i<placed.length;i++){
+      if(rectsOverlap(box, placed[i].box, 2)) c += 1;
+    }
+    // dots (skip own)
+    for(var j=0;j<dots.length;j++){
+      var d = dots[j];
+      if(d === item || (d.x === item.x && d.y === item.y)) continue;
+      var dr = d.r || 2;
+      var db = {x0: d.x - dr, y0: d.y - dr, x1: d.x + dr, y1: d.y + dr};
+      if(rectsOverlap(box, db, 2)) c += 1;
+    }
+    // obstacle boxes
+    for(var k=0;k<boxes.length;k++){
+      if(rectsOverlap(box, boxes[k], 2)) c += 1;
+    }
+    // segments
+    var rInflated = {x0: box.x0 - 2, y0: box.y0 - 2, x1: box.x1 + 2, y1: box.y1 + 2};
+    for(var s=0;s<segs.length;s++){
+      var sg = segs[s];
+      if(segRectIntersect(sg[0], sg[1], sg[2], sg[3], rInflated)) c += 1;
+    }
+    return c;
+  }
+
+  function isRejected(cand, item, placed){
+    var box = cand.box;
+    if(box.x0 < bx0 || box.y0 < by0 || box.x1 > bx1 || box.y1 > by1) return true;
+    for(var i=0;i<placed.length;i++){
+      if(rectsOverlap(box, placed[i].box, 2)) return true;
+    }
+    for(var j=0;j<dots.length;j++){
+      var d = dots[j];
+      if(d === item || (d.x === item.x && d.y === item.y)) continue;
+      var dr = d.r || 2;
+      var db = {x0: d.x - dr, y0: d.y - dr, x1: d.x + dr, y1: d.y + dr};
+      if(rectsOverlap(box, db, 2)) return true;
+    }
+    for(var k=0;k<boxes.length;k++){
+      if(rectsOverlap(box, boxes[k], 2)) return true;
+    }
+    var rInflated = {x0: box.x0 - 2, y0: box.y0 - 2, x1: box.x1 + 2, y1: box.y1 + 2};
+    for(var s=0;s<segs.length;s++){
+      var sg = segs[s];
+      if(segRectIntersect(sg[0], sg[1], sg[2], sg[3], rInflated)) return true;
+    }
+    return false;
+  }
+
+  var placed = [];
+  var result = [];
+  for(var ii=0; ii<items.length; ii++){
+    var item = items[ii];
+    var cands = buildCandidates(item);
+    var chosen = null, conflict = false;
+    for(var c=0;c<cands.length;c++){
+      if(!isRejected(cands[c], item, placed)){ chosen = cands[c]; break; }
+    }
+    if(!chosen){
+      conflict = true;
+      // pick candidate with fewest conflicts
+      var best = cands[0], bestScore = Infinity;
+      for(var c2=0;c2<cands.length;c2++){
+        var score = countConflicts(cands[c2], item, placed);
+        if(score < bestScore){ bestScore = score; best = cands[c2]; }
+      }
+      chosen = best;
+    }
+    var out = {x: chosen.x, y: chosen.y, anchor: chosen.anchor, leader: chosen.leader, box: chosen.box, conflict: conflict};
+    placed.push(out);
+    result.push(out);
+  }
+  return result;
+}
+
+function setupDetailMap(trip, story){
+  var el = document.getElementById('dmap');
+  if(!el || !STATE.worldGeo) return;
+  var route = story.route || [];
+  var located = route.filter(function(r){ return r.lat != null && r.lng != null; });
+
+  el.innerHTML = '';
+  var w = el.clientWidth || 600, h = el.clientHeight || 500;
+  var svg = d3.select(el).append('svg')
+    .attr('viewBox', '0 0 ' + w + ' ' + h)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  // --- bbox from unique located cities ---
+  var seenU = {};
+  var uniq = [];
+  located.forEach(function(r){
+    var key = (r.city || '') + '|';
+    if(!seenU[key]){ seenU[key] = 1; uniq.push(r); }
+  });
+  var bbox;
+  if(uniq.length >= 2){
+    var lngs = uniq.map(function(r){return r.lng;});
+    var lats = uniq.map(function(r){return r.lat;});
+    var minLng = Math.min.apply(null, lngs), maxLng = Math.max.apply(null, lngs);
+    var minLat = Math.min.apply(null, lats), maxLat = Math.max.apply(null, lats);
+    var dLng = maxLng - minLng, dLat = maxLat - minLat;
+    var cLng = (minLng + maxLng)/2, cLat = (minLat + maxLat)/2;
+    // ensure min span
+    var spanLng = Math.max(dLng, 1.2);
+    var spanLat = Math.max(dLat, 1.2);
+    // pad 25% of span each side
+    var padLng = spanLng * 0.25, padLat = spanLat * 0.25;
+    detailMapState.span = Math.max(spanLng, spanLat);
+    bbox = [[cLng - spanLng/2 - padLng, cLat - spanLat/2 - padLat],
+            [cLng + spanLng/2 + padLng, cLat + spanLat/2 + padLat]];
+  } else if(uniq.length === 1){
+    var r0 = uniq[0];
+    detailMapState.span = 0;
+    bbox = [[r0.lng - 1.2, r0.lat - 0.8], [r0.lng + 1.2, r0.lat + 0.8]];
+  } else {
+    bbox = [[-20, -20], [20, 20]];
+    detailMapState.span = 40;
+  }
+
+  var cornersMP = {
+    type: 'MultiPoint',
+    coordinates: [
+      [bbox[0][0], bbox[0][1]],
+      [bbox[1][0], bbox[0][1]],
+      [bbox[1][0], bbox[1][1]],
+      [bbox[0][0], bbox[1][1]]
+    ]
+  };
+
+  var proj = d3.geoMercator();
+  try {
+    proj.fitExtent([[24,24],[w-24,h-24]], cornersMP);
+  } catch(e){
+    try { proj.fitExtent([[24,24],[w-24,h-24]], {type:'Sphere'}); } catch(e2){}
+  }
+
+  var path = d3.geoPath(proj);
+
+  var tripCountries = {};
+  (trip.countries||[]).forEach(function(c){ tripCountries[globeCountry(c)] = 1; });
+
+  var zoomG = svg.append('g').attr('class', 'zoom-g');
+  var countriesG = zoomG.append('g');
+  countriesG.selectAll('path')
+    .data(STATE.worldGeo.features || [])
+    .enter().append('path')
+    .attr('class', function(d){
+      var n = d.properties && d.properties.name;
+      return 'country' + (tripCountries[n] ? ' trip' : '');
+    })
+    .attr('d', path);
+
+  // --- unique city dedup for dots/labels ---
+  var uniqCities = [];
+  var uniqMap = {};
+  var stopToUniq = [];
+  located.forEach(function(r){
+    var key = r.city || (r.lng + ',' + r.lat);
+    var idx = uniqMap[key];
+    if(idx == null){
+      idx = uniqCities.length;
+      uniqMap[key] = idx;
+      uniqCities.push({city: r.city, lng: r.lng, lat: r.lat});
+    }
+    stopToUniq.push(idx);
+  });
+
+  // route points (all stops, in order)
+  var routePts = located.map(function(r){ return [r.lng, r.lat, r.city]; });
+
+  // legs from great-circle samples
+  var legs = [];
+  for(var i=1;i<routePts.length;i++){
+    var a = routePts[i-1], b = routePts[i];
+    var interp = d3.geoInterpolate([a[0],a[1]],[b[0],b[1]]);
+    var samples = [];
+    for(var s=0;s<=24;s++){ samples.push(interp(s/24)); }
+    legs.push({samples:samples, from:a, to:b});
+  }
+
+  // Combined route path
+  var combined = [];
+  legs.forEach(function(leg, li){
+    leg.samples.forEach(function(p, idx){
+      if(li>0 && idx===0) return;
+      combined.push(p);
+    });
+  });
+
+  var routeEl = zoomG.append('path')
+    .attr('class','leg')
+    .attr('d', (combined.length ? path({type:'LineString', coordinates: combined}) : 'M0,0'))
+    .attr('fill','none');
+
+  zoomG.selectAll('.leg-seg').remove();
+  var legEls = [];
+  legs.forEach(function(leg, li){
+    var legPath = path({type:'LineString', coordinates: leg.samples});
+    var el2 = zoomG.append('path')
+      .attr('class','leg leg-seg')
+      .attr('d', legPath || 'M0,0')
+      .attr('data-leg', li);
+    legEls.push(el2);
+  });
+  routeEl.remove();
+  legEls.forEach(function(e2){ e2.node().style.transition = 'none'; });
+
+  var legLens = [];
+  var totalL = 0;
+  legEls.forEach(function(e2){
+    var L = 0;
+    try { L = e2.node().getTotalLength(); } catch(er){ L = 0; }
+    legLens.push(L);
+    totalL += L;
+    e2.node().style.strokeDasharray = L;
+    e2.node().style.strokeDashoffset = L;
+  });
+
+  // leader group (before cities so leaders under dots/labels)
+  var leaderG = zoomG.append('g').attr('class','leaders');
+
+  // city dots & labels (unique only)
+  var cityG = zoomG.append('g').attr('class','cities');
+  var dots = [];
+  uniqCities.forEach(function(u, ui){
+    var pt = proj([u.lng, u.lat]);
+    if(!pt) return;
+    var g = cityG.append('g');
+    var dot = g.append('circle')
+      .attr('class','city-dot')
+      .attr('cx', pt[0]).attr('cy', pt[1]).attr('r', 4)
+      .attr('data-idx', ui);
+    var lbl = g.append('text')
+      .attr('class','city-lbl')
+      .attr('text-anchor','start')
+      .attr('x', 9).attr('y', 0)
+      .text(u.city || '');
+    // leader line (in screen space, since label is counter-scaled it uses offsets in screen px)
+    var leader = leaderG.append('line')
+      .attr('class','city-leader')
+      .attr('x1', pt[0]).attr('y1', pt[1])
+      .attr('x2', pt[0]).attr('y2', pt[1])
+      .style('display','none');
+    dots.push({g:g, dot:dot, lbl:lbl, leader:leader, pt:pt, idx:ui, city:u.city, lng:u.lng, lat:u.lat});
+    g.style('opacity', 0);
+  });
+
+  detailMapState.proj = proj;
+  detailMapState.svg = svg;
+  detailMapState.g = zoomG;
+  detailMapState.w = w;
+  detailMapState.h = h;
+  detailMapState.legEls = legEls;
+  detailMapState.dots = dots;
+  detailMapState.routePts = routePts;
+  detailMapState.uniqCities = uniqCities;
+  detailMapState.stopToUniq = stopToUniq;
+  detailMapState.legs = legs;
+  detailMapState.currentDay = -1;
+  // day -> unique city dot index
+  var d2s = [], cursor = 0;
+  (story.days || []).forEach(function(d){
+    var found = -1;
+    if(d.stop != null && d.stop >= 0 && d.stop < route.length){
+      // find its down-index among located
+      var cnt = -1;
+      for(var ri=0; ri<=d.stop && ri<route.length; ri++){
+        if(route[ri].lat != null && route[ri].lng != null) cnt++;
+      }
+      if(cnt >= 0 && cnt < stopToUniq.length) found = stopToUniq[cnt];
+    }
+    if(found < 0){
+      for(var k = cursor; k < uniqCities.length; k++){ if(uniqCities[k].city === d.city){ found = k; break; } }
+    }
+    if(found < 0){ for(var k2 = 0; k2 < uniqCities.length; k2++){ if(uniqCities[k2].city === d.city){ found = k2; break; } } }
+    if(found >= 0) cursor = found;
+    d2s.push(found);
+  });
+  detailMapState.dayToStop = d2s;
+  detailMapState.tween = null;
+
+  // store projected segments for label collision
+  var projSegs = [];
+  legs.forEach(function(leg){
+    var prev = null;
+    for(var s=0;s<leg.samples.length;s++){
+      var pp = proj(leg.samples[s]);
+      if(!pp) { prev = null; continue; }
+      if(prev) projSegs.push([prev[0], prev[1], pp[0], pp[1]]);
+      prev = pp;
+    }
+  });
+  detailMapState.projSegs = projSegs;
+
+  animateDetailRoute(legLens, dots);
+
+  zoomG.attr('transform','translate(0,0) scale(1)');
+
+  // after draw settles, run label placement
+  setTimeout(function(){ updateDetailLabels(); }, 1650);
+
+  window.__detailZoomToDay = function(dayIdx){ zoomToDay(dayIdx); };
+}
+
+function animateDetailRoute(legLens, dots){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.__settled = false;
+  if(reduce){
+    detailMapState.legEls.forEach(function(e){ e.node().style.strokeDashoffset = 0; });
+    dots.forEach(function(d){ d.g.style('opacity',1); });
+    window.__settled = true;
+    updateDetailLabels();
+    return;
+  }
+  var start = performance.now();
+  var dur = 1600;
+  var total = legLens.reduce(function(a,b){return a+b;},0);
+  if(total === 0){ window.__settled = true; updateDetailLabels(); return; }
+  var dotProgress = [];
+  var cum = 0;
+  legLens.forEach(function(L, i){
+    cum += L;
+    dotProgress.push(cum / total);
+  });
+  dotProgress.unshift(0);
+  // unique dots: place based on cumulative progress by stop count (approx)
+  var els = detailMapState.legEls, token = detailMapState.drawToken = {};
+  function frame(now){
+    if(detailMapState.drawToken !== token){ return; }
+    var p = Math.min(1, (now - start)/dur);
+    var eased = d3.easeCubicInOut(p);
+    var drawn = total * eased;
+    var acc = 0;
+    legLens.forEach(function(L, i){
+      var el = els[i].node();
+      var visible = Math.max(0, Math.min(L, drawn - acc));
+      el.style.strokeDashoffset = (L - visible);
+      acc += L;
+    });
+    dots.forEach(function(d, i){
+      var dp = (dots.length > 1) ? (i / (dots.length - 1)) : 0;
+      d.g.style('opacity', eased >= dp - 0.001 ? 1 : 0);
+    });
+    if(p < 1){
+      requestAnimationFrame(frame);
+    } else {
+      window.__settled = true;
+      updateDetailLabels();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function setupDayObserver(){
+  var days = document.querySelectorAll('.itin-day');
+  if(!days.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && e.intersectionRatio > 0){
+        var idx = parseInt(e.target.getAttribute('data-day'), 10);
+        if(idx !== detailMapState.currentDay){
+          detailMapState.currentDay = idx;
+          if(window.__detailZoomToDay) window.__detailZoomToDay(idx);
+          document.querySelectorAll('.itin-day').forEach(function(el, i){
+            el.classList.toggle('cur', i === idx);
+          });
+        }
+      }
+    });
+  }, {rootMargin: window.matchMedia('(max-width:640px)').matches ? '-58% 0px -38% 0px' : '-40% 0px -55% 0px', threshold:0});
+  days.forEach(function(d){ io.observe(d); });
+  if(window.__detailZoomToDay) window.__detailZoomToDay(-1);
+}
+
+function zoomToDay(dayIdx){
+  if(!detailMapState.proj) return;
+  var proj = detailMapState.proj;
+  var w = detailMapState.w, h = detailMapState.h;
+  var g = detailMapState.g;
+  if(!g) return;
+
+  var targetK = 1, targetTx = 0, targetTy = 0;
+  var targetDot = null;
+  var d2s = detailMapState.dayToStop || [];
+  if(dayIdx >= 0) dayIdx = d2s[dayIdx] != null ? d2s[dayIdx] : dayIdx;
+
+  // decide targetK
+  var uniqN = (detailMapState.uniqCities || []).length;
+  var span = detailMapState.span || 0;
+  if(dayIdx >= 0 && dayIdx < detailMapState.dots.length){
+    targetDot = detailMapState.dots[dayIdx];
+  }
+  if(uniqN <= 2 || span < 4){
+    targetK = 1;
+  } else {
+    targetK = Math.min(1.8, 1 + span/12);
+  }
+
+  if(targetK > 1 && targetDot){
+    var pt = targetDot.pt;
+    targetTx = w/2 - pt[0]*targetK;
+    targetTy = h/2 - pt[1]*targetK;
+  } else {
+    targetK = 1; targetTx = 0; targetTy = 0;
+  }
+
+  // update dot emphasis
+  detailMapState.dots.forEach(function(d, i){
+    var isCur = (i === dayIdx);
+    d.dot.attr('r', isCur ? 6 : 4);
+    d.lbl.classed('cur', isCur);
+    d.lbl.style('font-size', isCur ? '15px' : '13px');
+    d.g.classed('cur', isCur);
+  });
+
+  // update leg colors
+  detailMapState.legEls.forEach(function(e, i){
+    e.classed('done', i < dayIdx);
+  });
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+    g.attr('transform', 'translate(' + targetTx + ',' + targetTy + ') scale(' + targetK + ')');
+    updateCounterScale();
+    updateDetailLabels();
+    return;
+  }
+
+  if(detailMapState.tween){
+    cancelAnimationFrame(detailMapState.tween);
+    detailMapState.tween = null;
+  }
+
+  var cur = g.node().getAttribute('transform') || 'translate(0,0) scale(1)';
+  var m = cur.match(/translate\(([-\d.]+),([-\d.]+)\)\s*scale\(([-\d.]+)\)/);
+  var fromK = 1, fromTx = 0, fromTy = 0;
+  if(m){ fromTx = parseFloat(m[1]); fromTy = parseFloat(m[2]); fromK = parseFloat(m[3]); }
+
+  var t0 = performance.now();
+  var dur = 700;
+  window.__settled = false;
+  function frame(now){
+    var p = Math.min(1, (now-t0)/dur);
+    var e = d3.easeCubicInOut(p);
+    var k = fromK + (targetK - fromK)*e;
+    var tx = fromTx + (targetTx - fromTx)*e;
+    var ty = fromTy + (targetTy - fromTy)*e;
+    g.attr('transform', 'translate(' + tx + ',' + ty + ') scale(' + k + ')');
+    updateCounterScale();
+    if(p < 1){
+      detailMapState.tween = requestAnimationFrame(frame);
+    } else {
+      detailMapState.tween = null;
+      window.__settled = true;
+      updateDetailLabels();
+    }
+  }
+  detailMapState.tween = requestAnimationFrame(frame);
+}
+
+// counter-scale labels and dots based on zoom
+function updateCounterScale(){
+  if(!detailMapState.g) return;
+  var m = detailMapState.g.node().getAttribute('transform') || '';
+  var mm = m.match(/scale\(([-\d.]+)\)/);
+  var k = mm ? parseFloat(mm[1]) : 1;
+  if(!detailMapState.dots) return;
+  detailMapState.dots.forEach(function(d){
+    var inv = 1/k;
+    d.dot.attr('transform', 'translate(' + d.pt[0] + ',' + d.pt[1] + ') scale(' + inv + ') translate(' + (-d.pt[0]) + ',' + (-d.pt[1]) + ')');
+    d.lbl.attr('transform', 'translate(' + d.pt[0] + ',' + d.pt[1] + ') scale(' + inv + ') translate(' + (-d.pt[0]) + ',' + (-d.pt[1]) + ')');
+  });
+}
+
+// place labels in screen space for current transform
+function updateDetailLabels(){
+  if(!detailMapState.g || !detailMapState.dots || !detailMapState.proj) return;
+  var g = detailMapState.g;
+  var m = g.node().getAttribute('transform') || '';
+  var mm = m.match(/translate\(([-\d.]+),([-\d.]+)\)\s*scale\(([-\d.]+)\)/);
+  var k = 1, tx = 0, ty = 0;
+  if(mm){ tx = parseFloat(mm[1]); ty = parseFloat(mm[2]); k = parseFloat(mm[3]); }
+
+  var w = detailMapState.w, h = detailMapState.h;
+
+  // current-day emphasis: ensure label font sizes are set (may have been changed)
+  var curIdx = detailMapState.currentDay;
+  var d2s = detailMapState.dayToStop || [];
+  var curUniq = curIdx >= 0 ? (d2s[curIdx] != null ? d2s[curIdx] : curIdx) : -1;
+
+  // measure each label width via getComputedTextLength
+  var items = [];
+  var dotsList = [];
+  detailMapState.dots.forEach(function(d, i){
+    var isCur = (i === curUniq);
+    d.lbl.style('font-size', isCur ? '15px' : '13px');
+    var screenX = d.pt[0]*k + tx;
+    var screenY = d.pt[1]*k + ty;
+    var tw = 40;
+    try { tw = d.lbl.node().getComputedTextLength(); } catch(e){ tw = 40; }
+    var th = isCur ? 15 : 13;
+    items.push({x: screenX, y: screenY, w: tw, h: th, r: isCur ? 6 : 4, pref: (i % 2 === 0) ? 'right' : 'left', _i: i});
+    dotsList.push({x: screenX, y: screenY, r: isCur ? 6 : 4, _i: i});
+  });
+
+  // route segments transformed to screen
+  var segs = [];
+  var projSegs = detailMapState.projSegs || [];
+  for(var s=0;s<projSegs.length;s++){
+    var sg = projSegs[s];
+    segs.push([sg[0]*k + tx, sg[1]*k + ty, sg[2]*k + tx, sg[3]*k + ty]);
+  }
+
+  var obstacles = {segments: segs, dots: dotsList, boxes: []};
+  var bx = Math.max(8, w * 0.1), by = Math.max(8, h * 0.1); // stay clear of the soft edge fade
+  var bounds = {x0: bx, y0: by, x1: w - bx, y1: h - by};
+  var placed = placeLabels(items, obstacles, bounds);
+
+  // apply: label is inside counter-scaled group around dot, so x/y are offsets in screen px from dot
+  placed.forEach(function(pl, ii){
+    var i = items[ii]._i;
+    var d = detailMapState.dots[i];
+    var dx = pl.x - (d.pt[0]*k + tx);
+    var dy = pl.y - (d.pt[1]*k + ty);
+    d.lbl.attr('x', d.pt[0] + dx).attr('y', d.pt[1] + dy);
+    d.lbl.attr('text-anchor', pl.anchor === 'start' ? 'start' : (pl.anchor === 'end' ? 'end' : 'middle'));
+    d.lbl.attr('dominant-baseline', 'middle');
+    if(pl.leader){
+      d.leader.style('display', null);
+      // leader in screen space: since dot is counter-scaled, we draw in outer coords
+      d.leader.attr('x1', d.pt[0]).attr('y1', d.pt[1]);
+      // end point: attach near label edge, in outer coords
+      var ex, ey;
+      if(pl.anchor === 'start'){ ex = pl.box.x0; ey = (pl.box.y0 + pl.box.y1)/2; }
+      else if(pl.anchor === 'end'){ ex = pl.box.x1; ey = (pl.box.y0 + pl.box.y1)/2; }
+      else { ex = (pl.box.x0 + pl.box.x1)/2; ey = (pl.box.y0 < d.pt[1]*k + ty) ? pl.box.y1 : pl.box.y0; }
+      // leader line lives in outer coord space; not inside counter-scaled group, so use pt directly
+      d.leader.attr('x1', d.pt[0]).attr('y1', d.pt[1]);
+      d.leader.attr('x2', (ex - tx) / k).attr('y2', (ey - ty) / k);
+    } else {
+      d.leader.style('display','none');
+    }
+  });
+}
+
+// ---------- detail keyboard + swipe ----------
+function setupDetailKeyboard(prevTrip, nextTrip){
+  if(window.__detailKeyHandler){
+    document.removeEventListener('keydown', window.__detailKeyHandler);
+  }
+  window.__detailKeyHandler = function(e){
+    if(lb.isOpen) return;
+    if(parseHash().view !== 'detail') return;
+    if(e.key === 'ArrowLeft' && prevTrip){ navigate('#/trip/' + encodeURIComponent(prevTrip.id)); }
+    else if(e.key === 'ArrowRight' && nextTrip){ navigate('#/trip/' + encodeURIComponent(nextTrip.id)); }
+    else if(e.key === 'Escape'){ navigate(STATE.returnView === 'china' ? '#/china' : '#/'); }
+  };
+  document.addEventListener('keydown', window.__detailKeyHandler);
+}
+
+function setupDetailSwipe(prevTrip, nextTrip){
+  var sx=0, sy=0, started=false, startTarget=null;
+  document.addEventListener('touchstart', function(e){
+    if(parseHash().view !== 'detail') return;
+    if(lb.isOpen) return;
+    if(e.touches.length !== 1) return;
+    startTarget = e.target;
+    if(startTarget && (startTarget.closest('.lb') || startTarget.closest('.itin-map') || startTarget.closest('.dmap'))) return;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+    started = true;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(!started) return;
+    started = false;
+    if(parseHash().view !== 'detail') return;
+    if(lb.isOpen) return;
+    if(!e.changedTouches.length) return;
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = e.changedTouches[0].clientY - sy;
+    if(Math.abs(dx) > 80 && Math.abs(dx) > 2*Math.abs(dy)){
+      if(dx > 0 && prevTrip){ navigate('#/trip/' + encodeURIComponent(prevTrip.id)); }
+      else if(dx < 0 && nextTrip){ navigate('#/trip/' + encodeURIComponent(nextTrip.id)); }
+    }
+  }, {passive:true});
+}
+
+// ---------- GLOBE ----------
+var globe = {
+  ctx:null, proj:null, dots:[], visited:null, cur:'摩洛哥', S:480, R:220,
+  tween:null, raf:null, initialized:false,
+  hoverRoute: null, hoverTween:null, hoverProgress:0, hoverStreak:null,
+  baseR: 220, baseS: 480
+};
+
+function initGlobe(){
+  var cv = document.getElementById('globe');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var S = 480, R = 220;
+  globe.ctx = ctx; globe.S = S; globe.R = R;
+  globe.proj = d3.geoOrthographic().scale(R).translate([S/2, S/2]).clipAngle(90);
+
+  var vis = new Set();
+  STATE.trips.forEach(function(t){ (t.countries||[]).forEach(function(c){ vis.add(globeCountry(c)); }); });
+  STATE.placesList.forEach(function(p){ if(p.country) vis.add(globeCountry(p.country)); });
+  globe.visited = vis;
+
+  var feats = (STATE.worldGeo && STATE.worldGeo.features) || [];
+  var filtered = [];
+  feats.forEach(function(f){
+    try { filtered.push({f:f, b:d3.geoBounds(f)}); } catch(e){}
+  });
+  var dots = [];
+  var step = 3.2;
+  for(var lat = -80; lat <= 84; lat += step){
+    var cosLat = Math.cos(lat * Math.PI / 180);
+    if(cosLat < 0.05) cosLat = 0.05;
+    var lngStep = step / cosLat;
+    for(var lng = -180; lng < 180; lng += lngStep){
+      var pt = [lng, lat];
+      for(var k=0;k<filtered.length;k++){
+        var b = filtered[k].b;
+        if(lng < b[0][0]-1 || lng > b[1][0]+1 || lat < b[0][1]-1 || lat > b[1][1]+1) continue;
+        try {
+          if(d3.geoContains(filtered[k].f, pt)){
+            dots.push([lng, lat, filtered[k].f.properties.name]);
+            break;
+          }
+        } catch(e){}
+      }
+    }
+  }
+  globe.dots = dots;
+
+  globe.initialized = true;
+  drawGlobe(globe.cur);
+
+  cv.addEventListener('click', function(){
+    var target = null;
+    for(var i = STATE.tripSeq.length-1; i >= 0; i--){
+      var t = STATE.tripSeq[i];
+      if(globeCountry((t.countries&&t.countries[0])||'') === globe.cur){ target = t; break; }
+    }
+    if(target){
+      var el = document.querySelector('[data-trip-id="' + target.id + '"]');
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+
+  document.getElementById('miniLbl').addEventListener('click', function(){ cv.click(); });
+}
+
+function drawGlobe(countryName, extra){
+  if(!globe.ctx) return;
+  extra = extra || {};
+  var zoom = extra.zoom || 1;
+  var feats = STATE.worldGeo.features;
+  var target = feats.find(function(f){ return f.properties.name === countryName; });
+  var center;
+  if(target){
+    try { center = d3.geoCentroid(target); } catch(e){ center = [WORLD_FALLBACK.lng, WORLD_FALLBACK.lat]; }
+  } else if(extra.centroid){
+    center = extra.centroid;
+  } else {
+    center = [WORLD_FALLBACK.lng, WORLD_FALLBACK.lat];
+  }
+  
+  if(!extra.keepRotate){
+    var rot = [-center[0], -center[1] * 0.6];
+    globe.proj.rotate(rot);
+  }
+  
+  var S = globe.S, Rbase = globe.R, cvEl = globe.ctx.canvas;
+  var px = S / Math.max(40, cvEl.clientWidth || 120);
+  globe.px = px;
+  globe.proj.scale(globe.R * zoom).translate([S/2, S/2]).clipAngle(90);
+  
+  var ctx = globe.ctx;
+  ctx.clearRect(0,0,S,S);
+  ctx.beginPath(); ctx.arc(S/2,S/2,Rbase,0,Math.PI*2);
+  ctx.fillStyle = 'rgba(18,16,14,.78)'; ctx.fill();
+  ctx.strokeStyle = 'rgba(237,230,218,.10)'; ctx.lineWidth = px; ctx.stroke();
+  
+  // clip to disc
+  ctx.save();
+  ctx.beginPath(); ctx.arc(S/2,S/2,Rbase,0,Math.PI*2); ctx.clip();
+  
+  var proj = globe.proj;
+  // draw countries if zoom > 1.6
+  if(zoom > 1.6){
+    var path = d3.geoPath(proj, ctx);
+    feats.forEach(function(f){
+      var n = f.properties.name;
+      var isTrip = extra.tripCountries && extra.tripCountries[n];
+      ctx.beginPath();
+      path(f);
+      if(isTrip){
+        ctx.fillStyle = 'rgba(201,162,122,.16)';
+        ctx.strokeStyle = 'rgba(201,162,122,.4)';
+      } else {
+        ctx.fillStyle = 'rgba(237,230,218,.06)';
+        ctx.strokeStyle = 'rgba(237,230,218,.10)';
+      }
+      ctx.lineWidth = 0.6 * px;
+      ctx.fill();
+      ctx.stroke();
+    });
+  } else {
+    // dots
+    var rot = proj.rotate();
+    var centerPt = [-rot[0], -rot[1]];
+    var dots = globe.dots, visited = globe.visited;
+    for(var i=0;i<dots.length;i++){
+      var d = dots[i];
+      if(d3.geoDistance([d[0], d[1]], centerPt) > Math.PI/2) continue;
+      var p = proj([d[0], d[1]]);
+      if(!p) continue;
+      var on = d[2] === countryName;
+      var v = visited.has(d[2]);
+      ctx.fillStyle = on ? '#C9A27A' : (v ? 'rgba(237,230,218,.55)' : 'rgba(237,230,218,.2)');
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], (on ? 1.3 : 0.85) * px, 0, Math.PI*2);
+      ctx.fill();
+    }
+  }
+  
+  // draw hover route
+  if(extra.route && extra.route.length){
+    drawHoverRoute(ctx, proj, extra.route, extra.routeProgress, extra.litCities, px);
+  }
+  
+  ctx.restore();
+}
+
+function drawHoverRoute(ctx, proj, routeStops, progress, litCities, zoom){
+  var px = zoom || 1; // zoom param is actually px (backing pixels per CSS px)
+  var located = routeStops.filter(function(r){ return r.lat != null && r.lng != null; });
+  if(!located.length) return;
+
+  // Build segments from great-circle samples (full route)
+  var segments = [];
+  var routeSegs = []; // for label collision: [[x1,y1,x2,y2],...]
+  var totalLen = 0;
+  for(var i=1;i<located.length;i++){
+    var a = [located[i-1].lng, located[i-1].lat];
+    var b = [located[i].lng, located[i].lat];
+    var interp = d3.geoInterpolate(a, b);
+    var pts = [];
+    for(var s=0;s<=24;s++){
+      var gpt = interp(s/24);
+      var pp = proj(gpt);
+      if(pp) pts.push(pp);
+    }
+    var segLen = 0;
+    for(var k=1;k<pts.length;k++){
+      segLen += Math.hypot(pts[k][0]-pts[k-1][0], pts[k][1]-pts[k-1][1]);
+      routeSegs.push([pts[k-1][0], pts[k-1][1], pts[k][0], pts[k][1]]);
+    }
+    segments.push({pts:pts, len:segLen});
+    totalLen += segLen;
+  }
+
+  // dedupe cities for dots/labels
+  var unique = [];
+  var seen = {};
+  var stopToUnique = [];
+  located.forEach(function(r){
+    var nm = r.city || '';
+    var key = nm || (r.lng + ',' + r.lat);
+    if(seen[key] == null){
+      seen[key] = unique.length;
+      var p = proj([r.lng, r.lat]);
+      unique.push({city: nm, p: p, idx: unique.length});
+    }
+    stopToUnique.push(seen[key]);
+  });
+
+  // draw line progressively
+  ctx.strokeStyle = '#C9A27A';
+  ctx.lineWidth = 1.4 * px;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  var drawn = totalLen * progress;
+  var acc = 0;
+  for(var si=0;si<segments.length;si++){
+    var seg = segments[si];
+    if(acc >= drawn) break;
+    var segRemain = drawn - acc;
+    if(segRemain >= seg.len){
+      for(var pi=0;pi<seg.pts.length;pi++){
+        if(pi===0 && si>0) continue;
+        if(pi===0 && si===0) ctx.moveTo(seg.pts[pi][0], seg.pts[pi][1]);
+        else ctx.lineTo(seg.pts[pi][0], seg.pts[pi][1]);
+      }
+    } else {
+      var partial = seg.len > 0 ? segRemain / seg.len : 1;
+      if(partial > 0){
+        var count = Math.max(1, Math.floor((seg.pts.length-1) * partial) + 1);
+        for(var pi2=0;pi2<count;pi2++){
+          if(pi2===0 && si>0) continue;
+          if(pi2===0 && si===0) ctx.moveTo(seg.pts[pi2][0], seg.pts[pi2][1]);
+          else ctx.lineTo(seg.pts[pi2][0], seg.pts[pi2][1]);
+        }
+      }
+    }
+    acc += seg.len;
+  }
+  ctx.stroke();
+
+  // determine lit unique cities
+  var litCount = litCities == null ? -1 : litCities;
+  var litUnique = {};
+  located.forEach(function(r, i){
+    var shown = i <= litCount;
+    if(shown){ litUnique[stopToUnique[i]] = true; }
+  });
+
+  var showLabels = (ctx.canvas && (ctx.canvas.clientWidth || 120)) >= 100;
+  var fontSize = 11 * px;
+
+  // Draw dots for each lit unique city
+  unique.forEach(function(u){
+    if(!u.p) return;
+    if(!litUnique[u.idx]) return;
+    ctx.fillStyle = '#C9A27A';
+    ctx.beginPath();
+    ctx.arc(u.p[0], u.p[1], 3*px, 0, Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(201,162,122,.5)';
+    ctx.lineWidth = px;
+    ctx.beginPath();
+    ctx.arc(u.p[0], u.p[1], 6*px, 0, Math.PI*2);
+    ctx.stroke();
+  });
+
+  if(!showLabels) return;
+
+  // measure widths & build items for placeLabels
+  ctx.font = '500 ' + fontSize + 'px "TravelSerif","Noto Serif SC",serif';
+  var labelH = 11 * px;
+  var items = [];
+  var dotList = [];
+  unique.forEach(function(u){
+    if(!u.p) return;
+    var w = ctx.measureText(u.city || '').width;
+    var item = {x: u.p[0], y: u.p[1], w: w, h: labelH, r: 3*px, pref: (u.idx % 2 === 0) ? 'right' : 'left'};
+    items.push(item);
+    dotList.push({x: u.p[0], y: u.p[1], r: 3*px, _ref: item, _u: u});
+  });
+
+  // bounds: disc bounding square inset 6px
+  var R = (globe.S/2 + globe.R) ? (globe.S/2 + globe.R) : (ctx.canvas.width/2);
+  // use projection distance center: find projection of centroid? Simpler: bounds of canvas disc
+  // The globe draws in canvas with center C and radius R.
+  var cx = (globe.cx != null) ? globe.cx : ctx.canvas.width/2;
+  var cy = (globe.cy != null) ? globe.cy : ctx.canvas.height/2;
+  var discR = (globe.curR != null) ? globe.curR : Math.min(ctx.canvas.width, ctx.canvas.height)/2 - 4*px;
+  var bounds = {x0: cx - discR, y0: cy - discR, x1: cx + discR, y1: cy + discR};
+
+  var obstacles = {segments: routeSegs, dots: dotList, boxes: []};
+  var placed = placeLabels(items, obstacles, bounds);
+
+  // only draw labels for lit unique cities; map items back to unique
+  ctx.textBaseline = 'middle';
+  ctx.font = '500 ' + fontSize + 'px "TravelSerif","Noto Serif SC",serif';
+  items.forEach(function(item, i){
+    // find unique ref
+    var u = dotList[i]._u;
+    if(!litUnique[u.idx]) return;
+    var pl = placed[i];
+    if(!pl || pl.conflict) return; // tiny globe: drop a label rather than overlap
+    if(pl.leader){
+      ctx.save();
+      ctx.strokeStyle = 'rgba(237,230,218,.35)';
+      ctx.lineWidth = 1 * px;
+      ctx.beginPath();
+      var ex, ey;
+      if(pl.anchor === 'start'){ ex = pl.box.x0; ey = (pl.box.y0 + pl.box.y1)/2; }
+      else if(pl.anchor === 'end'){ ex = pl.box.x1; ey = (pl.box.y0 + pl.box.y1)/2; }
+      else { ex = (pl.box.x0 + pl.box.x1)/2; ey = (pl.box.y0 < item.y) ? pl.box.y1 : pl.box.y0; }
+      ctx.moveTo(item.x, item.y);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.fillStyle = '#EDE6DA';
+    ctx.shadowColor = 'rgba(18,16,14,.9)';
+    ctx.shadowBlur = 6;
+    ctx.textAlign = pl.anchor === 'start' ? 'left' : (pl.anchor === 'end' ? 'right' : 'center');
+    ctx.fillText(u.city || '', pl.x, pl.y);
+    ctx.shadowBlur = 0;
+  });
+}
+
+function rotateTo(countryName, dur){
+  if(!globe.initialized) return;
+  if(globe.tween){ cancelAnimationFrame(globe.raf); globe.tween = null; }
+  if(globe.hoverActive) return;
+  var feats = STATE.worldGeo.features;
+  var target = feats.find(function(f){ return f.properties.name === countryName; });
+  var toCenter = target ? d3.geoCentroid(target) : [WORLD_FALLBACK.lng, WORLD_FALLBACK.lat];
+  toCenter = [-toCenter[0], -toCenter[1] * 0.6];
+  var from = globe.proj.rotate().slice();
+  var interpolate = d3.interpolate(from, toCenter);
+  var t0 = performance.now();
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ globe.proj.rotate(toCenter); drawGlobe(countryName); window.__settled = true; return; }
+  window.__settled = false;
+  globe.tween = true;
+  function frame(now){
+    var p = Math.min(1, (now - t0) / (dur || 800));
+    var e = d3.easeCubicInOut(p);
+    if(globe.hoverActive){ globe.tween = null; return; }
+    globe.proj.rotate(interpolate(e));
+    drawGlobe(countryName, {keepRotate:true});
+    if(p < 1){ globe.raf = requestAnimationFrame(frame); }
+    else { globe.tween = null; window.__settled = true; }
+  }
+  globe.raf = requestAnimationFrame(frame);
+}
+
+function setGlobeActive(country, index, N){
+  if(!globe.initialized) return;
+  if(globe.hoverActive){ globe.cur = country; globe.pendingLbl = [country, index, N]; return; }
+  var gc = document.getElementById('miniC');
+  var gn = document.getElementById('miniN');
+  if(gc) { gc.style.opacity = '0'; }
+  setTimeout(function(){
+    if(gc) gc.textContent = country;
+    if(gn){
+      if(index != null && N != null) gn.textContent = pad(index) + ' / ' + N;
+      else gn.textContent = '常去';
+    }
+    if(gc) gc.style.opacity = '1';
+  }, 200);
+  if(country !== globe.cur){
+    globe.cur = country;
+    rotateTo(country, 800);
+  } else {
+    drawGlobe(country);
+    window.__settled = true;
+  }
+}
+
+// ---------- hover on trip articles ----------
+var hoverTimer = null;
+var hoverLeaveTimer = null;
+var currentHovered = null;
+
+function setupTripHover(){
+  if(window.matchMedia('(max-width:640px)').matches) return;
+  var mini = document.getElementById('mini');
+  var items = document.querySelectorAll('.trip, .bleed, .arch-item');
+  items.forEach(function(el){
+    el.addEventListener('mouseenter', function(){
+      var tid = el.getAttribute('data-trip-id');
+      if(!tid) return;
+      var story = STATE.story[tid];
+      if(!story || !story.route) return;
+      var located = story.route.filter(function(r){return r.lat!=null && r.lng!=null;});
+      if(!located.length) return;
+      if(hoverLeaveTimer) clearTimeout(hoverLeaveTimer);
+      if(hoverTimer) clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(function(){ startHoverRoute(tid, story, mini); }, 120);
+    });
+    el.addEventListener('mouseleave', function(){
+      if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
+      if(hoverLeaveTimer) clearTimeout(hoverLeaveTimer);
+      hoverLeaveTimer = setTimeout(function(){ endHoverRoute(mini); }, 80);
+    });
+  });
+}
+
+function startHoverRoute(tid, story, mini){
+  if(!globe.initialized) return;
+  var located = story.route.filter(function(r){return r.lat!=null && r.lng!=null;});
+  if(!located.length) return;
+
+  // trip countries
+  var trip = STATE.trips.find(function(t){return t.id===tid;});
+  var tripCountries = {};
+  if(trip && trip.countries) trip.countries.forEach(function(c){ tripCountries[globeCountry(c)] = 1; });
+
+  // centroid & bbox
+  var lngs = located.map(function(r){return r.lng;});
+  var lats = located.map(function(r){return r.lat;});
+  var minLng = Math.min.apply(null,lngs), maxLng = Math.max.apply(null,lngs);
+  var minLat = Math.min.apply(null,lats), maxLat = Math.max.apply(null,lats);
+  var centroid = [(minLng+maxLng)/2, (minLat+maxLat)/2];
+
+  // zoom
+  var zoom = 5;
+  if(located.length >= 2){
+    var dLng = maxLng-minLng, dLat = maxLat-minLat;
+    var spanDeg = Math.max(dLng, dLat);
+    if(spanDeg > 0.001){
+      var targetVisible = spanDeg / 0.42;
+      zoom = Math.max(1, Math.min(9, 180 / targetVisible));
+    }
+  }
+
+  // --- Size selection: largest S in [120..220] step 10 that doesn't intersect visible content ---
+  var viewportW = window.innerWidth, viewportH = window.innerHeight;
+  var labelH = 44; // approx label height
+  var right = 32, bottom = 28;
+  var sels = '#app figure, #app .txt, #app .t-title, #app .t-meta, #app .year .num, #app .turn h2, #app .img-wrap';
+  var contentRects = [];
+  try {
+    var nodes = document.querySelectorAll(sels);
+    for(var ni=0; ni<nodes.length; ni++){
+      var r = nodes[ni].getBoundingClientRect();
+      if(r.width <= 0 || r.height <= 0) continue;
+      if(r.right < 0 || r.bottom < 0 || r.left > viewportW || r.top > viewportH) continue;
+      contentRects.push(r);
+    }
+  } catch(e){}
+
+  function overlapsAny(x0, y0, x1, y1){
+    for(var i=0;i<contentRects.length;i++){
+      var r = contentRects[i];
+      if(!(x1 < r.left || x0 > r.right || y1 < r.top || y0 > r.bottom)) return true;
+    }
+    return false;
+  }
+
+  var chosenS = 120;
+  for(var S=220; S>=120; S-=10){
+    var bx1 = viewportW - right;
+    var bx0 = bx1 - Math.max(S, 160);
+    var by1 = viewportH - bottom;
+    // box includes globe + label height below? label is BELOW globe in flex column
+    var by0 = by1 - S - labelH;
+    if(!overlapsAny(bx0, by0, bx1, by1)){ chosenS = S; break; }
+  }
+  // If none fit, choose smallest available tile (120) still
+  mini.style.setProperty('--gs', chosenS + 'px');
+  if(chosenS > 120){ mini.classList.add('grow'); }
+  else { mini.classList.remove('grow'); }
+
+  // update label
+  var c = document.getElementById('miniC');
+  var n = document.getElementById('miniN');
+  if(c) c.textContent = trip ? trip.title : '';
+  if(n) n.textContent = new Set(located.map(function(r){return r.city;})).size + ' 座城市';
+
+  // store hover state
+  globe.hoverRoute = located;
+  globe.hoverTripCountries = tripCountries;
+  globe.hoverCentroid = centroid;
+  globe.hoverZoom = zoom;
+  globe.hoverProgress = 0;
+  globe.hoverLit = 0;
+  globe.hoverActive = true;
+
+  // animate
+  animateHover();
+}
+
+function animateHover(){
+  if(!globe.hoverActive) return;
+  if(globe.hoverTween) cancelAnimationFrame(globe.hoverTween);
+  if(globe.tween){ cancelAnimationFrame(globe.raf); globe.tween = null; }
+  var n = (globe.hoverRoute||[]).length;
+  var c = globe.hoverCentroid;
+  var rotTo = [-c[0], -c[1]];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+    globe.proj.rotate(rotTo); globe.hoverZoomNow = globe.hoverZoom;
+    globe.hoverProgress = 1; globe.hoverLit = n; drawHoverFrame(); window.__settled = true; return;
+  }
+  window.__settled = false;
+  var rotFrom = globe.proj.rotate().slice();
+  var rotI = d3.interpolate(rotFrom, rotTo);
+  var zFrom = globe.hoverZoomNow || 1, zTo = globe.hoverZoom;
+  var t0 = performance.now(), MOVE = 650, DRAW = 1200, START = 450;
+  function frame(now){
+    var t = now - t0;
+    var pm = Math.min(1, t / MOVE), em = d3.easeCubicInOut(pm);
+    globe.proj.rotate(rotI(em));
+    globe.hoverZoomNow = zFrom * Math.pow(zTo / zFrom, em);
+    var pd = Math.max(0, Math.min(1, (t - START) / DRAW));
+    globe.hoverProgress = d3.easeSinInOut(pd);
+    n = globe.hoverRoute.length;
+    globe.hoverLit = t < START ? -1 : (n <= 1 ? 0 : Math.floor(globe.hoverProgress * (n - 1) + 0.001));
+    drawHoverFrame();
+    if(t < START + DRAW){ globe.hoverTween = requestAnimationFrame(frame); }
+    else { globe.hoverTween = null; globe.hoverLit = n; drawHoverFrame(); window.__settled = true; }
+  }
+  globe.hoverTween = requestAnimationFrame(frame);
+}
+
+function drawHoverFrame(){
+  if(!globe.hoverRoute) return;
+  drawGlobe('', {
+    zoom: globe.hoverZoomNow || globe.hoverZoom,
+    route: globe.hoverRoute,
+    routeProgress: globe.hoverProgress,
+    litCities: globe.hoverLit,
+    tripCountries: globe.hoverTripCountries,
+    centroid: globe.hoverCentroid,
+    keepRotate: true
+  });
+}
+
+function endHoverRoute(mini){
+  if(mini){
+    mini.classList.remove('grow');
+    mini.style.removeProperty('--gs');
+  }
+  globe.hoverActive = false;
+  if(globe.hoverTween){ cancelAnimationFrame(globe.hoverTween); globe.hoverTween = null; }
+  // revert label
+  var c = document.getElementById('miniC');
+  if(c) c.textContent = globe.cur;
+  var pl = globe.pendingLbl; globe.pendingLbl = null;
+  var nEl = document.getElementById('miniN');
+  if(nEl){ var ci = pl && pl[0] === globe.cur ? pl : [globe.cur, findTripIndexByCountry(globe.cur) + 1, STATE.tripSeq.length]; nEl.textContent = ci[1] ? pad(ci[1]) + ' / ' + ci[2] : '常去'; }
+  // fade zoom back
+  var startZoom = globe.hoverZoomNow || globe.hoverZoom || 1;
+  globe.hoverZoomNow = 1;
+  var startProgress = globe.hoverProgress || 0;
+  var hoverRoute = globe.hoverRoute;
+  var t0 = performance.now();
+  var dur = 520;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+    globe.hoverRoute = null;
+    drawGlobe(globe.cur);
+    window.__settled = true;
+    return;
+  }
+  window.__settled = false;
+  var rotFrom = globe.proj.rotate().slice();
+  var target = STATE.worldGeo.features.find(function(f){ return f.properties.name === globe.cur; });
+  var ctr = target ? d3.geoCentroid(target) : [WORLD_FALLBACK.lng, WORLD_FALLBACK.lat];
+  var rotTo = [-ctr[0], -ctr[1] * 0.6];
+  var rotInterp = d3.interpolate(rotFrom, rotTo);
+  function frame(now){
+    var p = Math.min(1, (now-t0)/dur);
+    var e = d3.easeCubicOut(p);
+    var z = startZoom + (1 - startZoom) * e;
+    var pr = startProgress * (1 - e);
+    globe.proj.rotate(rotInterp(e));
+    if(z > 1.001 && hoverRoute){
+      drawGlobe('', {
+        zoom: z,
+        route: hoverRoute,
+        routeProgress: pr,
+        litCities: globe.hoverLit,
+        tripCountries: globe.hoverTripCountries,
+        centroid: ctr,
+        keepRotate: true
+      });
+    } else {
+      globe.hoverRoute = null;
+      drawGlobe(globe.cur);
+    }
+    if(p < 1){
+      globe.hoverTween = requestAnimationFrame(frame);
+    } else {
+      globe.hoverTween = null;
+      globe.hoverRoute = null;
+      drawGlobe(globe.cur);
+      window.__settled = true;
+    }
+  }
+  globe.hoverTween = requestAnimationFrame(frame);
+}
+
+// ---------- mobile route trigger ----------
+var mobileRouteTimer = null;
+var mobileActiveTrip = null;
+function checkMobileRoute(){
+  if(!window.matchMedia('(max-width:640px)').matches) return;
+  if(parseHash().view !== 'world') return;
+  var articles = document.querySelectorAll('.trip[data-trip-id], .bleed[data-trip-id]');
+  var vh = window.innerHeight;
+  var mid = vh/2;
+  var found = null;
+  for(var i=0;i<articles.length;i++){
+    var r = articles[i].getBoundingClientRect();
+    if(r.top < mid && r.bottom > mid){ found = articles[i]; break; }
+  }
+  if(!found){
+    if(mobileRouteTimer){ clearTimeout(mobileRouteTimer); mobileRouteTimer = null; }
+    if(mobileActiveTrip){ endMobileRoute(); }
+    return;
+  }
+  var tid = found.getAttribute('data-trip-id');
+  if(mobileActiveTrip === tid) return;
+  if(mobileRouteTimer) clearTimeout(mobileRouteTimer);
+  mobileRouteTimer = setTimeout(function(){
+    var story = STATE.story[tid];
+    if(!story) return;
+    var trip = STATE.trips.find(function(t){return t.id===tid;});
+    if(!trip) return;
+    // play route draw at small size
+    var located = story.route.filter(function(r){return r.lat!=null && r.lng!=null;});
+    if(!located.length) return;
+    
+    var tripCountries = {};
+    (trip.countries||[]).forEach(function(c){ tripCountries[globeCountry(c)] = 1; });
+    
+    var lngs = located.map(function(r){return r.lng;});
+    var lats = located.map(function(r){return r.lat;});
+    var centroid = [(Math.min.apply(null,lngs)+Math.max.apply(null,lngs))/2, (Math.min.apply(null,lats)+Math.max.apply(null,lats))/2];
+    
+    globe.hoverRoute = located;
+    globe.hoverTripCountries = tripCountries;
+    globe.hoverCentroid = centroid;
+    globe.hoverZoom = 5;
+    globe.hoverProgress = 0;
+    globe.hoverLit = 0;
+    globe.hoverActive = true;
+    mobileActiveTrip = tid;
+    animateHover();
+  }, 700);
+}
+
+function endMobileRoute(){
+  mobileActiveTrip = null;
+  if(globe.hoverRoute){
+    globe.hoverActive = false;
+    if(globe.hoverTween){ cancelAnimationFrame(globe.hoverTween); globe.hoverTween = null; }
+    globe.hoverRoute = null;
+    drawGlobe(globe.cur);
+  }
+}
+
+// ---------- observer ----------
+var globeObserver = null;
+function setupGlobeObserver(){
+  if(globeObserver) globeObserver.disconnect();
+  globeObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        if(globe.hoverActive) return;
+        var c = e.target.getAttribute('data-c');
+        if(!c) return;
+        var i = e.target.getAttribute('data-i');
+        var N = STATE.tripSeq.length;
+        setGlobeActive(c, i ? parseInt(i,10) : null, i ? N : null);
+      }
+    });
+  }, {rootMargin:'-45% 0px -45% 0px'});
+  document.querySelectorAll('[data-c]').forEach(function(el){ globeObserver.observe(el); });
+}
+
+// ---------- LIGHTBOX ----------
+var lb = {
+  el:null, img:null, cap:null, list:[], idx:0, title:'', isOpen:false,
+  touchStartX: 0, touchStartY: 0
+};
+
+function initLightbox(){
+  lb.el = document.getElementById('lb');
+  lb.img = document.getElementById('lbImg');
+  lb.cap = document.getElementById('lbCap');
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); prevPhoto(); });
+  document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); nextPhoto(); });
+
+  lb.el.addEventListener('click', function(e){
+    if(e.target === lb.el) closeLightbox();
+  });
+  lb.img.addEventListener('click', function(e){
+    var rect = lb.img.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var w = rect.width;
+    if(x < w * 0.35) prevPhoto();
+    else if(x > w * 0.65) nextPhoto();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(!lb.isOpen) return;
+    if(e.key === 'Escape'){ closeLightbox(); }
+    else if(e.key === 'ArrowLeft'){ e.preventDefault(); prevPhoto(); }
+    else if(e.key === 'ArrowRight'){ e.preventDefault(); nextPhoto(); }
+  });
+
+  lb.el.addEventListener('touchstart', function(e){
+    if(e.touches.length === 1){
+      lb.touchStartX = e.touches[0].clientX;
+      lb.touchStartY = e.touches[0].clientY;
+    }
+  }, {passive:true});
+  lb.el.addEventListener('touchend', function(e){
+    if(e.changedTouches.length === 1){
+      var dx = e.changedTouches[0].clientX - lb.touchStartX;
+      var dy = e.changedTouches[0].clientY - lb.touchStartY;
+      if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+        if(dx > 0) prevPhoto(); else nextPhoto();
+      }
+    }
+  }, {passive:true});
+}
+
+function openLightbox(list, index, title){
+  if(!lb.el) initLightbox();
+  lb.list = list || [];
+  lb.idx = index || 0;
+  lb.title = title || '';
+  lb.isOpen = true;
+  lb.el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showPhoto(true);
+  preloadNeighbors();
+}
+
+function closeLightbox(){
+  lb.isOpen = false;
+  lb.el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function showPhoto(instant){
+  if(!lb.list.length) return;
+  var item = lb.list[lb.idx];
+  var src = item.src || item.full || '';
+  lb.img.classList.remove('show');
+  var newImg = new Image();
+  newImg.onload = function(){ setImgContent(src); };
+  newImg.onerror = function(){ setImgContent(src); };
+  newImg.src = src;
+  function setImgContent(u){
+    lb.img.src = u;
+    if(instant){ lb.img.classList.add('show'); }
+    else { requestAnimationFrame(function(){ lb.img.classList.add('show'); }); }
+  }
+  lb.cap.textContent = lb.title + ' · ' + (lb.idx + 1) + ' / ' + lb.list.length;
+  preloadNeighbors();
+}
+
+function preloadNeighbors(){
+  if(lb.list.length < 2) return;
+  var neighbors = [(lb.idx+1) % lb.list.length, (lb.idx-1+lb.list.length) % lb.list.length];
+  neighbors.forEach(function(i){
+    var it = lb.list[i];
+    if(it){ var im = new Image(); im.src = it.src || it.full || ''; }
+  });
+}
+
+function nextPhoto(){
+  if(!lb.list.length) return;
+  lb.idx = (lb.idx + 1) % lb.list.length;
+  showPhoto(false);
+}
+function prevPhoto(){
+  if(!lb.list.length) return;
+  lb.idx = (lb.idx - 1 + lb.list.length) % lb.list.length;
+  showPhoto(false);
+}
+window.__openLightbox = openLightbox;
+
+// ---------- MUSIC ----------
+var music = {
+  audio: null,
+  on: false,
+  src: null,
+  found: false,
+  fadeRaf: null,
+  visible: true
+};
+
+function initMusic(){
+  window.__music = music;
+  var toggles = [document.getElementById('musicToggle'), document.getElementById('musicToggleDetail')];
+  // restore from session
+  var sess = null;
+  try { sess = sessionStorage.getItem('musicOn'); } catch(e){}
+  // default muted on every visit; never resume without a click
+  
+  toggles.forEach(function(btn){
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      if(!music.found) return;
+      if(music.on) turnMusicOff(true);
+      else turnMusicOn(true);
+    });
+  });
+  
+  // discovery
+  discoverAudio().then(function(src){
+    if(!src) return;
+    music.src = src;
+    music.found = true;
+    toggles.forEach(function(b){ if(b) b.classList.add('visible'); });
+    if(music.on){
+      // resume
+      ensureAudio();
+      if(music.audio){
+        try { music.audio.play().catch(function(){}); } catch(e){}
+        fadeVolume(music.audio.volume, getTargetVol(), 400);
+        updateBars(true);
+      }
+    }
+  });
+  
+  // visibility
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){
+      if(music.audio && music.on){
+        fadeVolume(music.audio.volume, 0, 300, function(){
+          if(music.audio) music.audio.pause();
+        });
+      }
+    } else {
+      if(music.audio && music.on){
+        try { music.audio.play().catch(function(){}); } catch(e){}
+        fadeVolume(music.audio.volume, getTargetVol(), 400);
+        updateBars(true);
+      }
+    }
+  });
+  window.addEventListener('pagehide', function(){
+    if(music.audio && music.on){
+      try { music.audio.pause(); } catch(e){}
+    }
+  });
+}
+
+function syncMusicVolume(){
+  if(music.audio && music.on && !document.hidden) fadeVolume(music.audio.volume, getTargetVol(), 800);
+}
+function getTargetVol(){
+  return document.body.classList.contains('detail') ? 0.16 : 0.25;
+}
+
+function discoverAudio(){
+  function tryEndpoints(){
+    // 1. manifest
+    return fetch('public/audio/manifest.json').then(function(r){
+      if(!r.ok) throw new Error('no manifest');
+      return r.json();
+    }).then(function(j){
+      if(!j) throw new Error('empty');
+      if(j.src) return resolveSrc(j.src);
+      if(j.tracks && j.tracks.length && j.tracks[0].src) return resolveSrc(j.tracks[0].src);
+      if(Array.isArray(j) && j.length) return resolveSrc(j[0]);
+      throw new Error('bad manifest');
+    }).catch(function(){
+      // 2. directory listing
+      return fetch('public/audio/').then(function(r){
+        if(!r.ok) throw new Error('no dir');
+        return r.text();
+      }).then(function(txt){
+        var re = /href=["']([^"']+\.(?:mp3|m4a|ogg|opus|webm))["']/gi;
+        var m, found = null;
+        while((m = re.exec(txt)) !== null){
+          if(!found) found = m[1];
+        }
+        if(found) return resolveSrc(found);
+        throw new Error('no audio in listing');
+      }).catch(function(){
+        // 3. HEAD probes
+        var candidates = ['public/audio/bgm.mp3','public/audio/music.mp3','public/audio/track.mp3','public/audio/bgm.ogg'];
+        var i = 0;
+        function next(){
+          if(i >= candidates.length) return Promise.resolve(null);
+          var c = candidates[i++];
+          return fetch(c, {method:'HEAD'}).then(function(r){
+            if(r.ok) return c;
+            return next();
+          }).catch(function(){ return next(); });
+        }
+        return next();
+      });
+    });
+  }
+  function resolveSrc(s){
+    if(/^https?:|^\/|^public\//.test(s)) return s;
+    // relative to public/audio/
+    return 'public/audio/' + s.replace(/^\.\//,'');
+  }
+  return tryEndpoints();
+}
+
+function ensureAudio(){
+  if(music.audio) return;
+  try {
+    music.audio = new Audio(music.src);
+    music.audio.loop = true;
+    music.audio.preload = 'none';
+    music.audio.volume = 0;
+  } catch(e){ music.audio = null; }
+}
+
+function fadeVolume(from, to, dur, cb){
+  if(!music.audio) return;
+  if(music.fadeRaf){ cancelAnimationFrame(music.fadeRaf); music.fadeRaf = null; }
+  var t0 = performance.now();
+  function step(now){
+    var p = Math.min(1, (now-t0)/dur);
+    music.audio.volume = Math.max(0, Math.min(1, from + (to-from)*p));
+    if(p < 1){
+      music.fadeRaf = requestAnimationFrame(step);
+    } else {
+      music.fadeRaf = null;
+      if(cb) cb();
+    }
+  }
+  music.fadeRaf = requestAnimationFrame(step);
+}
+
+function turnMusicOn(persist){
+  ensureAudio();
+  if(!music.audio) return;
+  music.on = true;
+  try { music.audio.play().catch(function(){ music.on = false; updateBars(false); }); } catch(e){}
+  music.audio.volume = 0;
+  fadeVolume(0, getTargetVol(), 2000);
+  updateBars(true);
+  if(persist){ try { sessionStorage.setItem('musicOn','1'); } catch(e){} }
+}
+
+function turnMusicOff(persist){
+  music.on = false;
+  if(music.audio){
+    fadeVolume(music.audio.volume, 0, 600, function(){
+      if(music.audio) try { music.audio.pause(); } catch(e){}
+    });
+  }
+  updateBars(false);
+  if(persist){ try { sessionStorage.removeItem('musicOn'); } catch(e){} }
+}
+
+function updateBars(playing){
+  var toggles = [document.getElementById('musicToggle'), document.getElementById('musicToggleDetail')];
+  toggles.forEach(function(b){
+    if(!b) return;
+    b.classList.toggle('playing', playing);
+    b.setAttribute('aria-pressed', playing ? 'true' : 'false');
+  });
+}
+
+// ---------- init on ready ----------
+document.addEventListener('DOMContentLoaded', function(){
+  initLightbox();
+  initMusic();
+});
+if(document.readyState !== 'loading'){
+  initLightbox();
+  initMusic();
+}
+
+window.__settled = true;
+window.__ready = false;
+
+})();
 </script>
 </body>
 </html>
