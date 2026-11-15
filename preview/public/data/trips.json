@@ -1,39 +1,26 @@
 {
  "trips": [
   {
-   "id": "2019-korea",
-   "title": "韩国的回忆",
-   "start": "2019-07-11",
-   "end": "2019-07-13",
-   "nights": 2,
-   "countries": [
-    "韩国"
-   ],
-   "places": [
-    "korea"
-   ],
-   "kind": "trip",
-   "year": 2019,
-   "cover": "photos/korea/03.webp"
-  },
-  {
    "id": "2024-paris-winter",
    "title": "巴黎的冬天",
-   "start": "2024-02-11",
-   "end": "2024-02-18",
-   "nights": 7,
+   "start": "2024-02-10",
+   "end": "2024-02-14",
+   "nights": 4,
    "countries": [
     "法国"
    ],
-   "places": [],
+   "places": [
+    "paris24"
+   ],
    "kind": "trip",
-   "year": 2024
+   "year": 2024,
+   "who": "jy"
   },
   {
    "id": "2024-iceland",
    "title": "冰岛，冰与火之岛",
-   "start": "2024-03-29",
-   "end": "2024-04-03",
+   "start": "2024-03-28",
+   "end": "2024-04-02",
    "nights": 5,
    "countries": [
     "冰岛"
@@ -42,28 +29,32 @@
     "iceland"
    ],
    "kind": "trip",
-   "year": 2024
+   "year": 2024,
+   "who": "jy"
   },
   {
    "id": "2024-iberia-may",
    "title": "伊比利亚的五月",
-   "start": "2024-05-01",
-   "end": "2024-05-08",
-   "nights": 7,
+   "start": "2024-04-30",
+   "end": "2024-05-06",
+   "nights": 6,
    "countries": [
-    "葡萄牙",
-    "西班牙"
+    "西班牙",
+    "葡萄牙"
    ],
-   "places": [],
+   "places": [
+    "iberia24"
+   ],
    "kind": "trip",
-   "year": 2024
+   "year": 2024,
+   "who": "jy"
   },
   {
    "id": "2024-switzerland",
    "title": "瑞士的初夏",
    "start": "2024-06-01",
-   "end": "2024-06-06",
-   "nights": 5,
+   "end": "2024-06-05",
+   "nights": 4,
    "countries": [
     "瑞士"
    ],
@@ -71,29 +62,113 @@
     "switzerland"
    ],
    "kind": "trip",
-   "year": 2024
+   "year": 2024,
+   "who": "jy"
   },
   {
    "id": "2024-thailand",
    "title": "泰兰德公主",
-   "start": "2024-06-18",
-   "end": "2024-06-21",
-   "nights": 3,
+   "start": "2024-06-19",
+   "end": "2024-06-26",
+   "nights": 7,
    "countries": [
-    "泰国"
+    "泰国",
+    "马来西亚"
    ],
    "places": [
-    "thailand"
+    "thailand",
+    "malaysia"
    ],
    "kind": "trip",
    "year": 2024,
-   "cover": "photos/thailand/05.webp"
+   "who": "jy"
+  },
+  {
+   "id": "2024-uk-loop",
+   "title": "和妹妹的英国环线",
+   "start": "2024-07-28",
+   "end": "2024-08-09",
+   "nights": 12,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "ukloop24"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "who": "sis"
+  },
+  {
+   "id": "2024-cornwall-zx",
+   "title": "康沃尔的海",
+   "start": "2024-08-18",
+   "end": "2024-08-22",
+   "nights": 4,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "cornwall-zx"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "who": "zx",
+   "toggle": "cornwall_split"
+  },
+  {
+   "id": "2024-cornwall",
+   "title": "康沃尔的九月",
+   "start": "2024-09-02",
+   "end": "2024-09-05",
+   "nights": 3,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "cornwall24"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "who": "jy"
+  },
+  {
+   "id": "2024-highlands-zx",
+   "title": "苏格兰高地自驾",
+   "start": "2024-09-12",
+   "end": "2024-09-18",
+   "nights": 6,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "highlands"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "who": "zx"
+  },
+  {
+   "id": "2024-scotland-dec-zx",
+   "title": "去见她之前",
+   "start": "2024-12-18",
+   "end": "2024-12-22",
+   "nights": 4,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "scotland-dec"
+   ],
+   "kind": "trip",
+   "year": 2024,
+   "who": "zx"
   },
   {
    "id": "2024-morocco",
    "title": "摩洛哥的第一次约会",
-   "start": "2024-12-23",
-   "end": "2024-12-27",
+   "start": "2024-12-22",
+   "end": "2024-12-26",
    "nights": 4,
    "countries": [
     "摩洛哥"
@@ -103,30 +178,31 @@
    ],
    "kind": "trip",
    "year": 2024,
-   "cover": "photos/morocco/07.webp"
+   "who": "tg"
   },
   {
    "id": "2025-wales",
    "title": "威尔士小分队",
-   "start": "2025-01-15",
-   "end": "2025-01-19",
-   "nights": 4,
+   "start": "2025-01-11",
+   "end": "2025-01-14",
+   "nights": 3,
    "countries": [
     "英国"
    ],
    "places": [
-    "wales"
+    "wales",
+    "wales2"
    ],
    "kind": "trip",
    "year": 2025,
-   "cover": "photos/wales/05.webp"
+   "who": "tg"
   },
   {
    "id": "2025-france",
    "title": "浪漫法兰西",
-   "start": "2025-02-20",
-   "end": "2025-02-25",
-   "nights": 5,
+   "start": "2025-02-17",
+   "end": "2025-02-20",
+   "nights": 3,
    "countries": [
     "法国"
    ],
@@ -135,14 +211,14 @@
    ],
    "kind": "trip",
    "year": 2025,
-   "cover": "photos/france/06.webp"
+   "who": "tg"
   },
   {
    "id": "2025-italy-spring",
    "title": "意大利之春",
    "start": "2025-03-06",
-   "end": "2025-03-11",
-   "nights": 5,
+   "end": "2025-03-10",
+   "nights": 4,
    "countries": [
     "意大利",
     "梵蒂冈"
@@ -153,14 +229,14 @@
    ],
    "kind": "trip",
    "year": 2025,
-   "cover": "photos/vatican/01.webp"
+   "who": "tg"
   },
   {
    "id": "2025-greece",
    "title": "希腊的蓝与白",
    "start": "2025-04-22",
-   "end": "2025-04-28",
-   "nights": 6,
+   "end": "2025-04-26",
+   "nights": 4,
    "countries": [
     "希腊"
    ],
@@ -169,14 +245,14 @@
    ],
    "kind": "trip",
    "year": 2025,
-   "cover": "photos/greece/04.webp"
+   "who": "tg"
   },
   {
    "id": "2025-spain-summer",
-   "title": "仲夏西班牙",
-   "start": "2025-06-19",
-   "end": "2025-06-25",
-   "nights": 6,
+   "title": "特内里费的夏天",
+   "start": "2025-06-17",
+   "end": "2025-06-24",
+   "nights": 7,
    "countries": [
     "西班牙"
    ],
@@ -184,14 +260,15 @@
     "spain"
    ],
    "kind": "trip",
-   "year": 2025
+   "year": 2025,
+   "who": "tg"
   },
   {
    "id": "2025-car-day",
    "title": "提车日记",
-   "start": "2025-07-20",
-   "end": "2025-07-22",
-   "nights": 2,
+   "start": "2025-07-18",
+   "end": "2025-07-21",
+   "nights": 3,
    "countries": [
     "英国"
    ],
@@ -200,22 +277,104 @@
    ],
    "kind": "trip",
    "year": 2025,
-   "cover": "photos/birmingham/02.webp"
+   "who": "tg"
+  },
+  {
+   "id": "2025-family-uk",
+   "title": "爸妈和弟弟来英国",
+   "start": "2025-12-07",
+   "end": "2025-12-24",
+   "nights": 17,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "london-dec25"
+   ],
+   "kind": "trip",
+   "year": 2025,
+   "who": "fam"
+  },
+  {
+   "id": "2019-korea",
+   "title": "和闺蜜的首尔",
+   "start": "2026-01-14",
+   "end": "2026-01-16",
+   "nights": 2,
+   "countries": [
+    "韩国"
+   ],
+   "places": [
+    "korea"
+   ],
+   "kind": "trip",
+   "year": 2026,
+   "who": "friend"
+  },
+  {
+   "id": "2026-singapore-zx",
+   "title": "新加坡",
+   "start": "2026-06-01",
+   "end": "2026-06-04",
+   "nights": 3,
+   "countries": [
+    "新加坡"
+   ],
+   "places": [
+    "singapore"
+   ],
+   "kind": "trip",
+   "year": 2026,
+   "who": "zxbiz"
   },
   {
    "id": "2026-sea-honeymoon",
    "title": "东南亚蜜月",
-   "start": "2026-06-12",
-   "end": "2026-06-20",
-   "nights": 8,
+   "start": "2026-06-14",
+   "end": "2026-06-19",
+   "nights": 5,
    "countries": [
+    "泰国",
     "马来西亚"
    ],
    "places": [
-    "malaysia"
+    "honeymoon"
    ],
    "kind": "trip",
-   "year": 2026
+   "year": 2026,
+   "who": "tg"
+  },
+  {
+   "id": "2026-moscow-zx",
+   "title": "莫斯科出差",
+   "start": "2026-06-23",
+   "end": "2026-06-26",
+   "nights": 3,
+   "countries": [
+    "俄罗斯"
+   ],
+   "places": [
+    "moscow"
+   ],
+   "kind": "trip",
+   "year": 2026,
+   "who": "zxwork"
+  },
+  {
+   "id": "2026-jakarta-zx",
+   "title": "雅加达",
+   "start": "2026-08-04",
+   "end": "2026-08-07",
+   "nights": 3,
+   "countries": [
+    "印度尼西亚"
+   ],
+   "places": [
+    "jakarta"
+   ],
+   "kind": "trip",
+   "year": 2026,
+   "who": "zxbiz"
   },
   {
    "id": "uk-years",
@@ -244,6 +403,45 @@
    ]
   },
   {
+   "id": "edinburgh-again",
+   "title": "爱丁堡，一去再去",
+   "start": "2024-07-28",
+   "end": "2025-12-15",
+   "nights": null,
+   "countries": [
+    "英国"
+   ],
+   "places": [
+    "edinburgh"
+   ],
+   "kind": "long",
+   "year": null,
+   "subtitle": "去了 4 次",
+   "visits": [
+    {
+     "start": "2024-08-04",
+     "end": "2024-08-07",
+     "note": "嘉怡和妹妹的英国环线"
+    },
+    {
+     "start": "2024-09-12",
+     "end": "2024-09-18",
+     "note": "兴哥的苏格兰高地自驾"
+    },
+    {
+     "start": "2024-12-18",
+     "end": "2024-12-22",
+     "note": "兴哥一个人，去见嘉怡之前"
+    },
+    {
+     "start": "2025-12-14",
+     "end": "2025-12-15",
+     "note": "嘉怡和爸妈、弟弟"
+    }
+   ],
+   "cover": "photos/edinburgh/04.webp"
+  },
+  {
    "id": "china",
    "title": "中国",
    "start": null,
@@ -262,45 +460,6 @@
    ],
    "kind": "collection",
    "year": null
-  },
-  {
-   "id": "edinburgh-again",
-   "title": "爱丁堡，一去再去",
-   "start": "2024-08-04",
-   "end": "2025-12-20",
-   "nights": null,
-   "countries": [
-    "英国"
-   ],
-   "places": [
-    "edinburgh"
-   ],
-   "kind": "long",
-   "year": null,
-   "subtitle": "去了 4 次",
-   "visits": [
-    {
-     "start": "2024-08-04",
-     "end": "2024-08-07",
-     "note": "嘉怡陪妹妹"
-    },
-    {
-     "start": "2024-09-12",
-     "end": "2024-09-17",
-     "note": "政兴的苏格兰之旅"
-    },
-    {
-     "start": "2024-12-17",
-     "end": "2024-12-22",
-     "note": "政兴"
-    },
-    {
-     "start": "2025-12-17",
-     "end": "2025-12-20",
-     "note": "嘉怡陪爸妈"
-    }
-   ],
-   "cover": "photos/edinburgh/04.webp"
   }
  ]
 }
