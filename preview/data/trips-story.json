@@ -2,7 +2,7 @@
   "version": "v9.2",
   "trips": [
     {
-      "id": "2019-korea",
+      "id": "2026-korea",
       "draft": true,
       "confirmed": [
         "dates",
@@ -956,144 +956,42 @@
       "transport": [
         "自驾"
       ],
-      "highlights": [
-        "加的夫城堡",
-        "兰迪德诺海湾",
-        "高尔半岛"
-      ],
+      "highlights": [],
       "route": [
         {
           "order": 1,
-          "city": "埃克塞特",
+          "city": "卡迪夫",
           "country": "英国",
-          "lat": 50.7184,
-          "lng": -3.5339,
-          "days": [
-            1
-          ],
+          "lat": 51.4816,
+          "lng": -3.1791,
+          "days": [],
           "arrive_by": "",
           "note": ""
         },
         {
           "order": 2,
-          "city": "加的夫",
+          "city": "斯旺西",
           "country": "英国",
-          "lat": 51.4816,
-          "lng": -3.1791,
-          "days": [
-            1
-          ],
+          "lat": 51.6214,
+          "lng": -3.9436,
+          "days": [],
           "arrive_by": "",
           "note": ""
         },
         {
           "order": 3,
-          "city": "兰迪德诺",
-          "country": "英国",
-          "lat": 53.3241,
-          "lng": -3.8276,
-          "days": [
-            2,
-            3
-          ],
+          "days": [],
           "arrive_by": "",
-          "note": ""
-        },
-        {
-          "order": 4,
-          "city": "斯旺西",
+          "city": "高尔半岛",
           "country": "英国",
-          "lat": 51.6214,
-          "lng": -3.9436,
-          "days": [
-            4
-          ],
-          "arrive_by": "",
-          "note": ""
-        },
-        {
-          "order": 5,
-          "city": "埃克塞特",
-          "country": "英国",
-          "lat": 50.7184,
-          "lng": -3.5339,
-          "days": [
-            4
-          ],
-          "arrive_by": "",
-          "note": ""
+          "lat": 51.567,
+          "lng": -4.3,
+          "note": "Gower 半岛；改这里的坐标即可"
         }
       ],
-      "days": [
-        {
-          "day": 1,
-          "date": "2025-01-11",
-          "city": "加的夫",
-          "title": "雨里开进加的夫",
-          "text": "我们从埃克塞特出发，在布里斯托停下来吃了早午饭，过塞文大桥进了威尔士。下午看加的夫城堡和维多利亚拱廊，雨刷档位总也调不对，停车场里研究了半天，最后才发现还有自动模式。",
-          "weather": "小雨，8°C",
-          "stay": "加的夫市中心酒店",
-          "food": "威尔士奶酪吐司",
-          "draft": true,
-          "photos": [
-            "wales/01",
-            "wales/03"
-          ]
-        },
-        {
-          "day": 2,
-          "date": "2025-01-12",
-          "city": "兰迪德诺",
-          "title": "羊群拦住去山路",
-          "text": "我们一路向北穿过雪墩山，进村前一群羊慢慢横过公路，我们停了十分钟，后面的司机也一点不着急。傍晚到兰迪德诺，海边的长堤上只有我们两个人。",
-          "weather": "多云，5°C",
-          "stay": "兰迪德诺海湾旅馆",
-          "food": "热馅饼",
-          "draft": true,
-          "photos": [
-            "wales/04",
-            "wales2/01",
-            "wales2/02"
-          ],
-          "photos_guess": true
-        },
-        {
-          "day": 3,
-          "date": "2025-01-13",
-          "city": "兰迪德诺",
-          "title": "大奥姆角和康威城堡",
-          "text": "上午坐缆车上大奥姆角，风大得说话要喊。下午开去康威城堡登了塔楼，在码头吃了炸鱼薯条，雨夹雪突然落下来，两个人躲进咖啡馆分一碗汤。",
-          "weather": "雨夹雪，3°C",
-          "stay": "兰迪德诺海湾旅馆",
-          "food": "炸鱼薯条",
-          "draft": true,
-          "photos": [
-            "wales/05",
-            "wales/06",
-            "wales2/03"
-          ],
-          "photos_guess": true
-        },
-        {
-          "day": 4,
-          "date": "2025-01-14",
-          "city": "斯旺西",
-          "title": "海边看完日落回家",
-          "text": "往南开到斯旺西，在高尔半岛的海边看了一场日落。出发前旅馆老板塞给我们两块威尔士蛋糕，一路没舍得吃，回到埃克塞特才配茶分掉。",
-          "weather": "晴间多云，7°C",
-          "stay": "埃克塞特的家",
-          "food": "威尔士蛋糕",
-          "draft": true,
-          "photos": [
-            "wales/02",
-            "wales2/04",
-            "wales2/05",
-            "wales2/06"
-          ],
-          "photos_guess": true
-        }
-      ],
-      "v92": true
+      "days": [],
+      "v92": true,
+      "pending": "路线按 Jayzen 11-15 的说明：布里斯托出发，卡迪夫、斯旺西、高尔半岛，回布里斯托。高尔半岛坐标在 Gower 半岛，可改。"
     },
     {
       "id": "2025-france",

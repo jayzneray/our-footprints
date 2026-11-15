@@ -755,6 +755,73 @@ body.is-detail .menub{display:flex}
 @media (max-width:860px){.rbox{grid-template-columns:84px 84px}.rthumb{width:84px}}
 .hero-m .eyebrow{animation-delay:.8s}.hero-m .en{animation-delay:1.1s}
 
+/* legs to and from a trip: faint dashes */
+.mp-route.leg{stroke:rgba(237,230,218,.38);stroke-width:1;stroke-dasharray:3 5;fill:none}
+.mp-dot.leg{fill:#12100E;stroke:rgba(237,230,218,.5);stroke-width:1}
+
+/* small photos on home: three per trip */
+.rthumb{width:auto;aspect-ratio:auto;opacity:1}
+.rth{display:grid;grid-template-columns:1fr;gap:5px;width:120px}
+.rth .ph{aspect-ratio:4/5;opacity:.88;transition:opacity .4s}.rth .ph:hover{opacity:1}
+.rth .ph:nth-child(n+2){aspect-ratio:3/2}
+.ov-card .trips a{flex-wrap:wrap}
+.ovth{display:flex;gap:4px;width:100%}
+.ovth .ph{width:52px;height:38px;flex:none;opacity:.85}
+.ovth .ph img,.rth .ph img{width:100%;height:100%;object-fit:cover}
+@media (max-width:860px){.rth{width:84px}.ovth .ph{width:46px;height:34px}.ov-card .trips{display:flex}}
+/* v9.2i: a whole, usable globe in the first screen; the photo wall sits behind it, dimmed and softly blurred */
+.hero-m{--gw:min(70vh,88vw,1000px);--gw:min(70svh,88vw,1000px)}
+.hero-m .mosaic{filter:blur(2px) brightness(.62);inset:-5% -2% auto;height:110%}
+.hero-m .mc1 .ph:first-child img,.hero-m .mc4 .ph:last-child img,.hero-m .mc2 .ph:last-child{animation:none}
+.hero-m .cap{top:clamp(72px,9vh,100px)}
+.hero-m h1{font-size:clamp(40px,5.4vw,82px)}
+.hero-m .eyebrow{margin-bottom:18px}.hero-m .en{margin-top:16px}
+.hero-m .hglobe{top:calc(100vh - var(--gw) - 3vh);top:calc(100svh - var(--gw) - 3svh)}
+.hero-m .hglobe canvas{cursor:grab}
+.gtip{position:absolute;left:0;top:0;z-index:6;min-width:120px;max-width:260px;padding:9px 12px 8px;background:rgba(18,16,14,.95);border:1px solid rgba(201,162,122,.55);box-shadow:0 8px 24px rgba(0,0,0,.35);font-family:var(--serif);color:var(--ink);pointer-events:none;opacity:0;transition:opacity .2s}
+.gtip.on{opacity:1}.gtip.pin{pointer-events:auto}
+.gtip i{display:block;font-style:normal;font-size:11px;letter-spacing:.24em;color:var(--acc);margin-bottom:4px}
+.gtip a{display:block;padding:4px 0}.gtip a+a{border-top:1px solid var(--line)}
+.gtip b{display:block;font-weight:500;font-size:14px;letter-spacing:.08em}
+.gtip span{display:block;margin-top:2px;font-family:var(--latin);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.gtip.pin a:hover b{color:var(--acc)}
+@media (max-width:860px){
+  .hero-m{--gw:min(72vh,88vw);--gw:min(72svh,88vw)}
+  .hero-m .hglobe{top:auto;bottom:auto;top:calc(50svh - var(--gw) / 2 + 64px)}
+  .hero-m .cap{top:clamp(76px,11vh,104px)}
+  .gtip{max-width:220px}
+}
+/* v9.2i time scrubber + selected-trip card */
+.hero-m{--gw:min(62vh,86vw,940px);--gw:min(62svh,86vw,940px)}
+.hero-m .hglobe{top:calc(100vh - var(--gw) - 9vh);top:calc(100svh - var(--gw) - 9svh)}
+.gscrub{position:absolute;z-index:3;left:50%;bottom:calc(3svh + 6px);width:min(560px,72vw);transform:translateX(-50%);opacity:0;transition:opacity .8s}
+.gscrub.on{opacity:1}
+.gs-tr{position:relative;height:26px;cursor:pointer;touch-action:none}
+.gs-tr::before{content:'';position:absolute;left:0;right:0;top:12px;height:1px;background:rgba(237,230,218,.18)}
+.gs-fill{position:absolute;left:0;right:0;top:12px;height:1px;background:var(--acc);transform-origin:0 50%;transform:scaleX(1)}
+.gs-tk{position:absolute;top:8px;width:1px;height:9px;background:rgba(237,230,218,.3)}
+.gs-tk em{position:absolute;top:13px;left:-14px;font-size:11px;letter-spacing:.12em;color:var(--muted);font-style:normal}
+.gs-st{position:absolute;top:9px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#12100E;border:1px solid rgba(237,230,218,.35);padding:0;transition:background .3s,border-color .3s}
+.gs-st::after{content:'';position:absolute;inset:-8px}
+.gs-st.lit{border-color:rgba(201,162,122,.8)}.gs-st.lit.tg{background:var(--acc)}.gs-st.lit.solo{background:var(--solo)}.gs-st.lit.zx{background:var(--zx)}
+.gs-st:hover,.gs-st:focus-visible{border-color:var(--acc);outline:0}
+.gs-h{position:absolute;top:6px;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;background:#12100E;border:1px solid var(--acc);box-shadow:0 0 0 3px rgba(18,16,14,.8);cursor:grab}
+.gs-h::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--acc)}
+.hero-m .gl-card.gc-trip{display:flex;gap:16px;width:340px;max-width:340px;padding:16px;transform:translateX(14px)}
+.hero-m .gl-card.gc-trip.on{transform:none}
+.gc-ph{flex:none;width:86px;height:108px;overflow:hidden;display:block}.gc-ph .ph{width:100%;height:100%}.gc-ph img{width:100%;height:100%;object-fit:cover}
+.gc-tx{min-width:0}.gc-tx b{font-size:17px}.gc-tx .l{margin:8px 0 0;font-family:var(--serif);font-size:13px;line-height:1.7;letter-spacing:.06em;color:var(--ink2)}
+.gc-go{display:inline-flex;align-items:center;gap:10px;margin-top:10px;font-size:12px;letter-spacing:.2em;color:var(--ink);padding-bottom:3px;border-bottom:1px solid rgba(201,162,122,.55)}
+.gc-go svg{width:18px;height:8px}
+@media (max-width:860px){
+  .hero-m{--gw:min(46svh,82vw)}
+  .hero-m .hglobe{top:calc(11svh + 170px)}
+  .gscrub{bottom:auto;top:calc(11svh + 182px + var(--gw));width:84vw}
+  .hero-m .gl-card.gc-trip{width:auto;max-width:none;left:16px;right:16px;top:calc(11svh + 232px + var(--gw));bottom:auto;padding:12px;transform:translateY(8px)}
+  .gc-ph{width:64px;height:80px}
+}
+.gs-st{pointer-events:none}.gs-st::after{display:none}
+
 </style>
 </head>
 <body>
@@ -799,8 +866,8 @@ var TOGETHER_FROM='2024-12-22',MET='2024-10-13';
 var MONTH_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var COUNTRY_EN={'韩国':'Korea','法国':'France','冰岛':'Iceland','葡萄牙':'Portugal','西班牙':'Spain','瑞士':'Switzerland','泰国':'Thailand','摩洛哥':'Morocco','英国':'United Kingdom','意大利':'Italy','梵蒂冈':'Vatican City','希腊':'Greece','马来西亚':'Malaysia','中国':'China','新加坡':'Singapore','俄罗斯':'Russia','印度尼西亚':'Indonesia'};
 // covers: scenery first, or people small in the frame; never selfies or two big faces. 'MAP' = use the route map as the hero.
-var LEAD={'2019-korea':'korea/02','2024-paris-winter':'paris24/03','2024-iceland':'iceland/02','2024-iberia-may':'iberia24/01','2024-switzerland':'switzerland/01','2024-thailand':'thailand/04','2024-cornwall-zx':'cornwall-zx/03','2024-highlands-zx':'highlands/07','2024-scotland-dec-zx':'scotland-dec/03','2024-morocco':'morocco/07','2025-wales':'wales/06','2025-france':'MAP','2025-italy-spring':'vatican/02','2025-greece':'greece/04','2025-spain-summer':'spain/12','2025-car-day':'birmingham/06','2024-uk-loop':'ukloop24/04','2024-cornwall':'cornwall24/04','2025-family-uk':'london-dec25/07','2026-singapore-zx':'singapore/01','2026-sea-honeymoon':'honeymoon/14','2026-moscow-zx':'moscow/05','2026-jakarta-zx':'jakarta/02','edinburgh-again':'edinburgh/04','uk-years':'london/06','china':'qinhuangdao/04'};
-var SECOND={'2019-korea':'korea/03','2024-paris-winter':'paris24/04','2024-iceland':'iceland/04','2024-iberia-may':'iberia24/08','2024-switzerland':'switzerland/05','2024-thailand':'thailand/05','2024-cornwall-zx':'cornwall-zx/06','2024-highlands-zx':'highlands/05','2024-scotland-dec-zx':'scotland-dec/06','2024-morocco':'morocco/02','2025-wales':'wales2/02','2025-italy-spring':'italy/02','2025-greece':'greece/06','2025-spain-summer':'spain/06','2025-car-day':'birmingham/03','2025-family-uk':'london-dec25/03','2026-singapore-zx':'singapore/02','2026-sea-honeymoon':'honeymoon/09','2026-moscow-zx':'moscow/02','2026-jakarta-zx':'jakarta/03'};
+var LEAD={'2026-korea':'korea/02','2024-paris-winter':'paris24/03','2024-iceland':'iceland/02','2024-iberia-may':'iberia24/01','2024-switzerland':'switzerland/01','2024-thailand':'thailand/04','2024-cornwall-zx':'cornwall-zx/03','2024-highlands-zx':'highlands/07','2024-scotland-dec-zx':'scotland-dec/03','2024-morocco':'morocco/07','2025-wales':'wales/06','2025-france':'france/06','2025-italy-spring':'vatican/02','2025-greece':'greece/04','2025-spain-summer':'spain/12','2025-car-day':'birmingham/06','2024-uk-loop':'ukloop24/04','2024-cornwall':'cornwall24/04','2025-family-uk':'london-dec25/07','2026-singapore-zx':'singapore/01','2026-sea-honeymoon':'honeymoon/14','2026-moscow-zx':'moscow/05','2026-jakarta-zx':'jakarta/02','edinburgh-again':'edinburgh/04','uk-years':'london/06','china':'qinhuangdao/04'};
+var SECOND={'2026-korea':'korea/03','2024-paris-winter':'paris24/04','2024-iceland':'iceland/04','2024-iberia-may':'iberia24/08','2024-switzerland':'switzerland/05','2024-thailand':'thailand/05','2024-cornwall-zx':'cornwall-zx/06','2024-highlands-zx':'highlands/05','2024-scotland-dec-zx':'scotland-dec/06','2024-morocco':'morocco/02','2025-wales':'wales2/02','2025-italy-spring':'italy/02','2025-greece':'greece/06','2025-spain-summer':'spain/06','2025-car-day':'birmingham/03','2025-family-uk':'london-dec25/03','2026-singapore-zx':'singapore/02','2026-sea-honeymoon':'honeymoon/09','2026-moscow-zx':'moscow/02','2026-jakarta-zx':'jakarta/03'};
 
 /* ---------- icons ---------- */
 var IC={
@@ -853,7 +920,7 @@ function build(tripsD,placesD,storyD){
  var OPT=(storyD&&storyD.options)||{};var tl=tripsD.trips.filter(function(t){return t.id!=='edinburgh-again'&&!(OPT.cornwall_split===false&&t.id==='2024-cornwall-zx')}); // v9.2f: the standalone Edinburgh entry is gone; Edinburgh stays inside its trips
  TRIPS=tl.map(function(t){
   var s=ST[t.id]||{};var bf=(BRIEF&&BRIEF[t.id==='china'?'china-diary':t.id])||{};var o={who:t.who||s.who||'',id:t.id==='china'?'china-diary':t.id,title:bf.title||(t.id==='china'?'国内日记':t.title),start:t.start,end:t.end,nights:t.nights,kind:t.kind,year:t.year,countries:t.countries||[],summary:bf.line||s.summary||'',highlights:s.highlights||[],transport:s.transport||[]};
-  o.photos=[];(t.places||[]).forEach(function(pid){var p=PL[pid];if(!p)return;(p.photos||[]).forEach(function(ph){if(ph.hidden)return;o.photos.push({src:'public/'+ph.src,bg:ph.bg||'#1b1814',w:ph.w,h:ph.h,fy:ph.focusY,place:p.name,pid:pid,key:phKey(ph.src),country:p.country,province:p.province})})});
+  o.photos=[];(t.places||[]).forEach(function(pid){var p=PL[pid];if(!p)return;(p.photos||[]).forEach(function(ph){if(ph.hidden)return;o.photos.push({src:'public/'+ph.src,bg:ph.bg||'#1b1814',w:ph.w,h:ph.h,fy:ph.focusY,place:ph.place||p.name,pid:pid,key:phKey(ph.src),country:ph.country||p.country,province:p.province})})});
   var lk=LEAD[o.id]||LEAD[t.id];o.cover=lk==='MAP'?null:((lk&&o.photos.filter(function(p){return p.key===lk})[0])||o.photos[0]||null);o.portrait=!!(o.cover&&o.cover.h>o.cover.w);
   var sk=SECOND[o.id]||SECOND[t.id];o.second=(sk&&o.photos.filter(function(p){return p.key===sk})[0])||o.photos.filter(function(p){return p!==o.cover})[0]||null;
   if(t.id==='china'){o.stops=[{city:'中国',country:'中国',lat:35,lng:104,area:true,days:[]}];} // 国内日记: no cities, no route; the country is lit
@@ -867,18 +934,18 @@ function build(tripsD,placesD,storyD){
   o.dayCount=(t.kind==='trip'&&t.start&&t.end)?daysIncl(t.start,t.end):0;
   var km=0;for(var i=1;i<o.stops.length;i++)km+=hav([o.stops[i-1].lng,o.stops[i-1].lat],[o.stops[i].lng,o.stops[i].lat]);
   o.km=t.id==='china'?0:km;
-  var cs={};o.stops.forEach(function(x){if(!x.area)cs[x.city]=1});o.cityCount=Object.keys(cs).length;
+  var cs={};o.stops.forEach(function(x){if(!x.area)cs[x.city]=1});o.cityCount=Object.keys(cs).length;o.legs=t.legs||null;
   return o});
  TRIPS.forEach(function(t){BYID[t.id]=t});
  // photos of the removed Edinburgh entry: which visit each is from is not known, so they stay on the UK country page
- LOOSE=[];tripsD.trips.filter(function(t){return t.id==='edinburgh-again'}).forEach(function(t){(t.places||[]).forEach(function(pid){var p=PL[pid];if(!p)return;(p.photos||[]).forEach(function(ph){LOOSE.push({src:'public/'+ph.src,bg:ph.bg||'#1b1814',w:ph.w,h:ph.h,fy:ph.focusY,place:p.name,pid:pid,key:phKey(ph.src),country:p.country||'英国',province:p.province})})})});
+ LOOSE=[];var usedPl={};tripsD.trips.forEach(function(t){(t.places||[]).forEach(function(p){usedPl[p]=1})});[{places:Object.keys(PL).filter(function(k){return !usedPl[k]&&PL[k].scope!=='china'})}].forEach(function(t){(t.places||[]).forEach(function(pid){var p=PL[pid];if(!p)return;(p.photos||[]).forEach(function(ph){LOOSE.push({src:'public/'+ph.src,bg:ph.bg||'#1b1814',w:ph.w,h:ph.h,fy:ph.focusY,place:p.name,pid:pid,key:phKey(ph.src),country:p.country||'英国',province:p.province})})})});
  ALLPH_X=LOOSE;
  // order of trips for prev/next: real trips by date, then edinburgh, uk, china
  var real=TRIPS.filter(function(t){return t.kind==='trip'}).sort(function(a,b){return a.start<b.start?-1:1});
  SEQ=real.concat(['uk-years','china-diary'].map(function(i){return BYID[i]}).filter(Boolean));
  ALLPH=[];TRIPS.forEach(function(t){t.photos.forEach(function(p){ALLPH.push(p)})});
 }
-var SEQ=[],EXTRA={},CAPS=null,BRIEF={"2024-paris-winter": {"line": "铁塔、凯旋门、卢浮宫，冬天的巴黎也好看"}, "2024-iceland": {"line": "冰岛的风景，像梦里见过一样", "title": "世界的终点冰岛"}, "2024-iberia-may": {"line": "巴塞罗那到里斯本，五月的太阳刚刚好"}, "2024-switzerland": {"line": "瑞士随手一拍，都是明信片"}, "2024-thailand": {"line": "曼谷到吉隆坡，一路热一路吃"}, "2024-uk-loop": {"line": "跟妹妹把英国绕了一大圈"}, "2024-cornwall-zx": {"line": "康沃尔的海，蓝得不像在英国", "title": "康沃尔的海（兴兴）"}, "2024-cornwall": {"line": "九月的康沃尔，海风吹着刚好"}, "2024-highlands-zx": {"line": "高地随便停一下，都是风景"}, "2024-scotland-dec-zx": {"line": "十二月的苏格兰，冷，但很有过节的味道"}, "2024-morocco": {"line": "第一次一起旅行，风景很美，你更美"}, "2025-wales": {"line": "威尔士海边转了一圈，跟朋友疯玩的几天"}, "2025-france": {"line": "巴黎逛完又去迪士尼，玩到走不动"}, "2025-italy-spring": {"line": "从罗马到米兰，吵过一夜架"}, "2025-greece": {"line": "希腊的蓝和白，跟照片里一模一样"}, "2025-spain-summer": {"line": "特内里费晒够了太阳，又回了趟托萨小镇"}, "2025-car-day": {"line": "提车啦，和我们的气质很搭哦", "title": "伯明翰提车日记"}, "2025-family-uk": {"line": "爸妈和弟弟来英国，开心了整整一个月"}, "2019-korea": {"line": "跟闺蜜在首尔逛吃了几天"}, "2026-singapore-zx": {"line": "出差顺便，看了看新加坡", "title": "新加坡展会之行"}, "2026-sea-honeymoon": {"line": "蜜月去了东南亚，以后还要再去！"}, "2026-moscow-zx": {"line": "六月的莫斯科，来去匆匆"}, "2026-jakarta-zx": {"line": "雅加达出差，又堵又闷", "title": "雅加达展会之行"}, "uk-years": {"line": "在英国那几年，去得最多的是伦敦"}, "china-diary": {"line": "慢慢走遍大好河山", "title": "国内日记"}},LOOSE=[],ALLPH_X=[]; // BRIEF is baked in by build.py from data/trips-brief.kimi.json (approved copy); USE_BRIEF=0 python3 build.py leaves it out
+var SEQ=[],EXTRA={},CAPS=null,BRIEF={"2024-paris-winter": {"line": "铁塔、凯旋门、卢浮宫，冬天的巴黎也好看"}, "2024-iceland": {"line": "冰岛的风景，像梦里见过一样", "title": "世界的终点冰岛"}, "2024-iberia-may": {"line": "巴塞罗那到里斯本，五月的太阳刚刚好"}, "2024-switzerland": {"line": "瑞士随手一拍，都是明信片"}, "2024-thailand": {"line": "曼谷到吉隆坡，一路热一路吃"}, "2024-uk-loop": {"line": "跟妹妹把英国绕了一大圈"}, "2024-cornwall-zx": {"line": "康沃尔的海，蓝得不像在英国", "title": "康沃尔的海（兴兴）"}, "2024-cornwall": {"line": "九月的康沃尔，海风吹着刚好"}, "2024-highlands-zx": {"line": "高地随便停一下，都是风景"}, "2024-scotland-dec-zx": {"line": "十二月的苏格兰，冷，但很有过节的味道"}, "2024-morocco": {"line": "第一次一起旅行，风景很美，你更美"}, "2025-wales": {"line": "威尔士转了一圈，跟朋友们的第一次旅行"}, "2025-france": {"line": "巴黎逛完又去迪士尼，玩到走不动"}, "2025-italy-spring": {"line": "从罗马到米兰，吵过一夜架"}, "2025-greece": {"line": "希腊的蓝和白，跟照片里一模一样"}, "2025-spain-summer": {"line": "特内里费晒够了太阳，又回了趟托萨小镇"}, "2025-car-day": {"line": "提车啦，和我们的气质很搭哦", "title": "伯明翰提车日记"}, "2025-family-uk": {"line": "爸妈和弟弟来英国，开心了整整一个月"}, "2026-korea": {"line": "跟闺蜜在首尔逛吃了几天"}, "2026-singapore-zx": {"line": "出差顺便，看了看新加坡", "title": "新加坡展会之行"}, "2026-sea-honeymoon": {"line": "蜜月去了东南亚，以后还要再去！"}, "2026-moscow-zx": {"line": "六月的莫斯科，来去匆匆"}, "2026-jakarta-zx": {"line": "雅加达出差，又堵又闷", "title": "雅加达展会之行"}, "uk-years": {"line": "在英国那几年，去得最多的是伦敦"}, "china-diary": {"line": "慢慢走遍大好河山", "title": "国内日记"}},LOOSE=[],ALLPH_X=[]; // BRIEF is baked in by build.py from data/trips-brief.kimi.json (approved copy); USE_BRIEF=0 python3 build.py leaves it out
 function stats(){
  var cc={},cities={},trips=0,km=0,days=0;
  TRIPS.forEach(function(t){t.countries.forEach(function(c){cc[c]=1});t.stops.forEach(function(s){cities[s.city]=1});if(t.kind==='trip'){trips++;days+=t.dayCount}km+=t.km;
@@ -984,7 +1051,7 @@ FlatMap.prototype.S=function(ll){var p=this.proj(ll),T=this.T;return [T.k*p[0]+T
 FlatMap.prototype.applyT=function(force){if(this.moving&&!force)this.moveLand();else this.paintLand();this.renderOver()};
 /* routes: opt.routes = [{pts:[[lng,lat]..], cls:'tg'|'solo', id}] ; stops: opt.stops [{city,lat,lng,cls}] */
 FlatMap.prototype.setRoutes=function(routes,stops){this.opt.routes=routes;this.opt.stops=stops;this.segP=routes.map(function(){return 0});this.gRoute.selectAll('*').remove();this.gDots.selectAll('*').remove();this.gLbl.selectAll('*').remove();this.lblPos={};
- var self=this;this.routeEls=routes.map(function(r){var g={ghost:self.opt.ghost?self.gRoute.append('path').attr('class','mp-route ghost'):null,line:self.gRoute.append('path').attr('class','mp-route '+(r.cls||'tg')).attr('pathLength',1).style('stroke-dasharray','1 1').style('stroke-dashoffset',1)};return g});
+ var self=this;this.routeEls=routes.map(function(r){var g={ghost:self.opt.ghost?self.gRoute.append('path').attr('class','mp-route ghost'):null,line:/\bleg\b/.test(r.cls)?self.gRoute.append('path').attr('class','mp-route '+r.cls):self.gRoute.append('path').attr('class','mp-route '+(r.cls||'tg')).attr('pathLength',1).style('stroke-dasharray','1 1').style('stroke-dashoffset',1)};return g});
  // unique dots by city
  var u={};this.dots=[];(stops||[]).forEach(function(s,i){var key=s.city;if(u[key]){u[key].idx.push(i);return}var d={city:s.city,ll:[s.lng,s.lat],idx:[i],cls:s.cls||'',lbl:s.label!==false};u[key]=d;self.dots.push(d)});
  this.dots.forEach(function(d){d.c=self.gDots.append('circle').attr('r',3.2).attr('class','mp-dot '+d.cls);if(d.lbl)d.t=self.gLbl.append('text').attr('class','mp-lbl').text(d.city)});
@@ -998,7 +1065,7 @@ FlatMap.prototype.routeD=function(r){var self=this,s=r.pts.map(function(p){retur
  return d};
 FlatMap.prototype.renderOver=function(){
  if(!this.ready)return;var self=this,W=this.W,H=this.H,o=this.opt;
- (o.routes||[]).forEach(function(r,i){var e=self.routeEls&&self.routeEls[i];if(!e)return;var d=self.routeD(r);e.line.attr('d',d).style('stroke-dashoffset',1-self.segP[i]);if(e.ghost)e.ghost.attr('d',d)});
+ (o.routes||[]).forEach(function(r,i){var e=self.routeEls&&self.routeEls[i];if(!e)return;var d=self.routeD(r);e.line.attr('d',d);if(!/\bleg\b/.test(r.cls))e.line.style('stroke-dashoffset',1-self.segP[i]);if(e.ghost)e.ghost.attr('d',d)});
  var obst=[];var boxes=[];var lineB=[];
  (o.routes||[]).forEach(function(r){var s=r.pts.map(function(p){return self.S(p)});for(var i=1;i<s.length;i++){var a=s[i-1],b=s[i],dx=b[0]-a[0],dy=b[1]-a[1],L=Math.sqrt(dx*dx+dy*dy);if(L<0.5)continue;var off=Math.min(L*(r.bend==null?0.14:r.bend),60),mx=(a[0]+b[0])/2-dy/L*off,my=(a[1]+b[1])/2+dx/L*off,n=Math.max(4,Math.ceil(L/9));
   for(var j=0;j<=n;j++){var t=j/n,u=1-t,x=u*u*a[0]+2*u*t*mx+t*t*b[0],y=u*u*a[1]+2*u*t*my+t*t*b[1];if(Math.hypot(x-a[0],y-a[1])<7||Math.hypot(x-b[0],y-b[1])<7)continue;lineB.push([x-2.5,y-2.5,x+2.5,y+2.5])}
@@ -1062,10 +1129,12 @@ var OV=[
  {y:'Summer 2024',yr:'2024',t:'英国的夏天',p:'嘉怡陪妹妹从伦敦绕到爱丁堡；兴哥去了康沃尔和苏格兰高地。',ids:['2024-uk-loop','2024-cornwall-zx','2024-cornwall','2024-highlands-zx']},
  {y:'December 2024',yr:'2024',t:'两条线，在阿加迪尔汇合',p:'十月认识，十二月在阿加迪尔第一次见面。',ids:['2024-scotland-dec-zx','2024-morocco'],pad:15,turn:true,bridge:true},
  {y:'2025',yr:'2025',t:'两个人的一年',p:'威尔士、巴黎、意大利、希腊、特内里费。七月提了车，年底爸妈和弟弟来了英国。',ids:['2025-wales','2025-france','2025-italy-spring','2025-greece','2025-spain-summer','2025-car-day','2025-family-uk']},
- {y:'2026',yr:'2026',t:'回到亚洲',p:'首尔，新加坡，蜜月去了曼谷和吉隆坡，还有莫斯科和雅加达。',ids:['2019-korea','2026-singapore-zx','2026-sea-honeymoon','2026-moscow-zx','2026-jakarta-zx']},
+ {y:'2026',yr:'2026',t:'回到亚洲',p:'首尔，新加坡，蜜月去了曼谷和吉隆坡，还有莫斯科和雅加达。',ids:['2026-korea','2026-singapore-zx','2026-sea-honeymoon','2026-moscow-zx','2026-jakarta-zx']},
  {y:'So far',yr:'',t:'到现在',p:'',ids:[],all:true}
 ];
-var CHAP={'2024':'巴黎、冰岛、伊比利亚、瑞士、曼谷。十月认识，年底在摩洛哥见面。','2025':'两个人的第一个整年。南欧走了一大圈，夏天多了一辆车，年底爸妈和弟弟来了英国。','2026':'一月首尔。六月出差、蜜月、又出差。八月雅加达。'};
+// 2025 copy written by Jayzen; used exactly as written
+var CHAP_TAG={'2025':'6 段旅行 · 我和你'};
+var CHAP={'2024':'巴黎、冰岛、伊比利亚、瑞士、曼谷。十月认识，年底在摩洛哥见面。','2025':'两个人的第一个整年。欧洲走了一大圈，我走过你的路，多了一辆车，一家店，年底爸妈和弟弟来了英国，超级幸福的一年。','2026':'一月首尔。六月出差、蜜月、又出差。八月雅加达。'};
 var homeMaps=[],ovMap=null,homeIO=[],globeCtl=null,routeGen=0;
 function chapCount(list){var c={};list.forEach(function(t){c[t.lc]=(c[t.lc]||0)+1});var s=list.length+' 段旅行';if(c.tg===list.length)s+=' · 两个人';return s}
 var HERO_TILES=['wales2/04','highlands/04','highlands/02','cornwall-zx/03','vatican/02','cornwall24/01','highlands/06','wales2/03','morocco/07','highlands/05','honeymoon/09','scotland-dec/06'];
@@ -1077,7 +1146,7 @@ function renderHome(view){
  var MOS=HERO_TILES.map(function(k){return ALLPH.filter(function(p){return p.key===k})[0]}).filter(Boolean);
  var nc=isMob()?3:6,cols=[];for(var c=0;c<nc;c++)cols.push(MOS.filter(function(p,k){return k%nc===c}).slice(0,2));
  h+='<section class="hero hero-m" id="globe"><div class="mosaic" aria-hidden="true">'+cols.map(function(col,c){return '<div class="mc mc'+c+'">'+col.map(function(p){return img(p,{eager:true,alt:'',sizes:isMob()?'34vw':'17vw'})}).join('')+'</div>'}).join('')+'</div>'+
-  '<div class="hglobe"><div class="gl-canvas" id="gl"></div></div>'+
+  '<div class="hglobe"><div class="gl-canvas" id="gl"></div></div><div class="gscrub" id="gscrub"></div>'+
   '<div class="cap"><div class="eyebrow latin">'+yr+'</div><h1>'+chars('旅行日志',.45)+'</h1><div class="en latin">Somewhere between here and everywhere</div></div>'+
   '<div class="gl-card" id="glcard" aria-live="polite"></div>'+
   '<div class="ghint">拖动地球，点一条线</div><a class="cue" href="#intro" data-scroll="intro">往下<i></i></a></section>';
@@ -1087,13 +1156,13 @@ function renderHome(view){
   '<div class="ov-stage"><div class="ov-sticky"><div class="ov-map" id="ovmap"></div><div class="ov-year latin" id="ovyear">2024</div></div><div class="ov-steps">'+
   OV.map(function(s,i){var trips=s.ids.map(function(id){return BYID[id]}).filter(Boolean);
    var p=s.all?('一共 '+st.countries+' 个国家，'+st.cities+' 座城市，'+st.trips+' 段旅行。下一条线，还没开始画。'):s.p;
-   return '<div class="ov-step" data-i="'+i+'"><div class="ov-card"><div class="y latin">'+s.y+'</div><h3>'+esc(s.t)+'</h3><p>'+esc(p)+'</p>'+(trips.length?'<div class="trips">'+trips.map(function(t){return '<a href="#/trip/'+t.id+'"><span>'+esc(t.title)+'</span><small>'+fmtRange(t.start,t.end).replace(/^\d{4}\./,'')+'</small></a>'}).join('')+'</div>':'')+'</div></div>'}).join('')+
+   return '<div class="ov-step" data-i="'+i+'"><div class="ov-card"><div class="y latin">'+s.y+'</div><h3>'+esc(s.t)+'</h3><p>'+esc(p)+'</p>'+(trips.length?'<div class="trips">'+trips.map(function(t){return '<a href="#/trip/'+t.id+'">'+thumbs(t,'ovth')+'<span>'+esc(t.title)+'</span><small>'+fmtRange(t.start,t.end).replace(/^\d{4}\./,'')+'</small></a>'}).join('')+'</div>':'')+'</div></div>'}).join('')+
   '</div></div></section>';
  // chapters
  var real=SEQ.filter(function(t){return t.kind==='trip'}),years={};real.forEach(function(t){(years[t.year]=years[t.year]||[]).push(t)});
  var n=0,lay=['l-a','l-c','l-b','l-d'],li=0,mapFlip=false,metDone=false;
  Object.keys(years).sort().forEach(function(y){
-  h+='<section class="chap" id="y'+y+'"><div class="wrap"><div class="chap-h"><h2 class="yr latin rv">'+y+'</h2><div class="txt rv d2"><div class="c">'+chapCount(years[y])+'</div>'+(CHAP[y]?'<p>'+esc(CHAP[y])+'</p>':'')+'</div></div>';
+  h+='<section class="chap" id="y'+y+'"><div class="wrap"><div class="chap-h"><h2 class="yr latin rv">'+y+'</h2><div class="txt rv d2"><div class="c">'+(CHAP_TAG[y]||chapCount(years[y]))+'</div>'+(CHAP[y]?'<p>'+esc(CHAP[y])+'</p>':'')+'</div></div>';
   var list=years[y],k=0;
   while(k<list.length){var t=list[k];
    if(!metDone&&t.start>=MET){metDone=true;h+=metHTML()}
@@ -1144,7 +1213,7 @@ function countryIndex(){
 function yearsTxt(g){var y=Object.keys(g.years).sort();if(!y.length)return '';return y.length>2?y[0]+' — '+y[y.length-1]:y.join(' · ')}
 function archiveHTML(){var X=countryIndex();
  return '<section class="arch" id="archive"><div class="wrap"><div class="sec-k rv">按国家看 · Countries</div><h2 class="sec-t rv d1">'+X.order.length+' 个国家，'+ALLPH.length+' 张照片</h2><div class="ctiles">'+
-  X.order.map(function(c,i){var g=X.by[c],ph=null;g.trips.forEach(function(t){if(!ph&&t.cover&&(t.cover.country||'中国')===c)ph=t.cover});ph=ph||g.ph[0];
+  X.order.map(function(c,i){var g=X.by[c],ph=null;g.trips.forEach(function(t){if(!ph&&t.cover&&(t.cover.country||'中国')===c)ph=t.cover});ph=ph||g.ph.filter(function(p){return p.w>p.h})[0]||g.ph[0];g.trips.forEach(function(t){if(!ph&&t&&t.cover)ph=t.cover});
    return '<a class="ctile rv'+(i%3?' d'+(i%3):'')+'" href="#/country/'+encodeURIComponent(c)+'">'+(ph?img(ph,{alt:c,sizes:'(max-width:860px) 50vw, 25vw'}):'<div class="ph cmap" data-cmap="'+esc(c)+'"></div>')+
     '<div class="ci"><b>'+esc(c)+'</b><small class="latin">'+(COUNTRY_EN[c]||'')+'</small><span>'+g.trips.length+' 段 · '+esc(yearsTxt(g))+'</span></div></a>'}).join('')+
   '</div></div></section>'}
@@ -1170,7 +1239,7 @@ function tripCard(t,n,L){
 // the list's route view, in the old day page's manner: a big gold numeral, a small-caps row, thin rules, city chips that steer the map
 function rboxHTML(t){var seen={},chips=[];t.stops.forEach(function(s,i){if(s.area||seen[s.city])return;seen[s.city]=1;chips.push('<button type="button" class="chip" data-si="'+i+'">'+esc(s.city)+'</button>')});
  var n=t.nights||t.dayCount;return '<div class="rbox"><div class="rinfo">'+(n?'<div class="dn latin">'+p2(n)+'</div><div class="dl">'+(t.nights?'nights':'days')+'</div>':'')+'<div class="dd">'+fmtRange(t.start,t.end)+'</div>'+(chips.length?'<div class="chips">'+chips.join('')+'</div>':'')+'</div>'+
- (t.cover?'<a class="rthumb" href="#/trip/'+t.id+'" tabindex="-1">'+img(t.cover,{alt:'',sizes:'160px'})+'</a>':'')+'</div>'}
+ '<a class="rthumb" href="#/trip/'+t.id+'" tabindex="-1">'+thumbs(t,'rth')+'</a>'+'</div>'}
 function footHTML(){return '<div class="foot"><div>旅行日志 · 嘉怡和政兴</div><div>背景音乐：Erik Satie《Gymnopédie No. 1》，Robin Alciatore 演奏；Chopin《降 E 大调夜曲 Op. 9 No. 2》，Frank Lévy 演奏。均为公有领域录音，来自 <a href="https://musopen.org/" target="_blank" rel="noopener">Musopen</a> / <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>。</div></div>'}
 
 function setupHome(view){
@@ -1201,6 +1270,12 @@ function cursorLight(e){var el=this,r=el._r;if(!r){r=el._r=el.getBoundingClientR
 function countUp(el,to,dur){if(RM){el.textContent=fmtNum(to);return}var t0=performance.now();function f(now){var t=Math.min(1,(now-t0)/dur),v=to*(1-Math.pow(1-t,4));el.textContent=fmtNum(v);if(t<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
 function reveal(root){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.01});$$('.rv',root).forEach(function(el){io.observe(el)});homeIO.push(io)}
 function tripRoutes(t,cls){var segs=[];for(var i=1;i<t.stops.length;i++){segs.push({pts:[[t.stops[i-1].lng,t.stops[i-1].lat],[t.stops[i].lng,t.stops[i].lat]],cls:cls})}return segs}
+// legs getting there and home (e.g. Abu Dhabi → Bangkok): faint dashes, endpoints marked 出发 / 中转 / 回家, not counted as places
+function legRoutes(t){return (t.legs||[]).map(function(l){return {pts:l.map(function(p){return [p.lng,p.lat]}),cls:'leg',bend:.1}})}
+function legStops(t){var o=[],own={},by={};t.stops.forEach(function(s){own[s.city]=1});(t.legs||[]).forEach(function(l){l.forEach(function(p){if(own[p.city])return;var e=by[p.city];if(!e){e=by[p.city]={city:p.city,lat:p.lat,lng:p.lng,cls:'leg',roles:[]};o.push(e)}if(p.role&&e.roles.indexOf(p.role)<0)e.roles.push(p.role)})});o.forEach(function(e){if(e.roles.length)e.city+=' · '+e.roles.join('、')});return o}
+// the same three small photos everywhere on home: cover, the chosen second shot, then the next landscape one (480 variants, lazy)
+function smallSet(t){var o=[];function add(p){if(p&&o.indexOf(p)<0&&o.length<3)o.push(p)}add(t.cover);add(t.second);(t.photos||[]).forEach(function(p){if(p.w>p.h)add(p)});(t.photos||[]).forEach(add);return o}
+function thumbs(t,cls){var s=smallSet(t);return s.length?'<span class="'+cls+'">'+s.map(function(p){return img(p,{alt:'',sizes:'120px'})}).join('')+'</span>':''}
 function tripPts(t){return t.stops.map(function(s){return [s.lng,s.lat]})}
 function makeTripMap(el){
  var t=BYID[el.getAttribute('data-id')];if(!t||!t.stops.length)return;
@@ -1209,18 +1284,20 @@ function makeTripMap(el){
  var hl={};t.countries.forEach(function(c){hl[c]=1});
  el._pend=1;loadDetail().then(function(){el._pend=0;if(!el._want||!el.isConnected)return;
   var m=new FlatMap(el,{base:base,highlight:hl,kmax:30,lblSize:art||big?15:12,ctyAreaMin:art?2600:2400,seaK:art?1.0:1.6,dotR:art||big?4:3,pulse:false,ghost:art,ctxCities:false});
-  var rs=tripRoutes(t,t.lc||'tg');if(t.id==='2024-cornwall'&&BYID['2024-cornwall-zx'])rs=rs.concat(tripRoutes(BYID['2024-cornwall-zx'],'zx ghost2'));
-  m.setRoutes(rs,t.stops.filter(function(s){return !s.area}).map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}));
+  var rs=legRoutes(t).concat(tripRoutes(t,t.lc||'tg'));if(t.id==='2024-cornwall'&&BYID['2024-cornwall-zx'])rs=rs.concat(tripRoutes(BYID['2024-cornwall-zx'],'zx ghost2'));
+  m.setRoutes(rs,t.stops.filter(function(s){return !s.area}).map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t)));
   m.trip=t;m.art=art;m.wide=base;m.view(art?pts:[base[0],base[1]],art?{pad:.2,minSpan:5,instant:true}:{pad:0,instant:true});
   if(!art){m.opt.lblSet={}}
   el._map=m;homeMaps.push(m);
-  if(el.closest('.trip.act'))mapOn(m);
+  m._el=el;if(el.closest('.trip.act'))mapOnIdle(m);
  })}
 function dropTripMap(el){var m=el._map;el._map=null;var i=homeMaps.indexOf(m);if(i>=0)homeMaps.splice(i,1);m.destroy()}
 var actTrip=null;
-function activateTrip(tr){if(actTrip===tr)return;if(actTrip){actTrip.classList.remove('act');$$('[data-map]',actTrip).forEach(function(e){if(e._map)mapOff(e._map)})}actTrip=tr;tr.classList.add('act');$$('[data-map]',tr).forEach(function(e){if(e._map)mapOn(e._map)})}
+// a route map zooms in and draws its line only once the page stops scrolling: animating big canvases mid-scroll cost ~6fps on desktop
+var mapIdleT=0;function mapOnIdle(m){if(!document.documentElement.classList.contains('scr')){mapOn(m);return}m._pendOn=1;clearTimeout(mapIdleT);mapIdleT=setTimeout(function chk(){if(document.documentElement.classList.contains('scr')){mapIdleT=setTimeout(chk,120);return}homeMaps.forEach(function(x){if(x._pendOn){x._pendOn=0;if(actTrip&&x._el&&actTrip.contains(x._el))mapOn(x)}})},180)}
+function activateTrip(tr){if(actTrip===tr)return;if(actTrip){actTrip.classList.remove('act');$$('[data-map]',actTrip).forEach(function(e){if(e._map){e._map._pendOn=0;mapOff(e._map)}})}actTrip=tr;tr.classList.add('act');$$('[data-map]',tr).forEach(function(e){if(e._map)mapOnIdle(e._map)})}
 function mapOn(m){var t=m.trip,pts=tripPts(t);m.opt.lblSet=null;m.view(pts,{pad:m.art?.2:.24,minSpan:(t.stops[0]&&t.stops[0].area)?9:t.cityCount<2?4:(m.art?5:1.6),dur:1300});var n=m.segP.length;for(var i=0;i<n;i++)m.animateSeg(i,1,Math.max(450,900/n),700+i*Math.max(380,800/n));m.setActive(-1)}
-function mapOff(m){if(m.art)return;m.opt.lblSet={};m.view([m.wide[0],m.wide[1]],{pad:0,dur:900});for(var i=0;i<m.segP.length;i++)m.animateSeg(i,0,400,0)}
+function mapOff(m){if(m.art)return;var q=document.documentElement.classList.contains('scr');m.opt.lblSet={};m.view([m.wide[0],m.wide[1]],{pad:0,dur:900,instant:q});for(var i=0;i<m.segP.length;i++)m.animateSeg(i,0,q?0:400,0)}
 
 function setupOverview(view){
  var el=$('#ovmap',view);if(!el)return;
@@ -1232,7 +1309,7 @@ function setupOverview(view){
  function build(){ovMap=new FlatMap(el,{base:base,useWorld:true,kmax:12,lblSize:13,ctyAreaMin:5200,seaK:2.2,seaLabels:!isMob(),dotR:3,progress:false,pulse:false,countryLabels:true});
   ovMap.setRoutes(routes,stops);ovMap.opt.dotSet={};ovMap.opt.lblSet={};ovMap.view(all,{pad:padOv(),instant:true});ovStep(0,true)}
  build();loadDetail().then(function(){if(ovMap){ovMap.drawLand();ovMap.applyT()}});
- var cur=-1;
+ var cur=-1;el.__ov=function(){return {cur:cur,T:ovMap&&ovMap.T,moving:ovMap&&ovMap.moving}}; // test hook
  function padOv(){return isMob()?[.13,.07,.42,.07]:[.2,.07,.16,.4]}
  function ovStep(i,instant){if(i===cur)return;cur=i;var s=OV[i];$('#ovyear').textContent=s.yr||'';
   $$('.ov-step',view).forEach(function(x){x.classList.toggle('on',+x.getAttribute('data-i')===i)});
@@ -1240,8 +1317,14 @@ function setupOverview(view){
   var pts=[];s.ids.forEach(function(id){pts=pts.concat(tripPts(BYID[id]))});if(s.all||!pts.length)pts=all;
   ovMap.view(pts,{pad:padOv(),minSpan:s.pad||0,dur:instant?0:1600});
   var k=0;routes.forEach(function(r,j){var target=r.step<=i?1:0;if(ovMap.segP[j]===target)return;if(target&&r.step===i){ovMap.animateSeg(j,1,1100,600+k*380);k++}else ovMap.animateSeg(j,target,instant?0:500,0)})}
- var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ovStep(+e.target.getAttribute('data-i'))})},{rootMargin:'-45% 0px -45% 0px'});
- $$('.ov-step',view).forEach(function(s){io.observe(s)});homeIO.push(io);
+ // the chapter is whichever step holds the middle of the screen (or the nearest one). The observer only reports band crossings, and a fling can jump a
+ // step over the band between two frames, so the step is also re-read once scrolling settles.
+ var stepsEl=$$('.ov-step',view),setT=0;
+ function pick(){if(!el.isConnected)return;var mid=innerHeight/2,best=-1,bd=1e9;stepsEl.forEach(function(s){var r=s.getBoundingClientRect();var d=r.top<=mid&&r.bottom>=mid?0:Math.min(Math.abs(r.top-mid),Math.abs(r.bottom-mid));if(d<bd){bd=d;best=+s.getAttribute('data-i')}});
+  var sec=el.closest('section')||el.parentNode,sr=sec.getBoundingClientRect();if(best>=0&&sr.bottom>0&&sr.top<innerHeight)ovStep(best)}
+ var io=new IntersectionObserver(function(){pick()},{rootMargin:'-45% 0px -45% 0px'});
+ stepsEl.forEach(function(s){io.observe(s)});homeIO.push(io);
+ function onS(){clearTimeout(setT);setT=setTimeout(pick,140)}window.addEventListener('scroll',onS,{passive:true});homeIO.push({disconnect:function(){window.removeEventListener('scroll',onS);clearTimeout(setT)}});
 }
 
 /* ---------- detail ---------- */
@@ -1301,15 +1384,15 @@ function setupDetailMap(t,view){
  p.then(function(){
   if(!document.body.contains(box))return;
   dMap=new FlatMap(box,{base:base,highlight:hl,china:isC,kmax:60,lblSize:13.5,ctyAreaMin:isC?900:1800,seaK:.9,dotR:area?0:3.6,progress:false,ghost:false,capH:34,ctxCities:false,ctxAvoid:function(W,H){return [W-56,0,W,136]}});
-  var routes=(isC||!!t.moments||area)?[]:tripRoutes(t,t.lc||'tg');
+  var routes=(isC||!!t.moments||area)?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg'));
   if(t.moments)routes=[{pts:pts,cls:'tg',bend:.1}];
-  dMap.setRoutes(routes,area?[]:t.stops.map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}));
+  dMap.setRoutes(routes,area?[]:t.stops.map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t)));
   var fitAll={pad:isMob()?[.14,.1,.16,.1]:[.12,.12,.16,.12],minSpan:isC?40:area?9:isE?7:Math.max(5,routeSpan(pts)*1.1)};
   dMap.view(pts,{pad:fitAll.pad,minSpan:fitAll.minSpan,instant:true});dMap.fitAll=fitAll;
   setTimeout(function(){if(!dMap)return;for(var i=0;i<dMap.segP.length;i++)dMap.animateSeg(i,1,800,250+i*420)},250);
-  var cap0=area?t.countries.join('、'):isE?'4 次':routeText(t).length+' 座城';$('#dmapcap').textContent=cap0;
+  var cap0=area?t.countries.join('、'):isE?'4 次':t.cityCount+' 座城';$('#dmapcap').textContent=cap0;
   $$('.zoom button',box).forEach(function(b){b.addEventListener('click',function(){var z=b.getAttribute('data-z');if(z==='in')dMap.zoomBy(1.7);else if(z==='out')dMap.zoomBy(1/1.7);else{dMap.setActive(-1);dMap.view(pts,{pad:fitAll.pad,minSpan:fitAll.minSpan,dur:900})}})});
-  var mc=$('#mapcover',view);if(mc){var m2=new FlatMap(mc,{base:grow(bboxOf(pts),isC?22:area?14:5,isC?38:area?20:18),highlight:hl,kmax:30,lblSize:15,ctyAreaMin:3000,seaK:1,dotR:area?0:4,pulse:false,ghost:false,ctxCities:false});m2.setRoutes(area?[]:tripRoutes(t,t.lc||'tg'),area?[]:t.stops.map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}));m2.view(pts,{pad:isMob()?[.18,.12,.42,.12]:[.14,.1,.36,.42],minSpan:isC?40:area?9:2,instant:true});for(var i=0;i<m2.segP.length;i++)m2.animateSeg(i,1,1000,500+i*700)}
+  var mc=$('#mapcover',view);if(mc){var m2=new FlatMap(mc,{base:grow(bboxOf(pts),isC?22:area?14:5,isC?38:area?20:18),highlight:hl,kmax:30,lblSize:15,ctyAreaMin:3000,seaK:1,dotR:area?0:4,pulse:false,ghost:false,ctxCities:false});m2.setRoutes(area?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg')),area?[]:t.stops.map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t)));m2.view(pts,{pad:isMob()?[.18,.12,.42,.12]:[.14,.1,.36,.42],minSpan:isC?40:area?9:2,instant:true});for(var i=0;i<m2.segP.length;i++)m2.animateSeg(i,1,1000,500+i*700)}
   $$('.nx [data-map]',view).forEach(function(el){makeTripMap(el)});
   // hovering or focusing a place lights it on the map; leaving returns to the whole route
   var on=-1,outT=0;
@@ -1373,7 +1456,7 @@ function setupGlobe(view){
  function start(){if(started)return;if(performance.now()-lastScr<500){setTimeout(function(){if(gen===routeGen&&host.isConnected&&isNear())start()},500);return}started=true;window.removeEventListener('scroll',noteScr);near.disconnect();host.classList.add('loading');
   var useGL=hasGL()&&!isMob(); /* phones get the light canvas globe: no 526KB library, no WebGL in the first screen */(useGL?loadGlobeLib():Promise.reject()).then(function(){if(gen!==routeGen||!host.isConnected)return;globeCtl=makeGlobeGL(host,view)})
    .catch(function(){if(gen!==routeGen||!host.isConnected)return;globeCtl=makeFlatGlobe(host,view)})
-   .then(function(){host.classList.remove('loading');if(globeCtl&&queued){globeCtl.pickTrip(queued);queued=null}})}
+   .then(function(){host.classList.remove('loading');if(globeCtl)setupScrub(view,globeCtl);if(globeCtl&&queued){globeCtl.pickTrip(queued);queued=null}})}
  var nearNow=false;function isNear(){return nearNow}
  var near=new IntersectionObserver(function(es){es.forEach(function(e){nearNow=e.isIntersecting;if(e.isIntersecting)start()})});
  homeIO.push(near);
@@ -1382,98 +1465,172 @@ function setupGlobe(view){
  if(document.readyState==='complete')setTimeout(arm,600);else window.addEventListener('load',function(){setTimeout(arm,600)},{once:true});
  $$('[data-gt]',view).forEach(function(b){b.addEventListener('click',function(){var id=b.getAttribute('data-gt');if(globeCtl)globeCtl.pickTrip(id);else{queued=id;start()}})});
 }
+// ---- shared globe targets: arcs, city dots and countries all resolve to trips from the same data ----
+function globeIndex(){var real=SEQ.filter(function(t){return t.kind==='trip'&&t.stops.length&&!(t.stops[0]&&t.stops[0].area)});
+ var segs=[],cities={},countries={};
+ real.forEach(function(t){for(var i=1;i<t.stops.length;i++){var a=t.stops[i-1],b=t.stops[i];if(a.lat===b.lat&&a.lng===b.lng)continue;segs.push({a:[a.lng,a.lat],b:[b.lng,b.lat],c:t.lc,id:t.id})}
+  t.stops.forEach(function(s){if(s.area)return;var k=s.city;if(!cities[k])cities[k]={city:k,lat:s.lat,lng:s.lng,c:t.lc,trips:[]};var C=cities[k];if(C.trips.indexOf(t)<0)C.trips.push(t);if(t.lc==='tg')C.c='tg'});
+  t.countries.forEach(function(c){(countries[c]=countries[c]||[]).indexOf(t)<0&&countries[c].push(t)})});
+ return {real:real,segs:segs,cities:Object.keys(cities).map(function(k){return cities[k]}),countries:countries}}
+function tipTrips(head,ts){return (head?'<i>'+esc(head)+'</i>':'')+ts.map(function(t){return '<a href="#/trip/'+t.id+'"><b>'+esc(t.title)+'</b><span>'+fmtRange(t.start,t.end)+'</span></a>'}).join('')}
+// the tooltip: hover shows it (mouse), a click or tap pins it; a single-trip target opens straight away on click, on touch the second tap (or a tap on the tooltip) opens it
+function makeGTip(host){var wrap=host.parentNode,el=document.createElement('div');el.className='gtip';el.setAttribute('role','tooltip');wrap.appendChild(el);var cur=null,pinned=false;
+ function place(x,y){var r=wrap.getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight,lx=x-r.left+14,ly=y-r.top-h-12;if(lx+w>r.width)lx=x-r.left-w-14;if(ly<0)ly=y-r.top+16;el.style.transform='translate('+Math.round(lx)+'px,'+Math.round(ly)+'px)'}
+ function key(t){return t?t.kind+':'+t.key:''}
+ return {el:el,get:function(){return cur},pinned:function(){return pinned},
+  show:function(t,x,y,pin){if(!t){if(!pinned)this.hide();return}if(key(t)!==key(cur)||pin!==pinned){el.innerHTML=t.html;cur=t}pinned=!!pin;el.classList.add('on');el.classList.toggle('pin',pinned);place(x,y)},
+  hide:function(){cur=null;pinned=false;el.classList.remove('on','pin')},same:function(t){return t&&cur&&key(t)===key(cur)},destroy:function(){el.remove()}}}
+// the side card for a selected trip: cover, title, dates, its one line, and a way in
+function globeCardHTML(t){var c=t.cover;return (c?'<a class="gc-ph" href="#/trip/'+t.id+'" tabindex="-1">'+img(c,{alt:'',sizes:'120px'})+'</a>':'')+'<div class="gc-tx"><div class="k">'+esc(engMonth(t))+'</div><b>'+esc(t.title)+'</b><div class="m">'+fmtRange(t.start,t.end)+'</div>'+(t.summary?'<p class="l">'+esc(t.summary)+'</p>':'')+'<a class="gc-go" href="#/trip/'+t.id+'">看这趟旅行'+ARROW+'</a></div>'}
+function tripLit(id,cut){var t=BYID[id];return !cut||!t||(t.start||'')<=cut}
+function gTarget(kind,key,ts,head){ts=ts.filter(Boolean);if(!ts.length)return null;return {kind:kind,key:key,trips:ts,html:tipTrips(head,ts)}}
+// pointer logic common to both globes. api: hit(x,y)->target, rotate(dx,dy), zoom(f)->bool (false at a limit), idle(), busy()
+function globeInput(host,api,tip){var surf=api.surface;surf.style.touchAction='pan-y';
+ var pts={},drag=null,pinch=null,lastTap=null,vel=[0,0],lt=0,inert=0;
+ function rel(e){return [e.clientX,e.clientY]}
+ function go(t){if(t&&t.trips.length===1){location.hash='#/trip/'+t.trips[0].id;return true}return false}
+ surf.addEventListener('pointerdown',function(e){pts[e.pointerId]=rel(e);var ids=Object.keys(pts);api.busy();cancelAnimationFrame(inert);
+  if(ids.length===2){var a=pts[ids[0]],b=pts[ids[1]];pinch={d:Math.hypot(a[0]-b[0],a[1]-b[1])};drag=null;return}
+  drag={x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,moved:false,id:e.pointerId,type:e.pointerType};vel=[0,0];lt=performance.now()});
+ surf.addEventListener('pointermove',function(e){if(pts[e.pointerId])pts[e.pointerId]=rel(e);
+  if(pinch){var ids=Object.keys(pts);if(ids.length<2)return;var a=pts[ids[0]],b=pts[ids[1]],d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch.d>0)api.zoom(d/pinch.d);pinch.d=d;api.busy();return}
+  if(drag&&drag.id===e.pointerId){var dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+   if(!drag.moved&&Math.abs(dx)+Math.abs(dy)>6){drag.moved=true;tip.hide();try{surf.setPointerCapture(e.pointerId)}catch(_){}}
+   if(drag.moved){var now=performance.now(),mx=e.clientX-drag.lx,my=e.clientY-drag.ly,dt=Math.max(8,now-lt);vel=[mx/dt*16,my/dt*16];lt=now;drag.lx=e.clientX;drag.ly=e.clientY;api.rotate(mx,my);api.busy()}return}
+  if(e.pointerType==='mouse'&&!tip.pinned()){var t=api.hit(e.clientX,e.clientY);surf.style.cursor=t?'pointer':'grab';if(t)tip.show(t,e.clientX,e.clientY,false);else tip.hide();if(t&&t.kind==='trip'&&api.preview)api.preview(t.trips[0].id)}});
+ function end(e){var was=drag;delete pts[e.pointerId];if(pinch){if(Object.keys(pts).length<2)pinch=null;api.idle();return}drag=null;
+  if(!was||was.id!==e.pointerId)return;
+  if(was.moved){var v=vel.slice(),f=function(){v[0]*=.92;v[1]*=.92;if(Math.abs(v[0])+Math.abs(v[1])<.15){api.idle();return}api.rotate(v[0],v[1]);inert=requestAnimationFrame(f)};if(performance.now()-lt<80)inert=requestAnimationFrame(f);else api.idle();return}
+  if(e.type==='pointercancel'){api.idle();return}
+  var t=api.hit(e.clientX,e.clientY);
+  if(was.type==='mouse'){if(t&&!go(t))tip.show(t,e.clientX,e.clientY,true);else if(!t)tip.hide()}
+  else{if(t&&tip.same(t)&&tip.pinned()){go(t)}else if(t){tip.show(t,e.clientX,e.clientY,true);if(t.kind==='trip'&&api.select)api.select(t.trips[0].id)}else tip.hide()}
+  api.idle()}
+ surf.addEventListener('pointerup',end);surf.addEventListener('pointercancel',end);
+ surf.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'&&!tip.pinned()&&!drag)tip.hide()});
+ tip.el.addEventListener('click',function(e){var a=e.target.closest('a');if(a)return;var t=tip.get();if(t&&t.trips.length===1)location.hash='#/trip/'+t.trips[0].id});
+ // wheel: zoom only over the globe itself; at the zoom limit the page scrolls on
+ host.addEventListener('wheel',function(e){if(!api.over(e.clientX,e.clientY))return;var f=Math.exp(-e.deltaY*.0015);if(api.zoom(f)){e.preventDefault();api.busy();api.idle()}},{passive:false})}
+// the time scrubber under the home globe: drag to light the routes up to a date; each trip is a small stop on the line
+function setupScrub(view,G){var el=$('#gscrub',view);if(!el)return;
+ var ts=SEQ.filter(function(t){return t.kind==='trip'&&t.start&&t.stops.length&&!(t.stops[0]&&t.stops[0].area)}).slice().sort(function(a,b){return a.start<b.start?-1:1});if(!ts.length)return;
+ var y0=+ts[0].start.slice(0,4),y1=+ts[ts.length-1].start.slice(0,4),T0=Date.UTC(y0,0,1),T1=Date.UTC(y1+1,0,1);
+ function fr(d){var p=d.split('-');return (Date.UTC(+p[0],+p[1]-1,+(p[2]||1))-T0)/(T1-T0)}
+ function iso(f){var d=new Date(T0+f*(T1-T0));return d.toISOString().slice(0,10)}
+ var h='<div class="gs-tr"><i class="gs-fill"></i>';for(var y=y0;y<=y1+1;y++)h+='<span class="gs-tk" style="left:'+((Date.UTC(y,0,1)-T0)/(T1-T0)*100).toFixed(2)+'%">'+(y<=y1?'<em class="latin">'+y+'</em>':'')+'</span>';
+ ts.forEach(function(t){h+='<button type="button" class="gs-st '+t.lc+'" data-id="'+t.id+'" style="left:'+(fr(t.start)*100).toFixed(2)+'%" aria-label="'+esc(t.title)+'"></button>'});
+ h+='<b class="gs-h" role="slider" tabindex="0" aria-label="时间" aria-valuemin="0" aria-valuemax="100"></b></div>';el.innerHTML=h;el.classList.add('on');
+ var tr=$('.gs-tr',el),fill=$('.gs-fill',el),hd=$('.gs-h',el),cur=1,play=0,alive=true,gen=routeGen;
+ function set(f,user){cur=Math.max(0,Math.min(1,f));var p=(cur*100).toFixed(2)+'%';fill.style.transform='scaleX('+cur.toFixed(4)+')';hd.style.left=p;hd.setAttribute('aria-valuenow',Math.round(cur*100));
+  var c=cur>=.999?null:iso(cur);G.setTime(c);$$('.gs-st',el).forEach(function(b){b.classList.toggle('lit',!c||b.style.left&&parseFloat(b.style.left)/100<=cur+1e-4)});if(user&&play){cancelAnimationFrame(play);play=0}}
+ function fromX(x){var r=tr.getBoundingClientRect();return (x-r.left)/r.width}
+ var dr=null;
+ // a tap or click picks the nearest trip stop (stops sit close together on phones); a drag scrubs
+ var dx0=0,dmv=false;function nearest(x){var best=null,bd=12;$$('.gs-st',el).forEach(function(b){var r=b.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-x);if(d<bd){bd=d;best=b}});return best}
+ tr.addEventListener('pointerdown',function(e){dr=e.pointerId;dx0=e.clientX;dmv=false;try{tr.setPointerCapture(e.pointerId)}catch(_){}G.busy();e.preventDefault()});
+ tr.addEventListener('pointermove',function(e){if(dr!==e.pointerId)return;if(!dmv&&Math.abs(e.clientX-dx0)>4)dmv=true;if(dmv)set(fromX(e.clientX),true)});
+ function up(e){if(dr!==e.pointerId)return;dr=null;if(!dmv&&e.type==='pointerup'){var b=nearest(e.clientX);if(b)pickStop(b);else set(fromX(e.clientX),true)}G.idle()}tr.addEventListener('pointerup',up);tr.addEventListener('pointercancel',up);
+ hd.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?.02:e.key==='ArrowLeft'?-.02:0;if(d){set(cur+d,true);e.preventDefault()}});
+ function pickStop(b){var t=BYID[b.getAttribute('data-id')];if(!t)return;set(fr(t.end||t.start)+.002,true);G.pickTrip(t.id)}
+ $$('.gs-st',el).forEach(function(b){b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){pickStop(b);e.preventDefault()}})});
+ set(1);
+ // once per visit, the first time the globe is in view: the routes draw themselves in order, then the line rests at 'all'
+ var seen=false;try{seen=sessionStorage.getItem('fp-scrub')==='1'}catch(e){}
+ if(!seen&&!RM){var io=new IntersectionObserver(function(es){if(!es[0].isIntersecting)return;io.disconnect();try{sessionStorage.setItem('fp-scrub','1')}catch(e){}
+   var t0=0,D=9000;set(0);function f(now){if(!alive||gen!==routeGen)return;if(!t0)t0=now;var k=Math.min(1,(now-t0)/D);set(k);if(k<1)play=requestAnimationFrame(f);else{play=0;set(1)}}setTimeout(function(){play=requestAnimationFrame(f)},700)},{threshold:.4});io.observe(el);homeIO.push(io)}
+ homeIO.push({disconnect:function(){alive=false;cancelAnimationFrame(play)}});
+ if(/[?&]qa\b/.test(location.search))window.__scrub={set:function(f){set(f,true)},cur:function(){return cur}}}
 var EXETER={lat:50.7184,lng:-3.5339};
 function makeGlobeGL(host,view){
  var W=Math.min(host.clientWidth||600,1200),card=$('#glcard',view),alive=true;
  var visited={};TRIPS.forEach(function(t){t.countries.forEach(function(c){visited[c]=1})});
- var real=SEQ.filter(function(t){return t.kind==='trip'&&t.stops.length});
- var COL={solo:'rgba(154,144,132,.85)',zx:'rgba(138,154,162,.85)',tg:'rgba(201,162,122,1)'};
- var segs=[];real.forEach(function(t){for(var i=1;i<t.stops.length;i++){var a=t.stops[i-1],b=t.stops[i];if(a.lat===b.lat&&a.lng===b.lng)continue;segs.push({startLat:a.lat,startLng:a.lng,endLat:b.lat,endLng:b.lng,id:t.id,c:t.lc,title:t.title})}});
- var pts={};real.forEach(function(t){t.stops.forEach(function(s){pts[s.city]={lat:s.lat,lng:s.lng,c:t.lc==='tg'||(pts[s.city]&&pts[s.city].c==='tg')?'tg':t.lc}})});
- var cities=Object.keys(pts).map(function(k){return pts[k]});
- var hov=null,sel=null,clickT=0,dblAt=0;
- function cap(f){var n=f.properties.name;return f===hov||n===sel?'#6A5844':visited[n]?'#4A3D31':'#2E2924'}
+ var X=globeIndex(),COL={solo:'rgba(154,144,132,.85)',zx:'rgba(138,154,162,.85)',tg:'rgba(201,162,122,1)'};
+ var arcs=[];X.segs.forEach(function(s){var o={startLat:s.a[1],startLng:s.a[0],endLat:s.b[1],endLng:s.b[0],id:s.id,c:s.c};arcs.push(o);arcs.push({startLat:o.startLat,startLng:o.startLng,endLat:o.endLat,endLng:o.endLng,id:s.id,c:s.c,hit:true})});
+ var hfT=0,haT=0,lastF=null,mX=0,mY=0,hovF=null,hovA=null,selId=null,sel=null,clickT=0,dblAt=0,tip=makeGTip(host);
+ function cap(f){var n=f.properties.name;return f===hovF||n===sel?'#6A5844':visited[n]?'#4A3D31':'#2E2924'}
+ var cut=null;function arcCol(d){if(d.hit||!tripLit(d.id,cut))return 'rgba(0,0,0,0)';var c=COL[d.c];if(selId)return d.id===selId?c.replace(/[\d.]+\)$/,'1)'):c.replace(/[\d.]+\)$/,'.18)');return d.id===hovA?c.replace(/[\d.]+\)$/,'1)'):c}
  var g=Globe({animateIn:false,rendererConfig:{antialias:true,alpha:true,powerPreference:'low-power'}})(host)
-  .width(W).height(W).backgroundColor('rgba(0,0,0,0)')
-  .showAtmosphere(true).atmosphereColor('#C9A27A').atmosphereAltitude(.1).showGraticules(false)
+  .width(W).height(W).backgroundColor('rgba(0,0,0,0)').showAtmosphere(false).showGraticules(false)
   .polygonsData(WORLD.features).polygonCapColor(cap).polygonSideColor(function(){return 'rgba(0,0,0,0)'}).polygonStrokeColor(function(){return 'rgba(237,230,218,.14)'})
   .polygonAltitude(function(f){return visited[f.properties.name]?.009:.004}).polygonsTransitionDuration(0)
-  .polygonLabel(function(f){var n=f.properties.name;return visited[n]?'<div class="gl-tip">'+esc(n)+'</div>':''})
-  .onPolygonHover(function(f){hov=f&&visited[f.properties.name]?f:null;host.style.cursor=hov?'pointer':'grab';g.polygonCapColor(cap)})
-  .onPolygonClick(function(f){var n=f.properties.name;if(!visited[n])return;clearTimeout(clickT);clickT=setTimeout(function(){if(performance.now()-dblAt<900)return;pickCountry(n)},340)})
-  .arcsData(segs).arcColor(function(d){return COL[d.c]}).arcStroke(function(d){return d.c==='tg'?.6:.38}).arcAltitudeAutoScale(.32).arcsTransitionDuration(0)
-  .arcDashLength(1).arcDashGap(0)
-  .arcLabel(function(d){return '<div class="gl-tip">'+esc(d.title)+'</div>'})
-  .onArcHover(function(d){host.style.cursor=d?'pointer':'grab'})
-  .onArcClick(function(d){location.hash='#/trip/'+d.id})
-  .pointsData(cities).pointLat('lat').pointLng('lng').pointColor(function(d){return COL[d.c]}).pointAltitude(.012).pointRadius(.11).pointsMerge(true).pointsTransitionDuration(0);
- try{g.renderer().setPixelRatio(W>760?1:Math.min(1.5,window.devicePixelRatio||1));g.renderer().domElement.style.touchAction='pan-y'}catch(e){} // keep vertical page scroll on phones
+  .onPolygonHover(function(f){var n=f&&visited[f.properties.name]?f:null;clearTimeout(hfT);if(n){lastF={f:n,x:mX,y:mY};if(n!==hovF){hovF=n;g.polygonCapColor(cap)}}else hfT=setTimeout(function(){if(hovF){hovF=null;g.polygonCapColor(cap)}},300)})
+  .arcsData(arcs).arcColor(arcCol).arcStroke(function(d){return d.hit?1.5:d.c==='tg'?.6:.38}).arcAltitudeAutoScale(.32).arcsTransitionDuration(0).arcDashLength(1).arcDashGap(0)
+  .onArcHover(function(d){var id=d?d.id:null;clearTimeout(haT);if(id){if(id!==hovA){hovA=id;g.arcColor(arcCol)}}else haT=setTimeout(function(){if(hovA){hovA=null;g.arcColor(arcCol)}},300)})
+  .pointsData(X.cities).pointLat('lat').pointLng('lng').pointColor(function(d){return COL[d.c]}).pointAltitude(.012).pointRadius(.11).pointsMerge(true).pointsTransitionDuration(0);
+ try{g.renderer().setPixelRatio(W>760?1:Math.min(1.5,window.devicePixelRatio||1))}catch(e){}
  try{var m=g.globeMaterial();m.color.set('#15120F');if(m.emissive)m.emissive.set('#0b0908');m.shininess=4}catch(e){}
- var ctl=g.controls();ctl.autoRotate=!RM;ctl.autoRotateSpeed=.35;ctl.enableZoom=false;ctl.enablePan=false;
- ctl.addEventListener('start',function(){ctl.autoRotate=false});
- g.pointOfView({lat:12,lng:18,altitude:1.3},0);try{g.showAtmosphere(false)}catch(e){}
- function showCard(h){card.innerHTML='<button class="gx" aria-label="关闭">'+icon('x')+'</button>'+h;card.classList.add('on');$('.gx',card).onclick=function(){card.classList.remove('on');sel=null;g.polygonCapColor(cap);$$('[data-gt]',view).forEach(function(b){b.classList.remove('on')});g.arcColor(function(d){return COL[d.c]})}}
+ var ctl=g.controls();ctl.autoRotate=!RM;ctl.autoRotateSpeed=.35;ctl.enableZoom=false;ctl.enablePan=false;ctl.enableRotate=false; // rotation is ours (shared input), so touch keeps pan-y
+ g.pointOfView({lat:22,lng:18,altitude:1.5},0);
+ var MINA=.9,MAXA=3.2,idleT=0;
+ function center(){var p=g.pointOfView();return [p.lng,p.lat]}
+ function scr(c){var r=host.getBoundingClientRect(),q=g.getScreenCoords(c.lat,c.lng,.012);return q?[q.x+r.left,q.y+r.top]:null}
+ function hit(x,y){var r=host.getBoundingClientRect(),cc=center(),best=null,bd=144;
+  X.cities.forEach(function(c){if(d3.geoDistance([c.lng,c.lat],cc)>Math.PI/2-.12)return;var q=scr(c);if(!q)return;var d=(q[0]-x)*(q[0]-x)+(q[1]-y)*(q[1]-y);if(d<bd){bd=d;best=c}});
+  if(best)return gTarget('city',best.city,best.trips,best.city);
+  if(hovA)return gTarget('trip',hovA,[BYID[hovA]]);
+  var f=hovF||(lastF&&Math.abs(lastF.x-x)+Math.abs(lastF.y-y)<12?lastF.f:null);if(!f){var rr=host.getBoundingClientRect(),ll=g.toGlobeCoords(x-rr.left,y-rr.top);if(ll)f=WORLD.features.filter(function(z){return visited[z.properties.name]&&d3.geoContains(z,[ll.lng,ll.lat])})[0]||null} // globe.gl forgets its hover while the button is down
+  if(f)return gTarget('country',f.properties.name,X.countries[f.properties.name]||[],f.properties.name);return null}
+ function over(x,y){var r=host.getBoundingClientRect();return !!g.toGlobeCoords(x-r.left,y-r.top)}
+ host.addEventListener('pointermove',function(e){mX=e.clientX;mY=e.clientY},true);
+ function busy(){ctl.autoRotate=false;clearTimeout(idleT)}
+ function idle(){clearTimeout(idleT);idleT=setTimeout(function(){if(!alive||RM)return;if(tip.pinned())tip.hide();ctl.autoRotate=true},4000)}
+ var prevT=0;function preview(id){var t=BYID[id];if(!t||card.getAttribute('data-id')===id)return;clearTimeout(prevT);prevT=setTimeout(function(){showCard(globeCardHTML(t),'trip');card.setAttribute('data-id',id)},160)}
+ globeInput(host,{surface:g.renderer().domElement,hit:hit,over:over,busy:busy,idle:idle,preview:preview,select:function(id){pickTrip(id)},
+  rotate:function(dx,dy){var p=g.pointOfView(),k=p.altitude*28/ (W/2);g.pointOfView({lat:Math.max(-75,Math.min(75,p.lat+dy*k)),lng:p.lng-dx*k,altitude:p.altitude},0)},
+  zoom:function(f){var p=g.pointOfView(),a=Math.max(MINA,Math.min(MAXA,p.altitude/f));if(Math.abs(a-p.altitude)<1e-3)return false;g.pointOfView({lat:p.lat,lng:p.lng,altitude:a},0);return true}},tip);
+ function showCard(h,kind){card.innerHTML='<button class="gx" aria-label="关闭">'+icon('x')+'</button>'+h;card.className='gl-card on'+(kind?' gc-'+kind:'');card.removeAttribute('data-id');$('.gx',card).onclick=function(){card.classList.remove('on');sel=null;selId=null;g.polygonCapColor(cap);g.arcColor(arcCol)}}
+ var litN=-1;function setTime(c){cut=c;var n=X.real.filter(function(t){return tripLit(t.id,cut)}).length;if(n!==litN){litN=n;g.arcColor(arcCol);g.pointColor(function(d){return d.trips.some(function(t){return tripLit(t.id,cut)})?COL[d.c]:'rgba(0,0,0,0)'})}}
  function spanOf(t){var m=0;t.stops.forEach(function(a){t.stops.forEach(function(b){m=Math.max(m,d3.geoDistance([a.lng,a.lat],[b.lng,b.lat]))})});return m*180/Math.PI}
- function pickTrip(id){var t=BYID[id];if(!t||!t.stops.length)return;ctl.autoRotate=false;sel=null;g.polygonCapColor(cap);
-  $$('[data-gt]',view).forEach(function(b){b.classList.toggle('on',b.getAttribute('data-gt')===id)});
+ function pickTrip(id){var t=BYID[id];if(!t||!t.stops.length)return;busy();selId=id;g.arcColor(arcCol);
   var c=d3.geoCentroid({type:'MultiPoint',coordinates:t.stops.map(function(s){return [s.lng,s.lat]})}),sp=spanOf(t);
-  g.arcColor(function(d){return d.id===id?COL[d.c].replace(/[\d.]+\)$/,'1)'):COL[d.c].replace(/[\d.]+\)$/,'.18)')});
-  var alt=sp<5?.7:sp<12?.95:sp<30?1.35:1.9;g.pointOfView({lat:c[1]-alt*14,lng:c[0],altitude:alt},1300); // the globe's centre sits at the bottom of the screen: aim below the trip so it lands in the visible cap
-  showCard('<div class="k">'+esc(engMonth(t))+'</div><b>'+esc(t.title)+'</b><div class="m">'+fmtRange(t.start,t.end)+' · '+esc(companion(t)?companion(t).txt:'')+'</div><div class="r">'+routeText(t).map(esc).join(' — ')+'</div><a href="#/trip/'+t.id+'">打开这趟旅行'+ARROW+'</a>')}
- function pickCountry(name){var ts=SEQ.filter(function(t){return t.countries.indexOf(name)>=0&&t.kind==='trip'});
-  if(ts.length===1){location.hash='#/trip/'+ts[0].id;return}
-  sel=name;g.polygonCapColor(cap);ctl.autoRotate=false;
-  showCard('<div class="k">'+esc(COUNTRY_EN[name]||'')+'</div><b>'+esc(name)+'</b><div class="m">'+ts.length+' 段旅行</div><div class="r">'+ts.map(function(t){return '<a class="tl" href="#/trip/'+t.id+'">'+esc(t.title)+'</a>'}).join('')+'</div><a href="#/country/'+encodeURIComponent(name)+'">看这个国家'+ARROW+'</a>')}
- // hidden: double-click Exeter
+  var alt=sp<5?1.4:sp<12?1.45:sp<30?1.6:2.0; // never closer than the whole-sphere view allowsg.pointOfView({lat:c[1],lng:c[0],altitude:alt},1300);
+  showCard(globeCardHTML(t),'trip');idle()}
  function onDbl(e){var r=host.getBoundingClientRect(),c=g.toGlobeCoords(e.clientX-r.left,e.clientY-r.top);if(!c)return;
-  if(d3.geoDistance([c.lng,c.lat],[EXETER.lng,EXETER.lat])*180/Math.PI>1.6)return;dblAt=performance.now();clearTimeout(clickT);ctl.autoRotate=false;
-  g.pointOfView({lat:EXETER.lat-10,lng:EXETER.lng,altitude:.7},1600);
+  if(d3.geoDistance([c.lng,c.lat],[EXETER.lng,EXETER.lat])*180/Math.PI>1.6)return;dblAt=performance.now();busy();tip.hide();
+  g.pointOfView({lat:EXETER.lat,lng:EXETER.lng,altitude:1},1600);
   g.ringsData([EXETER]).ringColor(function(){return function(t){return 'rgba(201,162,122,'+(1-t)+')'}}).ringMaxRadius(1.4).ringPropagationSpeed(.7).ringRepeatPeriod(1400);
-  showCard('<b>埃克塞特</b><div class="m">很多条路，是从这里出发的。</div>');
-  setTimeout(function(){if(alive)g.ringsData([])},7000)}
+  showCard('<b>埃克塞特</b><div class="m">很多条路，是从这里出发的。</div>');setTimeout(function(){if(alive)g.ringsData([])},7000);idle()}
  host.addEventListener('dblclick',onDbl);
- if(/[?&]qa\b/.test(location.search)){window.__globe=g;window.__gpick=pickTrip} // test hook only
- // draw only when it helps: mostly on screen, tab visible, and the page not mid-scroll (a big WebGL canvas competing with scrolling costs frames)
- var vis=true,scr=false,run=true,scrT=0;
- function sync(){var want=alive&&vis&&!scr&&!document.hidden;if(want===run)return;run=want;if(want)g.resumeAnimation();else g.pauseAnimation()}
+ if(/[?&]qa\b/.test(location.search)){window.__globe=g;window.__gpick=pickTrip;window.__gq={kind:'gl',lit:function(){return litN},scr:function(city){var c=X.cities.filter(function(x){return x.city===city})[0];return c&&scr(c)},look:function(lng,lat){g.pointOfView({lat:lat,lng:lng,altitude:g.pointOfView().altitude},0)},state:function(){var p=g.pointOfView();return {lng:p.lng,lat:p.lat,z:p.altitude,auto:ctl.autoRotate}}}}
+ var vis=true,scrl=false,run=true,scrT=0;
+ function sync(){var want=alive&&vis&&!scrl&&!document.hidden;if(want===run)return;run=want;if(want)g.resumeAnimation();else g.pauseAnimation()}
  var io=new IntersectionObserver(function(es){es.forEach(function(e){vis=e.isIntersecting&&e.intersectionRatio>.12;sync()})},{threshold:[0,.12,.3]});io.observe(host);homeIO.push(io);
- function onScr(){if(!vis)return;scr=true;sync();clearTimeout(scrT);scrT=setTimeout(function(){scr=false;sync()},160)}window.addEventListener('scroll',onScr,{passive:true});
+ function onScr(){if(!vis)return;scrl=true;sync();clearTimeout(scrT);scrT=setTimeout(function(){scrl=false;sync()},160)}window.addEventListener('scroll',onScr,{passive:true});
  function vh(){sync()}document.addEventListener('visibilitychange',vh);
  function rs(){var w=Math.min(host.clientWidth||600,1200);if(w!==W){W=w;g.width(W).height(W)}}window.addEventListener('resize',rs);
- return {pickTrip:pickTrip,gl:g,destroy:function(){alive=false;clearTimeout(clickT);clearTimeout(scrT);window.removeEventListener('scroll',onScr);window.removeEventListener('resize',rs);document.removeEventListener('visibilitychange',vh);host.removeEventListener('dblclick',onDbl);try{g.pauseAnimation();g._destructor()}catch(e){}host.innerHTML=''}};
+ return {pickTrip:pickTrip,setTime:setTime,busy:busy,idle:idle,gl:g,destroy:function(){alive=false;clearTimeout(clickT);clearTimeout(scrT);clearTimeout(idleT);tip.destroy();window.removeEventListener('scroll',onScr);window.removeEventListener('resize',rs);document.removeEventListener('visibilitychange',vh);host.removeEventListener('dblclick',onDbl);try{g.pauseAnimation();g._destructor()}catch(e){}host.innerHTML=''}};
 }
-function makeFlatGlobe(host,view){ // fallback when WebGL is missing
+function makeFlatGlobe(host,view){ // canvas globe: phones and software WebGL
  host.classList.add('flat');
  var cv=document.createElement('canvas');host.appendChild(cv);var ctx=cv.getContext('2d',{willReadFrequently:true}); // CPU canvas: a GPU canvas is promoted to a layer and drags every overlapping trip card into its own layer
  var W=0,H=0,dpr=Math.min(1.5,window.devicePixelRatio||1);
  var proj=d3.geoOrthographic().clipAngle(90).precision(.8),path=d3.geoPath(proj,ctx),grat=d3.geoGraticule10();
- var rot=[-14,-16,0],baseScale=1,zoom=1,auto=!RM,lastUser=0,visible=true,raf=0,dirty=true,alive=true;
+ var rot=[-18,-22,0],baseScale=1,zoom=1,ZMIN=1,ZMAX=4,auto=!RM,lastUser=-1e9,visible=true,raf=0,dirty=true,alive=true,held=false;
  var visited={};TRIPS.forEach(function(t){t.countries.forEach(function(c){visited[c]=1})});
  var feats=WORLD.features,vis=feats.filter(function(f){return visited[f.properties.name]}),oth=feats.filter(function(f){return !visited[f.properties.name]});
- var real=SEQ.filter(function(t){return t.kind==='trip'&&t.stops.length});
- var allSegs=[];real.forEach(function(t){for(var i=1;i<t.stops.length;i++){var a=[t.stops[i-1].lng,t.stops[i-1].lat],b=[t.stops[i].lng,t.stops[i].lat];if(a[0]!==b[0]||a[1]!==b[1])allSegs.push({a:a,b:b,c:t.lc})}});
- var sel=null,selP=1,hover=null,selC=null,card=$('#glcard',view);
+ var X=globeIndex(),allSegs=X.segs;
+ var sel=null,selP=1,hover=null,hovT=null,card=$('#glcard',view),tip=makeGTip(host);
  function size(){var w=host.clientWidth||600;W=w;H=w;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';baseScale=W/2-6;proj.translate([W/2,H/2]);dirty=true}
  size();
+ function centerLL(){return [-rot[0],-rot[1]]}
  function draw(){proj.rotate(rot).scale(baseScale*zoom);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
   ctx.beginPath();path({type:'Sphere'});ctx.fillStyle='#191612';ctx.fill();
   ctx.beginPath();path(grat);ctx.strokeStyle='rgba(237,230,218,.045)';ctx.lineWidth=.6;ctx.stroke();
   ctx.beginPath();oth.forEach(function(f){path(f)});ctx.fillStyle='rgba(237,230,218,.11)';ctx.fill();
   ctx.beginPath();vis.forEach(function(f){path(f)});ctx.fillStyle='rgba(201,162,122,.3)';ctx.fill();
-  if(hover||selC){ctx.beginPath();[hover,selC].forEach(function(f){if(f)path(f)});ctx.fillStyle='rgba(201,162,122,.42)';ctx.fill()}
+  if(hover){ctx.beginPath();path(hover);ctx.fillStyle='rgba(201,162,122,.42)';ctx.fill()}
   ctx.beginPath();feats.forEach(function(f){path(f)});ctx.strokeStyle='rgba(18,16,14,.75)';ctx.lineWidth=.5;ctx.stroke();
-  // all arcs, faint
-  ['solo','zx','tg'].forEach(function(c){ctx.beginPath();allSegs.forEach(function(s){if(s.c===c)path({type:'LineString',coordinates:[s.a,s.b]})});ctx.strokeStyle='rgba('+GCOL[c]+','+(sel?.16:.5)+')';ctx.lineWidth=c==='tg'?1.1:.8;ctx.stroke()});
-  if(sel){var st=sel.stops,n=st.length-1,c=GCOL[sel.lc];ctx.beginPath();
-   for(var i=1;i<=n;i++){var lp=Math.max(0,Math.min(1,selP*n-(i-1)));if(lp<=0)break;var a=[st[i-1].lng,st[i-1].lat],b=[st[i].lng,st[i].lat];path({type:'LineString',coordinates:[a,lp<1?d3.geoInterpolate(a,b)(lp):b]})}
-   ctx.strokeStyle='rgba('+c+',1)';ctx.lineWidth=2;ctx.stroke();
-   var center=[-rot[0],-rot[1]];st.forEach(function(s,i){if(d3.geoDistance([s.lng,s.lat],center)>Math.PI/2-.05)return;var q=proj([s.lng,s.lat]);ctx.beginPath();ctx.arc(q[0],q[1],2.8,0,6.283);ctx.fillStyle='rgba('+c+',1)';ctx.fill()});
-   if(selP>=1){ctx.font='12px FSerif, "Songti SC", serif';ctx.fillStyle='rgba(237,230,218,.9)';var seen={},boxes=[];ctx.strokeStyle='rgba(18,16,14,.9)';ctx.lineWidth=3;ctx.lineJoin='round';st.forEach(function(s){if(seen[s.city])return;seen[s.city]=1;if(d3.geoDistance([s.lng,s.lat],center)>Math.PI/2-.12)return;var q=proj([s.lng,s.lat]),w=ctx.measureText(s.city).width,bx=[q[0]+6,q[1]-18,q[0]+10+w,q[1]-2];if(bx[2]>W-4){bx=[q[0]-10-w,bx[1],q[0]-6,bx[3]]}if(boxes.some(function(o){return !(bx[2]<o[0]||bx[0]>o[2]||bx[3]<o[1]||bx[1]>o[3])}))return;boxes.push(bx);ctx.strokeText(s.city,bx[0],q[1]-6);ctx.fillText(s.city,bx[0],q[1]-6)})}}
+  ['solo','zx','tg'].forEach(function(c){ctx.beginPath();allSegs.forEach(function(s){if(s.c===c&&tripLit(s.id,cut))path({type:'LineString',coordinates:[s.a,s.b]})});ctx.strokeStyle='rgba('+GCOL[c]+','+(sel?.16:.55)+')';ctx.lineWidth=c==='tg'?1.1:.8;ctx.stroke()});
+  var hl=sel||(hovT&&BYID[hovT]);
+  if(hl){var st=hl.stops,n=st.length-1,c=GCOL[hl.lc],P=sel?selP:1;ctx.beginPath();
+   for(var i=1;i<=n;i++){var lp=Math.max(0,Math.min(1,P*n-(i-1)));if(lp<=0)break;var a=[st[i-1].lng,st[i-1].lat],b=[st[i].lng,st[i].lat];path({type:'LineString',coordinates:[a,lp<1?d3.geoInterpolate(a,b)(lp):b]})}
+   ctx.strokeStyle='rgba('+c+',1)';ctx.lineWidth=2;ctx.stroke()}
+  var cc=centerLL();X.cities.forEach(function(s){if(d3.geoDistance([s.lng,s.lat],cc)>Math.PI/2-.05)return;if(cut&&!s.trips.some(function(t){return tripLit(t.id,cut)}))return;var q=proj([s.lng,s.lat]);ctx.beginPath();ctx.arc(q[0],q[1],2.4,0,6.283);ctx.fillStyle='rgba('+GCOL[s.c]+',.95)';ctx.fill()});
   ctx.beginPath();path({type:'Sphere'});ctx.strokeStyle='rgba(237,230,218,.16)';ctx.lineWidth=1;ctx.stroke();
   dirty=false}
  var lt=0;
  function loop(now){raf=0;if(!alive)return;var dt=lt?Math.min(64,now-lt):16;lt=now;
-  if(auto&&!fly&&now-lastUser>5000){rot[0]+=dt*0.004;dirty=true}
+  if(auto&&!fly&&!held&&now-lastUser>4000){rot[0]+=dt*0.004;dirty=true;if(tip.pinned())tip.hide()}
   if(fly){var t=Math.min(1,(now-fly.t0)/fly.d),e=d3.easeCubicInOut(t);rot=[fly.r0[0]+fly.dl*e,fly.r0[1]+(fly.r1[1]-fly.r0[1])*e,0];zoom=fly.z0+(fly.z1-fly.z0)*e;dirty=true;if(t>=1){var cb=fly.cb;fly=null;if(cb)cb()}}
   if(selAnim){selP=Math.min(1,(now-selAnim)/1100);if(selP>=1)selAnim=0;dirty=true}
   if(dirty)draw();
@@ -1483,32 +1640,37 @@ function makeFlatGlobe(host,view){ // fallback when WebGL is missing
  var fly=null,selAnim=0;
  function flyTo(ll,z,cb){var r1=[-ll[0],-ll[1]];var dl=((r1[0]-rot[0])%360+540)%360-180;fly={t0:performance.now(),d:1300,r0:rot.slice(),r1:r1,dl:dl,z0:zoom,z1:z,cb:cb};kick()}
  function spanOf(t){var m=0;t.stops.forEach(function(a){t.stops.forEach(function(b){m=Math.max(m,d3.geoDistance([a.lng,a.lat],[b.lng,b.lat]))})});return m*180/Math.PI}
- function pickTrip(id){var t=BYID[id];if(!t||!t.stops.length)return;sel=t;selC=null;selP=0;selAnim=0;lastUser=performance.now();
-  $$('[data-gt]',view).forEach(function(b){b.classList.toggle('on',b.getAttribute('data-gt')===id)});
+ function pickTrip(id){var t=BYID[id];if(!t||!t.stops.length)return;sel=t;selP=0;selAnim=0;lastUser=performance.now();
   var c=d3.geoCentroid({type:'MultiPoint',coordinates:t.stops.map(function(s){return [s.lng,s.lat]})}),sp=spanOf(t);
-  var z=sp<5?5:sp<9?3.4:sp<16?2.4:sp<32?1.6:1.05;
-  showCard('<div class="k">'+esc(engMonth(t))+'</div><b>'+esc(t.title)+'</b><div class="m">'+fmtRange(t.start,t.end)+' · '+esc(companion(t)?companion(t).txt:'')+'</div><div class="r">'+routeText(t).map(esc).join(' — ')+'</div><a href="#/trip/'+t.id+'">打开这趟旅行'+ARROW+'</a>');
+  var z=sp<5?1.6:sp<9?1.5:sp<16?1.4:sp<32?1.25:1.05; // capped near 1.6x so the region keeps its neighbours and the sphere edge
+  showCard(globeCardHTML(t),'trip');
   flyTo(c,z,function(){selAnim=performance.now();kick()})}
- function pickCountry(f){var name=f.properties.name;sel=null;selC=f;lastUser=performance.now();$$('[data-gt]',view).forEach(function(b){b.classList.remove('on')});
-  var ts=SEQ.filter(function(t){return t.countries.indexOf(name)>=0});
-  showCard('<div class="k">'+esc(COUNTRY_EN[name]||'')+'</div><b>'+esc(name)+'</b><div class="m">'+ts.length+' 段旅行</div><div class="r">'+ts.map(function(t){return '<a class="tl" href="#/trip/'+t.id+'">'+esc(t.title)+'</a>'}).join('')+'</div><a href="#/country/'+encodeURIComponent(name)+'">看这个国家'+ARROW+'</a>');
-  flyTo(d3.geoCentroid(f),Math.max(1,zoom),null)}
- function showCard(h){card.innerHTML='<button class="gx" aria-label="关闭">'+icon('x')+'</button>'+h;card.classList.add('on');$('.gx',card).onclick=function(){card.classList.remove('on');sel=null;selC=null;$$('[data-gt]',view).forEach(function(b){b.classList.remove('on')});flyTo([-rot[0],-rot[1]],1,null)}}
- function hit(x,y){var ll=proj.invert([x,y]);if(!ll||d3.geoDistance(ll,[-rot[0],-rot[1]])>Math.PI/2)return null;for(var i=0;i<vis.length;i++)if(d3.geoContains(vis[i],ll))return vis[i];return null}
- // drag
- var drag=null;
- cv.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,r:rot.slice(),moved:false,id:e.pointerId};fly=null;lastUser=performance.now()});
- cv.addEventListener('pointermove',function(e){var b=cv.getBoundingClientRect();
-  if(drag){var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.moved&&Math.abs(dx)+Math.abs(dy)>5){drag.moved=true;try{cv.setPointerCapture(drag.id)}catch(_){}}
-   if(drag.moved){var k=75/(baseScale*zoom);rot=[drag.r[0]+dx*k,Math.max(-70,Math.min(70,drag.r[1]-dy*k)),0];lastUser=performance.now();dirty=true;kick()}return}
-  if(e.pointerType==='mouse'){var f=hit(e.clientX-b.left,e.clientY-b.top);if(f!==hover){hover=f;cv.style.cursor=f?'pointer':'grab';dirty=true;kick()}}});
- function up(e){if(!drag)return;var b=cv.getBoundingClientRect();if(!drag.moved){var f=hit(e.clientX-b.left,e.clientY-b.top);if(f)pickCountry(f)}drag=null;lastUser=performance.now()}
- cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',function(){drag=null});
- cv.addEventListener('pointerleave',function(){if(hover){hover=null;dirty=true;kick()}});
+ function showCard(h,kind){card.innerHTML='<button class="gx" aria-label="关闭">'+icon('x')+'</button>'+h;card.className='gl-card on'+(kind?' gc-'+kind:'');card.removeAttribute('data-id');$('.gx',card).onclick=function(){card.classList.remove('on');sel=null;dirty=true;kick()}}
+ var cut=null,litN=-1;function setTime(c){cut=c;var n=X.real.filter(function(t){return tripLit(t.id,cut)}).length;if(n!==litN){litN=n;dirty=true;kick()}}
+ var prevT=0;function preview(id){var t=BYID[id];if(!t||card.getAttribute('data-id')===id)return;clearTimeout(prevT);prevT=setTimeout(function(){showCard(globeCardHTML(t),'trip');card.setAttribute('data-id',id)},160)}
+ function local(x,y){var b=cv.getBoundingClientRect();return [x-b.left,y-b.top]}
+ function front(ll){return d3.geoDistance(ll,centerLL())<Math.PI/2-.04}
+ function segD(p,a,b){var dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy,t=L?Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L)):0;return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)}
+ function hitArc(p){var best=null,bd=8;allSegs.forEach(function(s){var ip=d3.geoInterpolate(s.a,s.b),prev=null;for(var k=0;k<=8;k++){var ll=ip(k/8);if(!front(ll)){prev=null;continue}var q=proj(ll);if(prev){var d=segD(p,prev,q);if(d<bd){bd=d;best=s}}prev=q}});return best}
+ function hit(x,y){var p=local(x,y),best=null,bd=144;
+  X.cities.forEach(function(c){if(!front([c.lng,c.lat]))return;var q=proj([c.lng,c.lat]),d=(q[0]-p[0])*(q[0]-p[0])+(q[1]-p[1])*(q[1]-p[1]);if(d<bd){bd=d;best=c}});
+  if(best)return gTarget('city',best.city,best.trips,best.city);
+  var s=hitArc(p);if(s)return gTarget('trip',s.id,[BYID[s.id]]);
+  var ll=proj.invert(p);if(ll&&front(ll))for(var i=0;i<vis.length;i++)if(d3.geoContains(vis[i],ll)){var n=vis[i].properties.name;return gTarget('country',n,X.countries[n]||[],n)}
+  return null}
+ function over(x,y){var p=local(x,y);return Math.hypot(p[0]-W/2,p[1]-H/2)<=baseScale*zoom}
+ // hover look: the hovered country and route light up
+ cv.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse'||held)return;var p=local(e.clientX,e.clientY),s=hitArc(p),ll=proj.invert(p),f=null;if(!s&&ll&&front(ll))for(var i=0;i<vis.length;i++)if(d3.geoContains(vis[i],ll)){f=vis[i];break}
+  var nt=s?s.id:null;if(nt!==hovT||f!==hover){hovT=nt;hover=f;dirty=true;kick()}});
+ cv.addEventListener('pointerleave',function(){if(hover||hovT){hover=null;hovT=null;dirty=true;kick()}});
+ globeInput(host,{surface:cv,hit:hit,over:over,preview:preview,select:function(id){pickTrip(id)},busy:function(){held=true;lastUser=performance.now();fly=null},idle:function(){held=false;lastUser=performance.now();kick()},
+  rotate:function(dx,dy){var k=75/(baseScale*zoom);rot=[rot[0]+dx*k,Math.max(-75,Math.min(75,rot[1]-dy*k)),0];dirty=true;kick()},
+  zoom:function(f){var z=Math.max(ZMIN,Math.min(ZMAX,zoom*f));if(Math.abs(z-zoom)<1e-3)return false;zoom=z;dirty=true;kick();return true}},tip);
+ if(/[?&]qa\b/.test(location.search)){window.__gpick=pickTrip;window.__gq={kind:'flat',lit:function(){return litN},scr:function(city){var c=X.cities.filter(function(x){return x.city===city})[0];if(!c||!front([c.lng,c.lat]))return null;var q=proj([c.lng,c.lat]),b=cv.getBoundingClientRect();return [q[0]+b.left,q[1]+b.top]},look:function(lng,lat){rot=[-lng,-lat,0];lastUser=performance.now();dirty=true;draw()},state:function(){return {lng:-rot[0],lat:-rot[1],z:zoom,auto:auto&&!held&&performance.now()-lastUser>4000}}}}
  var io=new IntersectionObserver(function(es){es.forEach(function(e){visible=e.isIntersecting;if(visible)kick()})});io.observe(host);homeIO.push(io);
  function vh(){if(!document.hidden)kick()}document.addEventListener('visibilitychange',vh);
  draw();kick();
- return {pickTrip:pickTrip,resize:function(){size();kick()},destroy:function(){alive=false;if(raf)cancelAnimationFrame(raf);clearTimeout(scrT);window.removeEventListener('scroll',onScr);document.removeEventListener('visibilitychange',vh)}};
+ return {pickTrip:pickTrip,setTime:setTime,busy:function(){held=true;lastUser=performance.now()},idle:function(){held=false;lastUser=performance.now();kick()},resize:function(){size();kick()},destroy:function(){alive=false;if(raf)cancelAnimationFrame(raf);clearTimeout(scrT);tip.destroy();window.removeEventListener('scroll',onScr);document.removeEventListener('visibilitychange',vh)}};
 }
 
 /* ---------- lightbox ---------- */
@@ -1541,10 +1703,10 @@ function initMusic(){var b=$('#music');b.addEventListener('click',function(e){e.
  // default on: only an explicit mute ('off') keeps it quiet on later visits
  if(saved!=='off'){MU.want=true;arm();
   // autoplay attempt waits until the page has loaded, so the mp3 never competes with the hero photo and fonts
-  var go=function(){setTimeout(tryStart,1200)};if(document.readyState==='complete')go();else window.addEventListener('load',go,{once:true})}
+  }
  document.addEventListener('visibilitychange',function(){if(!MU.a||!MU.on)return;if(document.hidden)fadeTo(0,500,function(){if(document.hidden)MU.a.pause()});else{MU.a.play().catch(function(){});fadeTo(musicTarget(),1500)}});
  updMusic()}
-var ARM_EV=['pointerdown','touchend','click','keydown','scroll','wheel','touchstart'];
+var ARM_EV=['pointerdown','touchend','click','keydown'];
 function onArm(e){if(e&&e.target&&e.target.closest&&e.target.closest('#music'))return;if(!MU.want||MU.on)return;var soft=/scroll|wheel|touchstart/.test(e.type),now=Date.now();if(soft&&now-(MU.lt||0)<700)return;MU.lt=now;tryStart()}
 function arm(){ARM_EV.forEach(function(n){window.addEventListener(n,onArm,{capture:true,passive:true})})}
 function disarm(){ARM_EV.forEach(function(n){window.removeEventListener(n,onArm,{capture:true,passive:true})})}
@@ -1562,8 +1724,17 @@ function cleanup(){routeGen++;if($('#lb').classList.contains('open'))closeLB();h
  [ovMap,dMap].concat(homeMaps).forEach(function(m){if(m&&m.destroy)try{m.destroy()}catch(e){}});
  if(globeCtl){globeCtl.destroy();globeCtl=null}homeMaps=[];ovMap=null;dMap=null;actTrip=null;closeSheet()}
 function errHTML(){return '<section class="miss"><p>这一页加载出了点问题。</p><a href="#/">回到首页'+ARROW+'</a></section>'}
+// old trip ids and unknown routes: old ids open their new trip, anything else goes home (replaceState, never the not-found page)
+var TRIP_ALIAS={'2019-korea':'2026-korea','2026-seoul':'2026-korea','edinburgh-again':'','china':'china-diary'};
+function knownAnchor(a){if(!a||/^(globe|intro|map|met|turn|again|archive)$/.test(a))return true;var m=a.match(/^y(\d{4})$/);return !!m&&SEQ.some(function(t){return (t.start||'').slice(0,4)===m[1]})}
+function fixRoute(r){var to=null;
+ if(r.v==='trip'&&!BYID[r.id]){var a=TRIP_ALIAS[r.id];to=a&&BYID[a]?'#/trip/'+a:'#/'}
+ else if(r.v==='country'&&!countryIndex().by[r.id])to='#/';
+ else if(r.v==='home'&&!knownAnchor(r.anchor))to='#/';
+ if(to==null)return r;history.replaceState(null,'',location.pathname+location.search+to);return parse()}
 function route(first){
- var r=parse(),view=$('#view');
+ var r=fixRoute(parse()),view=$('#view');
+ if(curRoute&&curRoute.v==='home'&&r.v==='home'&&!r.anchor&&!location.hash.replace(/^#\/?/,'')){window.scrollTo(0,0)}
  if(curRoute&&curRoute.v==='home'&&r.v!=='home')homeY=scrollY;
  if(curRoute&&r.v==='home'&&curRoute.v==='home'){if(r.anchor)scrollToId(r.anchor);return}
  var jump=navJump;navJump=false;

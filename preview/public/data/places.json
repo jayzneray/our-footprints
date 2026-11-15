@@ -1447,7 +1447,9 @@
      "bg": "#41535d",
      "focusY": 0.5,
      "batch": 2,
-     "orig": "嘉怡西班牙葡萄牙/7cc063897277478207a4d109b27a8d7f.jpg"
+     "orig": "嘉怡西班牙葡萄牙/7cc063897277478207a4d109b27a8d7f.jpg",
+     "country": "葡萄牙",
+     "place": "里斯本"
     },
     {
      "src": "photos/iberia24/11.webp",
@@ -1475,7 +1477,9 @@
      "bg": "#565149",
      "focusY": 0.5,
      "batch": 2,
-     "orig": "嘉怡西班牙葡萄牙/ed37878403f3c1188c17bd2d940c00ab.jpg"
+     "orig": "嘉怡西班牙葡萄牙/ed37878403f3c1188c17bd2d940c00ab.jpg",
+     "country": "葡萄牙",
+     "place": "里斯本"
     }
    ]
   },
