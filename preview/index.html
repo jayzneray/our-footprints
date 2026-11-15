@@ -772,6 +772,8 @@ body.is-detail .menub{display:flex}
 /* v9.2i: a whole, usable globe in the first screen; the photo wall sits behind it, dimmed and softly blurred */
 .hero-m{--gw:min(70vh,88vw,1000px);--gw:min(70svh,88vw,1000px)}
 .hero-m .mosaic{filter:blur(2px) brightness(.62);inset:-5% -2% auto;height:110%}
+/* v9.2j: tiles under the blurred backdrop stay still, so the blur is rastered once and scrolling only composites it */
+.hero-m .mosaic .ph img{animation:none!important}.hero-m .mosaic{will-change:transform}
 .hero-m .mc1 .ph:first-child img,.hero-m .mc4 .ph:last-child img,.hero-m .mc2 .ph:last-child{animation:none}
 .hero-m .cap{top:clamp(72px,9vh,100px)}
 .hero-m h1{font-size:clamp(40px,5.4vw,82px)}
@@ -1133,7 +1135,7 @@ var OV=[
  {y:'So far',yr:'',t:'到现在',p:'',ids:[],all:true}
 ];
 // 2025 copy written by Jayzen; used exactly as written
-var CHAP_TAG={'2025':'6 段旅行 · 我和你'};
+var CHAP_TAG={'2025':'7 段旅行 · 我和你'};
 var CHAP={'2024':'巴黎、冰岛、伊比利亚、瑞士、曼谷。十月认识，年底在摩洛哥见面。','2025':'两个人的第一个整年。欧洲走了一大圈，我走过你的路，多了一辆车，一家店，年底爸妈和弟弟来了英国，超级幸福的一年。','2026':'一月首尔。六月出差、蜜月、又出差。八月雅加达。'};
 var homeMaps=[],ovMap=null,homeIO=[],globeCtl=null,routeGen=0;
 function chapCount(list){var c={};list.forEach(function(t){c[t.lc]=(c[t.lc]||0)+1});var s=list.length+' 段旅行';if(c.tg===list.length)s+=' · 两个人';return s}
@@ -1495,11 +1497,13 @@ function globeInput(host,api,tip){var surf=api.surface;surf.style.touchAction='p
  surf.addEventListener('pointermove',function(e){if(pts[e.pointerId])pts[e.pointerId]=rel(e);
   if(pinch){var ids=Object.keys(pts);if(ids.length<2)return;var a=pts[ids[0]],b=pts[ids[1]],d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch.d>0)api.zoom(d/pinch.d);pinch.d=d;api.busy();return}
   if(drag&&drag.id===e.pointerId){var dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+   if(!drag.moved&&drag.type!=='mouse'){ // v9.2j: one finger: vertical swipes belong to the page; rotate only once horizontal clearly dominates
+    if(Math.abs(dy)>8&&Math.abs(dy)>=Math.abs(dx)){drag=null;return}if(Math.abs(dx)<10||Math.abs(dx)<1.8*Math.abs(dy))return}
    if(!drag.moved&&Math.abs(dx)+Math.abs(dy)>6){drag.moved=true;tip.hide();try{surf.setPointerCapture(e.pointerId)}catch(_){}}
-   if(drag.moved){var now=performance.now(),mx=e.clientX-drag.lx,my=e.clientY-drag.ly,dt=Math.max(8,now-lt);vel=[mx/dt*16,my/dt*16];lt=now;drag.lx=e.clientX;drag.ly=e.clientY;api.rotate(mx,my);api.busy()}return}
+   if(drag.moved){var now=performance.now(),mx=e.clientX-drag.lx,my=e.clientY-drag.ly,dt=Math.max(8,now-lt);vel=[mx/dt*16,my/dt*16];lt=now;drag.lx=e.clientX;drag.ly=e.clientY;if(drag.type!=='mouse'){my=0;vel[1]=0}api.rotate(mx,my);api.busy()}return}
   if(e.pointerType==='mouse'&&!tip.pinned()){var t=api.hit(e.clientX,e.clientY);surf.style.cursor=t?'pointer':'grab';if(t)tip.show(t,e.clientX,e.clientY,false);else tip.hide();if(t&&t.kind==='trip'&&api.preview)api.preview(t.trips[0].id)}});
  function end(e){var was=drag;delete pts[e.pointerId];if(pinch){if(Object.keys(pts).length<2)pinch=null;api.idle();return}drag=null;
-  if(!was||was.id!==e.pointerId)return;
+  if(!was||was.id!==e.pointerId){api.idle();return}
   if(was.moved){var v=vel.slice(),f=function(){v[0]*=.92;v[1]*=.92;if(Math.abs(v[0])+Math.abs(v[1])<.15){api.idle();return}api.rotate(v[0],v[1]);inert=requestAnimationFrame(f)};if(performance.now()-lt<80)inert=requestAnimationFrame(f);else api.idle();return}
   if(e.type==='pointercancel'){api.idle();return}
   var t=api.hit(e.clientX,e.clientY);
@@ -1553,6 +1557,9 @@ function makeGlobeGL(host,view){
   .width(W).height(W).backgroundColor('rgba(0,0,0,0)').showAtmosphere(false).showGraticules(false)
   .polygonsData(WORLD.features).polygonCapColor(cap).polygonSideColor(function(){return 'rgba(0,0,0,0)'}).polygonStrokeColor(function(){return 'rgba(237,230,218,.14)'})
   .polygonAltitude(function(f){return visited[f.properties.name]?.009:.004}).polygonsTransitionDuration(0)
+  .onPolygonClick(function(f,ev){ // v9.2j: globe.gl drops its hover on click, so take the country from the click itself
+   if(!f||!ev||!visited[f.properties.name]||tip.pinned())return;if(Math.abs(ev.clientX-dX)+Math.abs(ev.clientY-dY)>6)return;
+   var n=f.properties.name;tip.show(gTarget('country',n,X.countries[n]||[],n),ev.clientX,ev.clientY,true)})
   .onPolygonHover(function(f){var n=f&&visited[f.properties.name]?f:null;clearTimeout(hfT);if(n){lastF={f:n,x:mX,y:mY};if(n!==hovF){hovF=n;g.polygonCapColor(cap)}}else hfT=setTimeout(function(){if(hovF){hovF=null;g.polygonCapColor(cap)}},300)})
   .arcsData(arcs).arcColor(arcCol).arcStroke(function(d){return d.hit?1.5:d.c==='tg'?.6:.38}).arcAltitudeAutoScale(.32).arcsTransitionDuration(0).arcDashLength(1).arcDashGap(0)
   .onArcHover(function(d){var id=d?d.id:null;clearTimeout(haT);if(id){if(id!==hovA){hovA=id;g.arcColor(arcCol)}}else haT=setTimeout(function(){if(hovA){hovA=null;g.arcColor(arcCol)}},300)})
@@ -1572,6 +1579,7 @@ function makeGlobeGL(host,view){
   if(f)return gTarget('country',f.properties.name,X.countries[f.properties.name]||[],f.properties.name);return null}
  function over(x,y){var r=host.getBoundingClientRect();return !!g.toGlobeCoords(x-r.left,y-r.top)}
  host.addEventListener('pointermove',function(e){mX=e.clientX;mY=e.clientY},true);
+var dX=-99,dY=-99;host.addEventListener('pointerdown',function(e){dX=e.clientX;dY=e.clientY},true);
  function busy(){ctl.autoRotate=false;clearTimeout(idleT)}
  function idle(){clearTimeout(idleT);idleT=setTimeout(function(){if(!alive||RM)return;if(tip.pinned())tip.hide();ctl.autoRotate=true},4000)}
  var prevT=0;function preview(id){var t=BYID[id];if(!t||card.getAttribute('data-id')===id)return;clearTimeout(prevT);prevT=setTimeout(function(){showCard(globeCardHTML(t),'trip');card.setAttribute('data-id',id)},160)}
