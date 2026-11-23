@@ -15,8 +15,8 @@
 
 <link rel="preload" href="public/v9/world.topo.json" as="fetch" crossorigin>
 <style>
-@font-face{font-family:'FSerif';src:url('public/v9/fonts/serif-sc.woff2') format('woff2');font-weight:400 600;font-display:swap;unicode-range:U+25,U+2C-3A,U+41-5A,U+61-7A,U+B0,U+B7,U+2014,U+2018-2019,U+201C-201D,U+2026,U+3001-3002,U+300A-300F,U+4E00-4E01,U+4E03,U+4E09-4E0B,U+4E0D-4E0E,U+4E1C,U+4E24,U+4E2A,U+4E2D,U+4E39-4E3B,U+4E48,U+4E4B,U+4E50,U+4E5D,U+4E5F,U+4E70,U+4E86,U+4E8B-4E8C,U+4E8E,U+4E94,U+4E9A-4E9B,U+4EA4,U+4EBA,U+4EC0-4EC1,U+4ECE,U+4ED6,U+4EE5,U+4EEC,U+4EFD,U+4F0A,U+4F1A,U+4F26,U+4F2F,U+4F4F,U+4F5B,U+4FBF,U+4FC4,U+505C,U+5145,U+514B,U+5168,U+516B-516D,U+5170-5171,U+5173-5174,U+5185,U+5188,U+518D,U+51AC,U+51B0,U+51EF,U+51FA,U+5206-5207,U+521D,U+5220,U+5229,U+5230,U+5237,U+524D,U+52A0,U+52A8,U+52D2,U+5317,U+5341,U+534A,U+534E,U+5357,U+535A,U+5361,U+5370,U+53BB,U+53C8,U+53D8,U+53E4,U+53EF,U+5403-5404,U+5408-5409,U+540C,U+540E,U+5468,U+548C,U+54E5,U+5609,U+56DB,U+56DE,U+56E2,U+56FD,U+5708,U+5723,U+5728,U+5730,U+5747,U+5750,U+5761,U+57C3,U+57CE,U+57DF,U+57FA,U+5821,U+585E,U+58EB,U+5904,U+590F,U+591A,U+591C,U+5927,U+5929,U+5931,U+594F,U+5965,U+5979,U+5988,U+59B9,U+59C6,U+59CB,U+5A01,U+5B50,U+5B63,U+5B89,U+5B8C,U+5B9E,U+5BB6,U+5BBF,U+5C0F,U+5C14,U+5C3C,U+5C71,U+5C9B,U+5CE1,U+5DDD-5DDE,U+5DEE,U+5DF1,U+5DF4,U+5E02-5E03,U+5E0C,U+5E15,U+5E38,U+5E74,U+5E93,U+5E95,U+5EA6-5EA7,U+5EB7,U+5F00,U+5F1F-5F20,U+5F55,U+5F7B,U+5F80,U+5F85,U+5F90,U+5FB7,U+5FEB,U+6021,U+603B,U+610F,U+6155,U+6210-6211,U+6216,U+624E,U+6253,U+6258,U+627E,U+629A,U+62B5,U+62C9,U+62D6,U+6309,U+6311,U+632A,U+6362,U+63A5,U+63D0,U+6458,U+6469,U+6539,U+653B,U+653E-653F,U+6566,U+6570,U+6574,U+65AF-65B0,U+65B9,U+65C5,U+65E0,U+65E5,U+65F6,U+6602,U+660C,U+660E,U+661F,U+6625,U+662F,U+665A,U+666E-666F,U+66F2,U+66FC,U+6700,U+6708-6709,U+672A,U+672C,U+6761,U+6765,U+6797,U+67CF-67D0,U+6837,U+683C,U+68B5,U+69DF,U+6B21,U+6B23,U+6B27,U+6B62,U+6B65,U+6BB5,U+6BCD,U+6BCF,U+6BD4-6BD5,U+6C14,U+6C47,U+6C5F,U+6C83,U+6CA1,U+6CB3,U+6CD5,U+6CE2,U+6CF0,U+6D0B,U+6D1B,U+6D32,U+6D4E,U+6D6A,U+6D77,U+6E05,U+6E21,U+6E24,U+6E7E,U+6F14,U+6F2B,U+706B,U+7075,U+70B9,U+70DF,U+7136,U+7167,U+7231,U+7236,U+7238,U+7247,U+7259,U+7279,U+73A9,U+73AF-73B0,U+73ED,U+7403,U+7434,U+745E,U+74E6,U+7532,U+7535,U+7538,U+753B,U+7559,U+7565,U+767D,U+7684,U+7687,U+76D8,U+76EE,U+76F4,U+76F8,U+7701,U+770B,U+771F,U+7740,U+79D1,U+79DF,U+79E6,U+7A0B,U+7A3F,U+7A7F,U+7AD9,U+7B2C,U+7C73,U+7D22,U+7EA6,U+7EBF,U+7ED5,U+7EE7,U+7EED,U+7F05-7F06,U+7F29,U+7F57,U+7FC1,U+7FF0,U+7FFB,U+80CC,U+814A,U+81EA,U+8239,U+826F,U+8272,U+82AD,U+82B1,U+82CF,U+82F1,U+8349,U+83AB,U+83DC,U+8404,U+8428,U+8461,U+8482,U+84DD,U+871C,U+884C,U+8865,U+897F,U+89C1,U+89C8,U+8BA4,U+8BB0,U+8BBF,U+8BC6,U+8BF7,U+8BFE,U+8C03,U+8C37,U+8D25,U+8D39,U+8D5B,U+8D70,U+8D76,U+8D8A,U+8D9F,U+8DB3,U+8DD1,U+8DDF,U+8DEF,U+8F66,U+8F6E,U+8F7D,U+8F86,U+8FB9,U+8FBE,U+8FC7-8FC8,U+8FD4,U+8FD8-8FD9,U+8FEA,U+8FF9,U+90A3,U+90E8,U+90FD,U+9102,U+91CC,U+91D1,U+91DC,U+94C1,U+952E,U+95ED-95EE,U+95F4,U+95FA,U+961F,U+963F,U+964D,U+966A,U+9686,U+968F,U+9694,U+96C5,U+96E8,U+96F7,U+975E,U+9762,U+97E9,U+97F3,U+9875,U+987A,U+9886,U+9898,U+98DE,U+9996,U+9A6C,U+9A7E,U+9AD8,U+9C81,U+9EC4,U+9ECE,U+9ED1,U+FF01,U+FF08-FF09,U+FF0C,U+FF1A-FF1B,U+FF1F}
-@font-face{font-family:'FSerif';src:url('public/v9/fonts/serif-sc-ext.woff2') format('woff2');font-weight:400 600;font-display:swap;unicode-range:U+4E49,U+4E4C-4E4D,U+4E91,U+4EAC,U+4F10,U+4FDD,U+5176,U+5178-5179,U+51E0,U+5217,U+521A,U+522B,U+52AA,U+5308,U+5362,U+5371,U+5384,U+53CA,U+53D9,U+53F0,U+54C8,U+5580,U+56FE,U+571F,U+572D,U+5766,U+57D4,U+5854,U+58A8,U+59D4,U+5AE9,U+5B5F,U+5B81,U+5B9B,U+5BBE,U+5BCC,U+5BE8,U+5C5E,U+5E1D,U+5E72,U+5E7F,U+5E86,U+5EF7,U+5EFA,U+5F8B,U+5F97,U+5FBD,U+6240,U+62DC,U+62FF,U+631D,U+6377,U+6492,U+6587,U+6590,U+65E6,U+65FA,U+667A,U+6717,U+671D,U+6781,U+679C,U+67EC,U+6839,U+6851,U+68EE,U+6BDB,U+6C11,U+6C57,U+6C76,U+6C99,U+6CCA,U+6D25,U+6D2A,U+6D59,U+6D66,U+6E2F,U+6E56,U+6FB3,U+73BB,U+74DC,U+7518,U+7586,U+798F,U+79D8,U+7A81,U+7ACB,U+7EB3,U+7ECD,U+7EF4,U+7F8E,U+7FA4,U+8001,U+8033,U+8054,U+8083,U+80AF,U+8131,U+82AC,U+8328,U+8377,U+83B1,U+83F2,U+8499,U+84EC,U+85CF,U+8D1D,U+8D35,U+8D5E,U+8D64,U+8FBD,U+9053,U+914B,U+91CD,U+957F,U+95E8,U+9655,U+9675-9676,U+9752,U+97E6,U+987F,U+9999,U+9C9C,U+9EA6,U+9F99}
+@font-face{font-family:'FSerif';src:url('public/v9/fonts/serif-sc.woff2') format('woff2');font-weight:400 600;font-display:swap;unicode-range:U+25,U+2C-3A,U+41-5A,U+61-7A,U+B0,U+B7,U+2014,U+2018-2019,U+201C-201D,U+2026,U+3001-3002,U+300A-300F,U+4E00-4E01,U+4E03,U+4E09-4E0B,U+4E0D-4E0E,U+4E16,U+4E1C,U+4E24,U+4E2A,U+4E2D,U+4E39-4E3B,U+4E48,U+4E4B,U+4E50,U+4E5D,U+4E5F,U+4E70,U+4E86,U+4E8C,U+4E8E,U+4E94,U+4E9A-4E9B,U+4EA4,U+4EAD,U+4EBA,U+4EC0-4EC1,U+4ECE,U+4ED6,U+4EE5,U+4EEC,U+4F0A,U+4F1A,U+4F26,U+4F2F,U+4F46,U+4F4F,U+4F5B,U+4F60,U+4FBF,U+4FC4,U+4FE1,U+505C,U+50CF,U+5145,U+5149,U+514B,U+5165,U+5168,U+516B-516D,U+5170-5171,U+5173-5174,U+5185,U+5188,U+518D,U+51AC,U+51B0,U+51B7,U+51E0,U+51EF,U+51FA,U+5206-5207,U+521A,U+521D,U+5220,U+5229,U+5230,U+5237,U+524D,U+52A0,U+52A8,U+52D2,U+5306,U+5316-5317,U+5341,U+5348,U+534A,U+534E,U+5357,U+535A,U+5361-5362,U+5370,U+53BB,U+53C8,U+53CB,U+53D1,U+53E3-53E4,U+53EF,U+5403,U+5408-5409,U+540C,U+540E,U+5435,U+5439,U+5468,U+5473,U+548C,U+54E5-54E6,U+5566,U+5609,U+56DB,U+56DE,U+56FD-56FE,U+5708,U+5723,U+5728,U+5730,U+573A,U+5747,U+5750,U+5761,U+57C3,U+57CE,U+57DF,U+57FA,U+5821,U+5835,U+5854,U+585E,U+58EB,U+590F,U+591A,U+591C,U+591F,U+5927,U+5929-592B,U+5931,U+594F,U+5965,U+5979,U+597D,U+5988,U+59B9,U+59C6,U+59CB,U+5A01,U+5B50,U+5B89,U+5B8C,U+5B9E,U+5BAB,U+5BB6,U+5C0F,U+5C14,U+5C3C,U+5C55,U+5C71,U+5C9B,U+5CE1,U+5DDD-5DDE,U+5DEE,U+5DF1,U+5DF4,U+5E02-5E03,U+5E0C,U+5E15,U+5E38,U+5E74,U+5E78,U+5E93,U+5E95,U+5E97,U+5EA6-5EA7,U+5EB7,U+5EF6,U+5F00,U+5F18,U+5F1F-5F20,U+5F55,U+5F7B,U+5F80,U+5F85,U+5F88,U+5F90,U+5F97,U+5FB7,U+5FC3,U+5FD7,U+5FEB,U+6021,U+603B,U+610F,U+6155,U+6162,U+6211,U+6216,U+624B,U+624E,U+6253,U+6258,U+627E,U+628A,U+629A,U+62B5,U+62C9,U+62CD,U+62D6,U+6309,U+6311,U+632A,U+6362,U+63A5,U+63D0,U+642D,U+6458,U+6469,U+6536,U+6539,U+653B,U+653E-653F,U+6566,U+6574,U+65AF-65B0,U+65B9,U+65C5,U+65CB,U+65E5,U+65F6,U+6602,U+660C,U+660E,U+661F,U+6625,U+662F,U+6652,U+665A,U+666E-666F,U+66F2,U+66F4,U+66FC,U+6700,U+6708-6709,U+670B,U+672A,U+672C,U+673A,U+6751,U+6761,U+6765,U+6797,U+67B6,U+67CF-67D0,U+6837,U+683C,U+68A6,U+68B5,U+69DF,U+6A21,U+6B21,U+6B23,U+6B27,U+6B62,U+6B65,U+6BB5,U+6BCD,U+6BCF,U+6BD4-6BD5,U+6C14,U+6C34,U+6C47,U+6C5D,U+6C5F,U+6C83,U+6CA1,U+6CB3,U+6CD5,U+6CE2,U+6CF0,U+6D0B,U+6D1B,U+6D1E,U+6D32,U+6D4E,U+6D6A,U+6D6E,U+6D77,U+6E05,U+6E21,U+6E24,U+6E38,U+6E7E,U+6F14,U+6F2B,U+706B,U+7075,U+70B9,U+70E4,U+70ED,U+7136,U+7167,U+7231,U+7236,U+7238,U+7247,U+7259,U+7279,U+72CE,U+73A9,U+73AF-73B0,U+73ED,U+7403,U+7434,U+745E,U+74E6,U+7532,U+7535,U+7538,U+753B,U+754C,U+7565,U+767D,U+7684,U+7687,U+76D8,U+76EE,U+76F4,U+76F8,U+770B,U+771F,U+7740,U+77E3,U+798F,U+79D1,U+79DF,U+79E6,U+7A0B,U+7A3F,U+7A7F,U+7AD9,U+7B2C,U+7C73,U+7EA6-7EA7,U+7EBF,U+7EC8,U+7ED5,U+7EE7,U+7EED,U+7F05-7F06,U+7F29,U+7F57,U+7F8E,U+7FC1,U+7FF0,U+7FFB,U+8089,U+80CC,U+814A,U+81EA,U+8239,U+826F,U+8282,U+82AD,U+82CF,U+82F1,U+8349,U+836B,U+83AB,U+83DC,U+8404,U+8428,U+8461,U+8482,U+84DD,U+871C,U+884C,U+8857,U+8865,U+897F,U+8981,U+89C1,U+89C8,U+8BA4,U+8BB0,U+8BBF,U+8BC6,U+8BF7,U+8BFE,U+8C03,U+8C37,U+8D25,U+8D28,U+8D39,U+8D5B,U+8D70,U+8D76-8D77,U+8D85,U+8D8A,U+8D9F,U+8DB3,U+8DDF,U+8DEF,U+8F66,U+8F6C,U+8F6E,U+8F7D,U+8F86,U+8FB9,U+8FBE,U+8FC7-8FC8,U+8FD8-8FD9,U+8FEA,U+8FF9,U+901B,U+904D,U+9053,U+90A3,U+90E8,U+90FD,U+9102,U+91CC,U+91DC,U+94C1,U+952E,U+9547,U+95E8,U+95ED-95EE,U+95F4,U+95F7,U+95FA,U+961F,U+9633,U+963F,U+964D,U+966A,U+9686,U+968F,U+9694,U+96C5,U+96F7,U+975E,U+9762,U+97E9,U+97F3,U+9875,U+987A,U+9886,U+9898,U+98CE,U+98DE,U+996D,U+9996,U+9A6C,U+9A7E,U+9AD8,U+9C81,U+9E25,U+9EC4,U+9ECE,U+9ED1,U+FF01,U+FF08-FF09,U+FF0C,U+FF1A-FF1B,U+FF1F}
+@font-face{font-family:'FSerif';src:url('public/v9/fonts/serif-sc-ext.woff2') format('woff2');font-weight:400 600;font-display:swap;unicode-range:U+4E49,U+4E4C-4E4D,U+4E91,U+4EAC,U+4F10,U+4FDD,U+5176,U+5178-5179,U+5217,U+522B,U+52AA,U+5308,U+5371,U+5384,U+53CA,U+53D9,U+53F0,U+5404,U+54C8,U+5580,U+571F,U+572D,U+5766,U+57D4,U+58A8,U+59D4,U+5AE9,U+5B5F,U+5B81,U+5B9B,U+5BBE,U+5BCC,U+5BE8,U+5C5E,U+5E1D,U+5E72,U+5E7F,U+5E86,U+5EF7,U+5EFA,U+5F8B,U+5FBD,U+6240,U+62DC,U+62FF,U+631D,U+6377,U+6492,U+6587,U+6590,U+65E6,U+65FA,U+667A,U+6717,U+671D,U+6781,U+679C,U+67EC,U+6839,U+6851,U+68EE,U+6BDB,U+6C11,U+6C57,U+6C76,U+6C99,U+6CCA,U+6D25,U+6D2A,U+6D59,U+6D66,U+6E2F,U+6E56,U+6FB3,U+73BB,U+74DC,U+7518,U+7586,U+79D8,U+7A81,U+7ACB,U+7D22,U+7EB3,U+7ECD,U+7EF4,U+7FA4,U+8001,U+8033,U+8054,U+8083,U+80AF,U+8131,U+8272,U+82AC,U+8328,U+8377,U+83B1,U+83F2,U+8499,U+84EC,U+85CF,U+8D1D,U+8D35,U+8D5E,U+8D64,U+8FBD,U+914B,U+91CD,U+957F,U+9655,U+9675-9676,U+9752,U+97E6,U+987F,U+9999,U+9C9C,U+9EA6,U+9F99}
 @font-face{font-family:'FLatin';src:url('public/v9/fonts/cormorant.woff2') format('woff2');font-weight:300 700;font-display:swap}
 @font-face{font-family:'FLatin';src:url('public/v9/fonts/cormorant-italic.woff2') format('woff2');font-weight:300 700;font-style:italic;font-display:swap}
 :root{
@@ -689,6 +689,21 @@ body.is-detail .menub{display:flex}
   .tp-pl .st-c .nm{font-size:17px}
   .dmap.tp-map .box{aspect-ratio:1/1;max-height:none}
 }
+/* v9.2k: day itinerary on trips that have published (non-draft) days */
+.itin{padding:8px var(--pad) 48px;max-width:1440px;margin:0 auto}
+.itin ol{list-style:none;margin:0;padding:0}
+.itin-d{padding:36px 0 28px;border-top:1px solid var(--line)}
+.itin-d:first-child{padding-top:4px;border-top:0}
+.itin-k{font-size:12px;letter-spacing:.16em;color:var(--muted);margin:0 0 10px}
+.itin-d h3{margin:0 0 10px;font-family:var(--serif);font-weight:400;font-size:20px;letter-spacing:.14em;color:var(--ink)}
+.itin-d p{margin:0;max-width:36em;font-size:15px;line-height:1.85;letter-spacing:.06em;color:var(--ink2)}
+.itin-stay{margin-top:12px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
+.itin-d .pg{margin-top:22px}
+@media (max-width:860px){
+  .itin{padding:0 var(--pad) 28px}
+  .itin-d{padding:28px 0 20px}
+  .itin-d h3{font-size:18px}
+}
 /* v9.2c home first screen: quiet photo wall + the globe rising from below */
 .hero-m{--gw:min(96vh,92vw,1100px);background:#12100E}
 .hero-m .mosaic{position:absolute;inset:-4% 0 auto;height:108%;display:grid;grid-template-columns:repeat(6,1fr);gap:5px;background:#12100E;opacity:0;animation:mosIn 2.4s var(--ease) .2s forwards}
@@ -868,8 +883,8 @@ var TOGETHER_FROM='2024-12-22',MET='2024-10-13';
 var MONTH_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var COUNTRY_EN={'韩国':'Korea','法国':'France','冰岛':'Iceland','葡萄牙':'Portugal','西班牙':'Spain','瑞士':'Switzerland','泰国':'Thailand','摩洛哥':'Morocco','英国':'United Kingdom','意大利':'Italy','梵蒂冈':'Vatican City','希腊':'Greece','马来西亚':'Malaysia','中国':'China','新加坡':'Singapore','俄罗斯':'Russia','印度尼西亚':'Indonesia'};
 // covers: scenery first, or people small in the frame; never selfies or two big faces. 'MAP' = use the route map as the hero.
-var LEAD={'2026-korea':'korea/02','2024-paris-winter':'paris24/03','2024-iceland':'iceland/02','2024-iberia-may':'iberia24/01','2024-switzerland':'switzerland/01','2024-thailand':'thailand/04','2024-cornwall-zx':'cornwall-zx/03','2024-highlands-zx':'highlands/07','2024-scotland-dec-zx':'scotland-dec/03','2024-morocco':'morocco/07','2025-wales':'wales/06','2025-france':'france/06','2025-italy-spring':'vatican/02','2025-greece':'greece/04','2025-spain-summer':'spain/12','2025-car-day':'birmingham/06','2024-uk-loop':'ukloop24/04','2024-cornwall':'cornwall24/04','2025-family-uk':'london-dec25/07','2026-singapore-zx':'singapore/01','2026-sea-honeymoon':'honeymoon/14','2026-moscow-zx':'moscow/05','2026-jakarta-zx':'jakarta/02','edinburgh-again':'edinburgh/04','uk-years':'london/06','china':'qinhuangdao/04'};
-var SECOND={'2026-korea':'korea/03','2024-paris-winter':'paris24/04','2024-iceland':'iceland/04','2024-iberia-may':'iberia24/08','2024-switzerland':'switzerland/05','2024-thailand':'thailand/05','2024-cornwall-zx':'cornwall-zx/06','2024-highlands-zx':'highlands/05','2024-scotland-dec-zx':'scotland-dec/06','2024-morocco':'morocco/02','2025-wales':'wales2/02','2025-italy-spring':'italy/02','2025-greece':'greece/06','2025-spain-summer':'spain/06','2025-car-day':'birmingham/03','2025-family-uk':'london-dec25/03','2026-singapore-zx':'singapore/02','2026-sea-honeymoon':'honeymoon/09','2026-moscow-zx':'moscow/02','2026-jakarta-zx':'jakarta/03'};
+var LEAD={'2026-korea':'korea/02','2024-paris-winter':'paris24/03','2024-iceland':'iceland/02','2024-iberia-may':'iberia24/01','2024-switzerland':'switzerland/01','2024-thailand':'thailand/04','2024-cornwall-zx':'cornwall-zx/03','2024-highlands-zx':'highlands/07','2024-scotland-dec-zx':'scotland-dec/03','2024-morocco':'morocco/07','2025-wales':'wales/06','2025-france':'france/06','2025-italy-spring':'vatican/02','2025-greece':'greece/04','2025-spain-summer':'spain/12','2025-car-day':'birmingham/06','2024-uk-loop':'ukloop24/04','2024-cornwall':'cornwall24/04','2025-family-uk':'london-dec25/07','2026-singapore-zx':'singapore/01','2026-sea-honeymoon':'honeymoon/14','2026-moscow-zx':'moscow/05','2026-jakarta-zx':'jakarta/02','2026-seoul-mom':'seoul-mom/09','edinburgh-again':'edinburgh/04','uk-years':'london/06','china':'qinhuangdao/04'};
+var SECOND={'2026-korea':'korea/03','2024-paris-winter':'paris24/04','2024-iceland':'iceland/04','2024-iberia-may':'iberia24/08','2024-switzerland':'switzerland/05','2024-thailand':'thailand/05','2024-cornwall-zx':'cornwall-zx/06','2024-highlands-zx':'highlands/05','2024-scotland-dec-zx':'scotland-dec/06','2024-morocco':'morocco/02','2025-wales':'wales2/02','2025-italy-spring':'italy/02','2025-greece':'greece/06','2025-spain-summer':'spain/06','2025-car-day':'birmingham/03','2025-family-uk':'london-dec25/03','2026-singapore-zx':'singapore/02','2026-sea-honeymoon':'honeymoon/09','2026-moscow-zx':'moscow/02','2026-jakarta-zx':'jakarta/03','2026-seoul-mom':'seoul-mom/02'};
 
 /* ---------- icons ---------- */
 var IC={
@@ -929,7 +944,7 @@ function build(tripsD,placesD,storyD){
   else if(s.route&&s.route.length){o.stops=s.route.slice().sort(function(a,b){return (a.order||0)-(b.order||0)}).map(function(r){return {city:r.city,country:r.country,lat:+r.lat,lng:+r.lng,area:!!r.area,days:r.days||[],by:'',note:''}})}
   else if(s.moments){var seen={};o.stops=[];s.moments.forEach(function(m){if(!seen[m.city]){seen[m.city]=1;o.stops.push({city:m.city,lat:+m.lat,lng:+m.lng,days:[]})}})}
   else o.stops=[];
-  o.days=(s.days||s.itinerary||[]).map(function(d){return {day:d.day,date:d.date,city:d.city,title:d.title||'',text:d.text||d.note||'',weather:d.weather||'',stay:d.stay||'',pk:d.photos||null,food:d.food||(((EXTRA.food||{})[t.id]||{})[String(d.day)])||''}});
+  o.days=(s.days||s.itinerary||[]).map(function(d){return {day:d.day,date:d.date,city:d.city,title:d.title||'',text:d.text||d.note||'',weather:d.weather||'',stay:d.stay||'',pk:d.photos||null,food:d.food||(((EXTRA.food||{})[t.id]||{})[String(d.day)])||'',draft:!!d.draft}});
   o.moments=s.moments||null;o.visits=s.visits||null;
   o.together=t.kind==='trip'?(o.who?(o.who==='tg'||o.who==='fam'):(t.start>=TOGETHER_FROM)):null;
   o.lc=lineCls(o.who,o.together);
@@ -947,14 +962,14 @@ function build(tripsD,placesD,storyD){
  SEQ=real.concat(['uk-years','china-diary'].map(function(i){return BYID[i]}).filter(Boolean));
  ALLPH=[];TRIPS.forEach(function(t){t.photos.forEach(function(p){ALLPH.push(p)})});
 }
-var SEQ=[],EXTRA={},CAPS=null,BRIEF={"2024-paris-winter": {"line": "铁塔、凯旋门、卢浮宫，冬天的巴黎也好看"}, "2024-iceland": {"line": "冰岛的风景，像梦里见过一样", "title": "世界的终点冰岛"}, "2024-iberia-may": {"line": "巴塞罗那到里斯本，五月的太阳刚刚好"}, "2024-switzerland": {"line": "瑞士随手一拍，都是明信片"}, "2024-thailand": {"line": "曼谷到吉隆坡，一路热一路吃"}, "2024-uk-loop": {"line": "跟妹妹把英国绕了一大圈"}, "2024-cornwall-zx": {"line": "康沃尔的海，蓝得不像在英国", "title": "康沃尔的海（兴兴）"}, "2024-cornwall": {"line": "九月的康沃尔，海风吹着刚好"}, "2024-highlands-zx": {"line": "高地随便停一下，都是风景"}, "2024-scotland-dec-zx": {"line": "十二月的苏格兰，冷，但很有过节的味道"}, "2024-morocco": {"line": "第一次一起旅行，风景很美，你更美"}, "2025-wales": {"line": "威尔士转了一圈，跟朋友们的第一次旅行"}, "2025-france": {"line": "巴黎逛完又去迪士尼，玩到走不动"}, "2025-italy-spring": {"line": "从罗马到米兰，吵过一夜架"}, "2025-greece": {"line": "希腊的蓝和白，跟照片里一模一样"}, "2025-spain-summer": {"line": "特内里费晒够了太阳，又回了趟托萨小镇"}, "2025-car-day": {"line": "提车啦，和我们的气质很搭哦", "title": "伯明翰提车日记"}, "2025-family-uk": {"line": "爸妈和弟弟来英国，开心了整整一个月"}, "2026-korea": {"line": "跟闺蜜在首尔逛吃了几天"}, "2026-singapore-zx": {"line": "出差顺便，看了看新加坡", "title": "新加坡展会之行"}, "2026-sea-honeymoon": {"line": "蜜月去了东南亚，以后还要再去！"}, "2026-moscow-zx": {"line": "六月的莫斯科，来去匆匆"}, "2026-jakarta-zx": {"line": "雅加达出差，又堵又闷", "title": "雅加达展会之行"}, "uk-years": {"line": "在英国那几年，去得最多的是伦敦"}, "china-diary": {"line": "慢慢走遍大好河山", "title": "国内日记"}},LOOSE=[],ALLPH_X=[]; // BRIEF is baked in by build.py from data/trips-brief.kimi.json (approved copy); USE_BRIEF=0 python3 build.py leaves it out
+var SEQ=[],EXTRA={},CAPS=null,BRIEF={"2024-paris-winter": {"line": "铁塔、凯旋门、卢浮宫，冬天的巴黎也好看"}, "2024-iceland": {"line": "冰岛的风景，像梦里见过一样", "title": "世界的终点冰岛"}, "2024-iberia-may": {"line": "巴塞罗那到里斯本，五月的太阳刚刚好"}, "2024-switzerland": {"line": "瑞士随手一拍，都是明信片"}, "2024-thailand": {"line": "曼谷到吉隆坡，一路热一路吃"}, "2024-uk-loop": {"line": "跟妹妹把英国绕了一大圈"}, "2024-cornwall-zx": {"line": "康沃尔的海，蓝得不像在英国", "title": "康沃尔的海（兴兴）"}, "2024-cornwall": {"line": "九月的康沃尔，海风吹着刚好"}, "2024-highlands-zx": {"line": "高地随便停一下，都是风景"}, "2024-scotland-dec-zx": {"line": "十二月的苏格兰，冷，但很有过节的味道"}, "2024-morocco": {"line": "第一次一起旅行，风景很美，你更美"}, "2025-wales": {"line": "威尔士转了一圈，跟朋友们的第一次旅行"}, "2025-france": {"line": "巴黎逛完又去迪士尼，玩到走不动"}, "2025-italy-spring": {"line": "从罗马到米兰，吵过一夜架"}, "2025-greece": {"line": "希腊的蓝和白，跟照片里一模一样"}, "2025-spain-summer": {"line": "特内里费晒够了太阳，又回了趟托萨小镇"}, "2025-car-day": {"line": "提车啦，和我们的气质很搭哦", "title": "伯明翰提车日记"}, "2025-family-uk": {"line": "爸妈和弟弟来英国，开心了整整一个月"}, "2026-korea": {"line": "跟闺蜜在首尔逛吃了几天"}, "2026-singapore-zx": {"line": "出差顺便，看了看新加坡", "title": "新加坡展会之行"}, "2026-sea-honeymoon": {"line": "蜜月去了东南亚，以后还要再去！"}, "2026-moscow-zx": {"line": "六月的莫斯科，来去匆匆"}, "2026-jakarta-zx": {"line": "雅加达出差，又堵又闷", "title": "雅加达展会之行"}, "2026-seoul-mom": {"title": "和妈妈的首尔"}, "uk-years": {"line": "在英国那几年，去得最多的是伦敦"}, "china-diary": {"line": "慢慢走遍大好河山", "title": "国内日记"}},LOOSE=[],ALLPH_X=[]; // BRIEF is baked in by build.py from data/trips-brief.kimi.json (approved copy); USE_BRIEF=0 python3 build.py leaves it out
 function stats(){
  var cc={},cities={},trips=0,km=0,days=0;
  TRIPS.forEach(function(t){t.countries.forEach(function(c){cc[c]=1});t.stops.forEach(function(s){cities[s.city]=1});if(t.kind==='trip'){trips++;days+=t.dayCount}km+=t.km;
   if(t.visits)t.visits.forEach(function(v){if(v.start&&v.end)days+=daysIncl(v.start,v.end)})});
  return {countries:Object.keys(cc).length,cities:Object.keys(cities).length,trips:trips,km:km,days:days};
 }
-var WHO={jy:'嘉怡一个人',zx:'兴哥一个人',sis:'嘉怡和妹妹',friend:'和闺蜜',tg:'两个人',fam:'和爸妈、弟弟',zxbiz:'兴哥 · 出差顺便玩',zxwork:'兴哥出差'};
+var WHO={jy:'嘉怡一个人',zx:'兴哥一个人',sis:'嘉怡和妹妹',friend:'和闺蜜',tg:'两个人',fam:'和爸妈、弟弟',zxbiz:'兴哥 · 出差顺便玩',zxwork:'兴哥出差',mom:'和妈妈'};
 function lineCls(w,tg){if(w==='zx'||w==='zxbiz'||w==='zxwork')return 'zx';if(w==='tg'||w==='fam')return 'tg';if(w)return 'solo';return tg?'tg':'solo'}
 function companion(t){if(t.who&&WHO[t.who])return {tg:t.lc==='tg',cls:t.lc,txt:WHO[t.who]};if(t.together===true)return {tg:true,cls:'tg',txt:'两个人'};if(t.together===false)return {tg:false,cls:'solo',txt:'一个人'};return null}
 function routeText(t){var out=[];t.stops.forEach(function(s,i){if(i&&s.city===t.stops[i-1].city)return;out.push(s.city)});return out}
@@ -1131,12 +1146,12 @@ var OV=[
  {y:'Summer 2024',yr:'2024',t:'英国的夏天',p:'嘉怡陪妹妹从伦敦绕到爱丁堡；兴哥去了康沃尔和苏格兰高地。',ids:['2024-uk-loop','2024-cornwall-zx','2024-cornwall','2024-highlands-zx']},
  {y:'December 2024',yr:'2024',t:'两条线，在阿加迪尔汇合',p:'十月认识，十二月在阿加迪尔第一次见面。',ids:['2024-scotland-dec-zx','2024-morocco'],pad:15,turn:true,bridge:true},
  {y:'2025',yr:'2025',t:'两个人的一年',p:'威尔士、巴黎、意大利、希腊、特内里费。七月提了车，年底爸妈和弟弟来了英国。',ids:['2025-wales','2025-france','2025-italy-spring','2025-greece','2025-spain-summer','2025-car-day','2025-family-uk']},
- {y:'2026',yr:'2026',t:'回到亚洲',p:'首尔，新加坡，蜜月去了曼谷和吉隆坡，还有莫斯科和雅加达。',ids:['2026-korea','2026-singapore-zx','2026-sea-honeymoon','2026-moscow-zx','2026-jakarta-zx']},
+ {y:'2026',yr:'2026',t:'回到亚洲',p:'首尔两次，新加坡，蜜月去了曼谷和吉隆坡，还有莫斯科和雅加达。',ids:['2026-korea','2026-singapore-zx','2026-sea-honeymoon','2026-moscow-zx','2026-jakarta-zx','2026-seoul-mom']},
  {y:'So far',yr:'',t:'到现在',p:'',ids:[],all:true}
 ];
 // 2025 copy written by Jayzen; used exactly as written
 var CHAP_TAG={'2025':'7 段旅行 · 我和你'};
-var CHAP={'2024':'巴黎、冰岛、伊比利亚、瑞士、曼谷。十月认识，年底在摩洛哥见面。','2025':'两个人的第一个整年。欧洲走了一大圈，我走过你的路，多了一辆车，一家店，年底爸妈和弟弟来了英国，超级幸福的一年。','2026':'一月首尔。六月出差、蜜月、又出差。八月雅加达。'};
+var CHAP={'2024':'巴黎、冰岛、伊比利亚、瑞士、曼谷。十月认识，年底在摩洛哥见面。','2025':'两个人的第一个整年。欧洲走了一大圈，我走过你的路，多了一辆车，一家店，年底爸妈和弟弟来了英国，超级幸福的一年。','2026':'一月首尔。六月出差、蜜月、又出差。八月雅加达。十一月和妈妈再去首尔。'};
 var homeMaps=[],ovMap=null,homeIO=[],globeCtl=null,routeGen=0;
 function chapCount(list){var c={};list.forEach(function(t){c[t.lc]=(c[t.lc]||0)+1});var s=list.length+' 段旅行';if(c.tg===list.length)s+=' · 两个人';return s}
 var HERO_TILES=['wales2/04','highlands/04','highlands/02','cornwall-zx/03','vatican/02','cornwall24/01','highlands/06','wales2/03','morocco/07','highlands/05','honeymoon/09','scotland-dec/06'];
@@ -1337,7 +1352,8 @@ function pgHTML(ps,ctx){if(!ps.length)return '';var rows=[],n=ps.length,i=0;var 
  return '<div class="pg">'+rows.map(function(r){var sum=0;r.forEach(function(p){sum+=(p.w||3)/(p.h||4)});var mw=r.length===1?((p0=r[0]).w>p0.h?100:58):(sum<1.6?78:100);
   return '<div class="pgr" style="max-width:'+mw+'%">'+r.map(function(p){var ar=(p.w||3)/(p.h||4);return img(p,{lift:true,attrs:' data-lbi="'+ctx.indexOf(p)+'"',alt:p.place,sizes:'(max-width:860px) '+Math.round(100*ar/sum)+'vw, '+Math.round(45*ar/sum)+'vw',style:'flex:'+ar.toFixed(3)+' 1 0;aspect-ratio:'+(p.w||3)+'/'+(p.h||4)})}).join('')+'</div>'}).join('')+'</div>'}
 var p0;
-// v9.2b trip page: cover, one short line, places, route map, photos grouped by place. No day-by-day.
+// v9.2b trip page: cover, one short line, places, route map, photos grouped by place.
+// v9.2k: non-draft day cards (itinerary) sit between the map and leftover photos.
 function renderDetail(view,id){
  var t=BYID[id];if(!t){view.innerHTML=missHTML();return}
  var i=SEQ.indexOf(t),prev=SEQ[(i-1+SEQ.length)%SEQ.length],next=SEQ[(i+1)%SEQ.length];
@@ -1358,10 +1374,30 @@ function renderDetail(view,id){
   places.map(function(pl,j){return '<li class="st-c" data-stop="'+pl.stop+'"'+(pl.visit!=null?' data-visit="'+pl.visit+'"':'')+' tabindex="0"><span class="n latin">'+p2(j+1)+'</span><span class="nm">'+esc(pl.nm)+'</span>'+(pl.sub?'<span class="sb">'+esc(pl.sub)+'</span>':'')+(pl.link&&BYID[pl.link]?'<a class="vlink" href="#/trip/'+pl.link+'">那一趟'+ARROW+'</a>':'')+'</li>'}).join('')+'</ol>'+
   (start?'<div class="tp-note">从'+esc(start)+'出发，又回到'+esc(start)+'</div>':'')+'</div>'+
   '<div class="dmap tp-map"><div class="box" id="dmapbox"><div class="zoom"><button data-z="in" aria-label="放大">+</button><button data-z="out" aria-label="缩小">−</button><button data-z="fit" aria-label="全部路线" style="font-size:11px">⤢</button></div><div class="cap"><span>'+(isE?'爱丁堡':isC?'中国':'路线')+'</span><b id="dmapcap"></b></div></div></div></section>';
- // photos, grouped by place where known
- var ctx=t.photos.slice(),groups=[],gi={};
- ctx.forEach(function(p){var nm=isC?'':(p.place||'');if(gi[nm]==null){gi[nm]=groups.length;groups.push({nm:nm,ps:[]})}groups[gi[nm]].ps.push(p)});
- if(ctx.length){h+='<section class="tp-ph"><div class="sec-k">照片 · '+ctx.length+'</div>'+groups.map(function(g){return '<div class="tp-g">'+(groups.length>1&&g.nm?'<h3 data-place="'+esc(g.nm)+'">'+esc(g.nm)+'</h3>':'')+pgHTML(g.ps,ctx)+'</div>'}).join('')+'</section>'}
+ // published day cards (only days with draft:false; existing trips stay hidden)
+ var ctx=t.photos.slice();
+ var days=(t.days||[]).filter(function(d){return !d.draft});
+ var used={};
+ var dph=days.map(function(d){
+  var ps=(d.pk||[]).map(function(k){return t.photos.filter(function(p){return p.key===k})[0]}).filter(Boolean);
+  ps.forEach(function(p){used[p.key]=1});
+  return {d:d,ps:ps};
+ });
+ if(days.length){
+  h+='<section class="itin"><div class="sec-k">行程</div><ol>'+dph.map(function(x){
+   var d=x.d,row='<li class="itin-d">';
+   if(d.date)row+='<div class="itin-k latin">'+esc(fmtDay(d.date))+'</div>';
+   if(d.title)row+='<h3>'+esc(d.title)+'</h3>';
+   if(d.text)row+='<p>'+esc(d.text)+'</p>';
+   if(d.stay)row+='<div class="itin-stay">'+esc(d.stay)+'</div>';
+   if(x.ps.length)row+=pgHTML(x.ps,ctx);
+   return row+'</li>';
+  }).join('')+'</ol></section>';
+ }
+ // photos not already shown on a day card, grouped by place
+ var rest=ctx.filter(function(p){return !used[p.key]}),groups=[],gi={};
+ rest.forEach(function(p){var nm=isC?'':(p.place||'');if(gi[nm]==null){gi[nm]=groups.length;groups.push({nm:nm,ps:[]})}groups[gi[nm]].ps.push(p)});
+ if(rest.length){h+='<section class="tp-ph"><div class="sec-k">照片 · '+rest.length+'</div>'+groups.map(function(g){return '<div class="tp-g">'+(groups.length>1&&g.nm?'<h3 data-place="'+esc(g.nm)+'">'+esc(g.nm)+'</h3>':'')+pgHTML(g.ps,ctx)+'</div>'}).join('')+'</section>'}
  h+='<section class="dfoot"><div class="k">继续看</div><div class="nx">'+nxHTML(prev,'上一站',false)+nxHTML(next,'下一站',true)+'</div><div class="keys">键盘 <kbd>←</kbd><kbd>→</kbd> 切换旅行，<kbd>Esc</kbd> 回到全部</div>'+
   '<div style="text-align:center"><button class="rand" data-rand>'+icon('shuffle')+'随便翻一段旅行</button></div>'+footHTML()+'</section>';
  view.innerHTML=h;markLoaded(view);

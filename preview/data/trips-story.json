@@ -3347,6 +3347,119 @@
       ],
       "v92": true,
       "pending": "行程细节为草稿"
+    },
+    {
+      "id": "2026-seoul-mom",
+      "draft": false,
+      "confirmed": [
+        "dates",
+        "route"
+      ],
+      "route_draft": false,
+      "dates_draft": false,
+      "summary": "",
+      "transport": [
+        "飞机",
+        "AREX",
+        "打车"
+      ],
+      "highlights": [
+        "狎鸥亭",
+        "圣水",
+        "光化门",
+        "汝矣岛",
+        "弘大"
+      ],
+      "route": [
+        {
+          "order": 1,
+          "city": "首尔",
+          "country": "韩国",
+          "lat": 37.5665,
+          "lng": 126.978,
+          "days": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "arrive_by": "",
+          "note": ""
+        }
+      ],
+      "days": [
+        {
+          "day": 1,
+          "date": "2026-11-18",
+          "city": "首尔",
+          "title": "抵达 · 狎鸥亭",
+          "text": "抵达后入住 Long Weekend Haus，晚饭去狎鸥亭。",
+          "stay": "Long Weekend Haus",
+          "draft": false,
+          "photos": [
+            "seoul-mom/01",
+            "seoul-mom/02"
+          ]
+        },
+        {
+          "day": 2,
+          "date": "2026-11-19",
+          "city": "首尔",
+          "title": "圣水",
+          "text": "圣水逛街，Haus Nowhere、Nudake，还有 London Bagel Museum。",
+          "stay": "Long Weekend Haus",
+          "draft": false,
+          "photos": [
+            "seoul-mom/03",
+            "seoul-mom/04",
+            "seoul-mom/05",
+            "seoul-mom/06",
+            "seoul-mom/07",
+            "seoul-mom/08"
+          ]
+        },
+        {
+          "day": 3,
+          "date": "2026-11-20",
+          "city": "首尔",
+          "title": "光化门 · 西村 · 三清",
+          "text": "光化门、西村、三清洞，下午林荫道、岛山。晚上烤肉，换住 Wish Stay YEONNAM（延南洞）。",
+          "stay": "Wish Stay YEONNAM",
+          "draft": false,
+          "photos": [
+            "seoul-mom/09",
+            "seoul-mom/10",
+            "seoul-mom/11",
+            "seoul-mom/12",
+            "seoul-mom/13",
+            "seoul-mom/14"
+          ]
+        },
+        {
+          "day": 4,
+          "date": "2026-11-21",
+          "city": "首尔",
+          "title": "汝矣岛 · 弘大",
+          "text": "下午汝矣岛，晚上弘大。",
+          "stay": "Wish Stay YEONNAM",
+          "draft": false,
+          "photos": [
+            "seoul-mom/15"
+          ]
+        },
+        {
+          "day": 5,
+          "date": "2026-11-22",
+          "city": "首尔",
+          "title": "回国",
+          "text": "延南洞午饭后，从弘大入口站坐 AREX 去机场。",
+          "stay": "",
+          "draft": false,
+          "photos": []
+        }
+      ],
+      "v92": true
     }
   ]
 }

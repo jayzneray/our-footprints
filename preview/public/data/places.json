@@ -1010,6 +1010,109 @@
    "memory": ""
   },
   {
+   "id": "seoul-mom",
+   "name": "首尔",
+   "country": "韩国",
+   "scope": "world",
+   "lat": 37.5665,
+   "lng": 126.978,
+   "cover": "photos/seoul-mom/09-480.webp",
+   "photos": [
+    {
+     "src": "photos/seoul-mom/01.webp",
+     "w": 1440,
+     "h": 2556,
+     "bg": "#2e251e"
+    },
+    {
+     "src": "photos/seoul-mom/02.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#414853"
+    },
+    {
+     "src": "photos/seoul-mom/03.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#424044"
+    },
+    {
+     "src": "photos/seoul-mom/04.webp",
+     "w": 1280,
+     "h": 1707,
+     "bg": "#43392c"
+    },
+    {
+     "src": "photos/seoul-mom/05.webp",
+     "w": 1280,
+     "h": 1707,
+     "bg": "#3e3734"
+    },
+    {
+     "src": "photos/seoul-mom/06.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#433e39"
+    },
+    {
+     "src": "photos/seoul-mom/07.webp",
+     "w": 1440,
+     "h": 2561,
+     "bg": "#3a3a3a"
+    },
+    {
+     "src": "photos/seoul-mom/08.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#524c48"
+    },
+    {
+     "src": "photos/seoul-mom/09.webp",
+     "w": 1280,
+     "h": 1707,
+     "bg": "#363a42"
+    },
+    {
+     "src": "photos/seoul-mom/10.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#272725"
+    },
+    {
+     "src": "photos/seoul-mom/11.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#2f3334"
+    },
+    {
+     "src": "photos/seoul-mom/12.webp",
+     "w": 1280,
+     "h": 1707,
+     "bg": "#434b58"
+    },
+    {
+     "src": "photos/seoul-mom/13.webp",
+     "w": 1280,
+     "h": 1707,
+     "bg": "#48372d"
+    },
+    {
+     "src": "photos/seoul-mom/14.webp",
+     "w": 1440,
+     "h": 1920,
+     "bg": "#554940"
+    },
+    {
+     "src": "photos/seoul-mom/15.webp",
+     "w": 1280,
+     "h": 1707,
+     "bg": "#3f2d28"
+    }
+   ],
+   "date": "2026-11-18",
+   "memory": ""
+  },
+  {
    "id": "malaysia",
    "name": "马来西亚",
    "country": "马来西亚",
