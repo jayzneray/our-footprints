@@ -772,7 +772,8 @@
      "focusY": 0.5,
      "batch": 3,
      "orig": "2024嘉怡泰国吉隆坡/6036a53db4b54260c005efc3b67c7db4.jpg",
-     "hidden": true
+     "hidden": true,
+     "country": "马来西亚"
     },
     {
      "src": "photos/thailand/08.webp",
@@ -781,7 +782,8 @@
      "bg": "#2a271e",
      "focusY": 0.5,
      "batch": 3,
-     "orig": "2024嘉怡泰国吉隆坡/791dc233e97d7565e2651be38dc5fd57.jpg"
+     "orig": "2024嘉怡泰国吉隆坡/791dc233e97d7565e2651be38dc5fd57.jpg",
+     "country": "马来西亚"
     },
     {
      "src": "photos/thailand/09.webp",
@@ -790,7 +792,8 @@
      "bg": "#212226",
      "focusY": 0.5,
      "batch": 3,
-     "orig": "2024嘉怡泰国吉隆坡/a3a1b9b0df1632e12ee48dd4373b6bfa.jpg"
+     "orig": "2024嘉怡泰国吉隆坡/a3a1b9b0df1632e12ee48dd4373b6bfa.jpg",
+     "country": "马来西亚"
     }
    ],
    "date": null,
@@ -2093,7 +2096,9 @@
      "bg": "#464445",
      "focusY": 0.5,
      "batch": 3,
-     "orig": "蜜月/1d41d17f4444146c42296573800e1905.jpg"
+     "orig": "蜜月/1d41d17f4444146c42296573800e1905.jpg",
+     "country": "马来西亚",
+     "place": "吉隆坡"
     },
     {
      "src": "photos/honeymoon/12.webp",
@@ -2120,7 +2125,9 @@
      "bg": "#25221e",
      "focusY": 0.5,
      "batch": 3,
-     "orig": "蜜月/95e4a8a8666f652c16db7eff8a6d60f8.jpg"
+     "orig": "蜜月/95e4a8a8666f652c16db7eff8a6d60f8.jpg",
+     "country": "马来西亚",
+     "place": "吉隆坡"
     },
     {
      "src": "photos/honeymoon/15.webp",
