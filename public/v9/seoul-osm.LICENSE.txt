@@ -1,0 +1,10 @@
+Seoul OSM geographic background — Open Data Commons Open Database License 1.0 (ODbL).
+© OpenStreetMap contributors.
+Attribution: https://www.openstreetmap.org/copyright
+License: https://opendatacommons.org/licenses/odbl/1-0/
+Source: https://download.geofabrik.de/asia/south-korea-261122.osm.pbf
+Source description: https://download.geofabrik.de/asia/south-korea.html
+Snapshot filename 2026-11-22. Official MD5 verified; recorded in seoul-osm.geo.json properties.
+Extraction: real pyosmium multipolygon/way assembly; WGS84 bbox [126.1,36.95,127.4,38.1]; topology-preserving initial simplification 0.00002deg, roads 0.00005deg; 6-decimal coordinates. Water areas >=2.5e-7deg² or named Han River retained; actual river/coast lines kept. Motorway/trunk/primary and links retained; secondary and links only within Seoul core [126.86,37.48,127.12,37.64]. Connected road pieces merge only by same class/name; source_ids lists preserve member OSM-way provenance. Water/river/coast original OSM ids/types retained. GeoJSON uses RFC7946 ring winding; application normalizes a separate in-memory copy for d3.
+This local derivative database is offered under ODbL1.0 at seoul-osm.geo.json. It contains only public geographic features, not private POIs, photos, trip routes or user accounts. Application/personal content is a separate collection and is not relicensed by this notice.
+No map tiles scraped, no paid key/account, no remote API runtime dependency. Overpass public requests failed; final data uses the checksum-verified Geofabrik snapshot.
