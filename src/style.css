@@ -301,6 +301,8 @@ body.is-detail .top .mark{display:none}
 .itin{padding:70px 0 40px}
 .dmap{position:sticky;top:64px;height:calc(100vh - 64px);height:calc(100svh - 64px);padding:28px 0 28px}
 .dmap .box{position:relative;width:100%;height:100%;background:#0E0C0B;border:1px solid var(--line);overflow:hidden}
+.korea-outline{position:absolute;inset:0;display:block;width:100%;height:100%;background:#0E0C0B}
+.korea-outline-shape{fill:#5A4A38;stroke:rgba(237,230,218,.28);stroke-width:1;vector-effect:non-scaling-stroke}
 .dmap svg{display:block;width:100%;height:100%}
 .dmap .cap{position:absolute;left:18px;bottom:14px;right:18px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.22em;color:var(--muted);pointer-events:none}
 .dmap .cap b{font-weight:400;font-family:var(--serif);font-size:14px;letter-spacing:.14em;color:var(--ink)}
@@ -500,6 +502,13 @@ body.is-detail .menub{display:flex}
 
 
 /* ---------- v9.2: covers keep their own orientation ---------- */
+.trip[hidden]{display:none!important}
+.search-toggle{width:40px;height:40px;border:1px solid transparent;border-radius:50%;color:var(--ink2);font-size:26px;line-height:1}.search-toggle:hover,.search-toggle[aria-expanded="true"]{border-color:var(--line2);color:var(--acc)}
+body.is-detail .search-toggle{display:none}
+.search-panel{position:fixed;z-index:51;top:72px;right:var(--pad);width:min(640px,calc(100vw - 2*var(--pad)));padding:18px;background:rgba(18,16,14,.98);border:1px solid var(--line2);box-shadow:0 18px 48px rgba(0,0,0,.42);opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;transition:.22s ease}
+.search-panel.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.finder-controls{display:grid;grid-template-columns:minmax(180px,1fr) 130px 150px auto;gap:8px;align-items:center}
+.finder-search{position:relative;display:block}.finder-search input,.finder-controls select{width:100%;height:48px;padding:0 16px;border:1px solid var(--line2);border-radius:2px;background:rgba(255,255,255,.025);color:var(--ink);font:inherit;font-size:14px;letter-spacing:.05em;outline:none}.finder-search input:focus,.finder-controls select:focus{border-color:var(--acc);box-shadow:0 0 0 2px rgba(190,145,89,.16)}.finder-search input::placeholder{color:var(--muted)}.finder-search>span:last-child{position:absolute;right:16px;top:8px;font-size:24px;color:var(--muted);pointer-events:none}.finder-controls select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 20px,calc(100% - 12px) 20px;background-size:5px 5px;background-repeat:no-repeat}.finder-controls select option{background:#181614;color:var(--ink)}.finder-controls>button{height:44px;padding:0 12px;border-bottom:1px solid var(--line2);color:var(--ink2);font:inherit;font-size:12px;letter-spacing:.1em}.finder-controls>button:hover{color:var(--acc)}.finder-count{min-height:1.5em;margin:14px 0 0;color:var(--muted);font-size:12px;letter-spacing:.08em}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .trip.ls .vis .main{aspect-ratio:4/3}
 .trip.pt .vis .main{aspect-ratio:4/5}
 .trip.pt.l-a .vis{grid-column:2/7}.trip.pt.l-a .info{grid-column:8/12}
@@ -520,6 +529,7 @@ body.is-detail .menub{display:flex}
   .chap-h .txt{grid-column:1/10;margin-top:30px}
 }
 @media (max-width:860px){
+.search-panel{top:62px;right:12px;width:calc(100vw - 24px);padding:14px}.finder-controls{grid-template-columns:1fr 1fr}.finder-search{grid-column:1/-1}.finder-controls>button{justify-self:start}
   .top{height:56px}
   .sheet{top:56px}
   .hero .meta{display:none}
@@ -652,6 +662,19 @@ body.is-detail .menub{display:flex}
 .miss .mlist+.home{margin-bottom:60px}.miss:has(.mlist){padding-top:120px}
 .rmap .rc,.rmap .rk,.maparts .tag,.dmap .zoom{z-index:3}
 /* v9.2b trip page: places + route map + photos by place */
+.trip-quicknav{position:sticky;top:64px;z-index:8;display:flex;align-items:center;gap:4px;padding:8px var(--pad);background:rgba(18,16,14,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);overflow-x:auto;scrollbar-width:none}
+.trip-quicknav::-webkit-scrollbar{display:none}
+.trip-quicknav button{flex:0 0 auto;padding:8px 12px;color:var(--ink2);font:inherit;font-size:11px;letter-spacing:.12em;white-space:nowrap}
+.trip-quicknav button:hover,.trip-quicknav button:focus-visible{color:var(--acc);outline-color:var(--acc)}
+.trip-quicknav [data-replay-map]{margin-left:auto;color:var(--muted)}
+.trip-anchor{display:block;scroll-margin-top:92px}
+#trip-days,#trip-photos{scroll-margin-top:112px}
+.day-map-link{display:inline-flex;align-items:center;gap:8px;margin-top:15px;padding:5px 0;border-bottom:1px solid var(--line);font:inherit;font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.day-map-link:hover{color:var(--acc);border-color:var(--acc)}
+.day-map-link svg{width:16px;height:8px}
+.resume-journey{position:fixed;right:24px;bottom:24px;z-index:30;padding:13px 18px;border:1px solid var(--line2);border-radius:2px;background:rgba(25,22,19,.94);backdrop-filter:blur(12px);color:var(--ink);font:inherit;font-size:12px;letter-spacing:.1em;box-shadow:0 8px 30px rgba(0,0,0,.24);cursor:pointer}
+.resume-journey:hover{border-color:var(--acc);color:var(--acc)}
+.resume-journey[hidden]{display:none}
 .tp{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(28px,4vw,64px);padding:72px var(--pad) 56px;max-width:1440px;margin:0 auto;align-items:start}
 .sec-k{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:22px}
 .tp-pl ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
@@ -672,6 +695,10 @@ body.is-detail .menub{display:flex}
 .tp-g{margin-bottom:40px}
 .tp-g h3{margin:0 0 16px;font-family:var(--serif);font-weight:400;font-size:15px;letter-spacing:.24em;color:var(--acc)}
 @media (max-width:860px){
+  .trip-quicknav{top:56px;gap:0;padding:7px var(--pad)}
+  .trip-quicknav button{padding:9px 10px;font-size:10px}
+  .trip-quicknav [data-replay-map]{margin-left:auto}
+  .resume-journey{right:14px;bottom:calc(14px + env(safe-area-inset-bottom));max-width:calc(100vw - 28px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .tp{grid-template-columns:1fr;padding:44px var(--pad) 32px;gap:28px}
   .tp-pl .st-c{padding:14px 0 13px;grid-template-columns:36px 1fr auto}
   .tp-pl .st-c .nm{font-size:17px}
@@ -843,7 +870,7 @@ body.is-detail .menub{display:flex}
 .osm-credit a:hover{color:#fff;text-decoration:underline;}
 @media (max-width:600px){.osm-credit{font-size:11px;top:4px;left:4px;}.osm-credit a{padding:1px 4px;}}
 
-.mp-city-labels .mp-city-leader{stroke:rgba(237,230,218,.35);stroke-width:1;stroke-dasharray:2 2}.mp-city-labels .mp-city-label{fill:rgba(237,230,218,.9);paint-order:stroke;stroke:rgba(23,27,25,.6);stroke-width:3;stroke-linejoin:round;font-weight:600;letter-spacing:.02em}.mp-city-labels .mp-city-label.cur{fill:#f0c674;stroke:rgba(23,27,25,.8)}
+.mp-city-labels .mp-city-leader{stroke:rgba(201,162,122,.58);stroke-width:1;stroke-dasharray:2 2}.mp-city-labels .mp-city-label{fill:rgba(237,230,218,.96);paint-order:stroke;stroke:rgba(23,21,18,.94);stroke-width:3;stroke-linejoin:round;font-weight:600;letter-spacing:.02em}.mp-city-labels .mp-city-label.cur{fill:#d5b27e;stroke:rgba(23,21,18,.96)}
 /* Two Scotland home cards only: title+photos above a wide map; photos not 120px strips. */
 .trip[data-id="2024-highlands-zx"],
 .trip[data-id="2024-scotland-dec-zx"]{

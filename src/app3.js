@@ -33,6 +33,8 @@ function renderHome(view){
   '<div class="cap"><div class="eyebrow latin">'+yr+'</div><h1>'+chars('旅行日志',.45)+'</h1><div class="en latin">Somewhere between here and everywhere</div></div>'+
   '<div class="gl-card" id="glcard" aria-live="polite"></div>'+
   '<div class="ghint">拖动地球，点一条线</div><a class="cue" href="#y2026" data-scroll="y2026">往下<i></i></a></section>';
+ // A practical index keeps the story-led home useful when the archive grows.
+ // Search UI lives in the header popover; keep the narrative home uncluttered.
  // chapters
  var real=SEQ.filter(function(t){return t.kind==='trip'}),years={};real.forEach(function(t){(years[t.year]=years[t.year]||[]).push(t)});
  var n=0,lay=['l-a','l-c','l-b','l-d'],li=0,mapFlip=false,metDone=false;
@@ -57,8 +59,9 @@ function renderHome(view){
 }
 function metHTML(){return '<div class="met rv" id="met"><span class="ln"></span><span class="tx"><b class="latin">2024.10.13</b>我们认识了</span><span class="ln"></span></div>'}
 function cornwallNote(t){return (t.id==='2024-cornwall'&&BYID['2024-cornwall-zx'])?'<div class="note2">同一片海，相隔两周。那时还不认识。</div>':''}
+function tripSearchText(t){return [t.title,t.summary,t.start,t.year,routeText(t).join(' '),(t.stops||[]).map(function(s){return s.city}).join(' '),(t.highlights||[]).join(' ')].join(' ')}
 function miniCard(t,n){var cm=companion(t),rt=routeText(t);
- return '<article class="trip l-mini" data-id="'+t.id+'"><a class="vis rv" href="#/trip/'+t.id+'"><div class="maparts" data-map="art" data-id="'+t.id+'"></div><div class="tag">'+engMonth(t)+'</div></a>'+
+ return '<article class="trip l-mini" data-id="'+t.id+'" data-year="'+esc(t.year||'')+'" data-who="'+(cm?cm.cls:'')+'" data-search="'+esc(tripSearchText(t))+'"><a class="vis rv" href="#/trip/'+t.id+'"><div class="maparts" data-map="art" data-id="'+t.id+'"></div><div class="tag">'+engMonth(t)+'</div></a>'+
   '<div class="info rv d1"><div class="no latin">'+p2(n)+'</div><h3><a href="#/trip/'+t.id+'">'+esc(t.title)+'</a></h3>'+
   '<div class="meta"><b>'+fmtRange(t.start,t.end)+'</b> · '+t.dayCount+' 天'+(t.cityCount?' · '+t.cityCount+' 座城':'')+'</div>'+
   (t.summary?'<p class="sum">'+esc(t.summary)+'</p>':'')+
@@ -157,7 +160,7 @@ function tripCard(t,n,L){
  var vis;
  if(L.indexOf('l-map')===0){vis='<div class="vis rv"><a class="main ph" href="#/trip/'+t.id+'" style="display:block"><div class="maparts" data-map="art" data-id="'+t.id+'"></div><div class="tag">'+engMonth(t)+'</div></a></div>'}
  else vis='<div class="vis rv"><a class="main ph big" href="#/trip/'+t.id+'" style="display:block" aria-label="'+esc(t.title)+'"><div class="maparts rmap-l" data-map="big" data-id="'+t.id+'"><div class="rc">'+(t.unordered?'到访城市':'路线')+'</div></div></a></div>';
- return '<article class="trip '+L+(t.portrait?' pt':' ls')+'" data-id="'+t.id+'">'+vis+
+ return '<article class="trip '+L+(t.portrait?' pt':' ls')+'" data-id="'+t.id+'" data-year="'+esc(t.year||'')+'" data-who="'+(cm?cm.cls:'')+'" data-search="'+esc(tripSearchText(t))+'">'+vis+
   '<div class="info rv d1"><div class="no latin">'+p2(n)+'</div><h3><a href="#/trip/'+t.id+'">'+esc(t.title)+'</a></h3>'+
   '<div class="meta"><b>'+fmtRange(t.start,t.end)+'</b> · '+t.dayCount+' 天'+(t.nights?' '+t.nights+' 晚':'')+(t.cityCount?' · '+t.cityCount+' 座城':'')+'</div>'+
   (t.summary?'<p class="sum">'+esc(t.summary)+'</p>':'')+
@@ -173,6 +176,8 @@ function footHTML(){return '<div class="foot"><div>旅行日志 · 兴兴嘉怡�
 
 function setupHome(view){
  reveal(view);
+ var search=$('#tripSearch'),year=$('#tripYear'),who=$('#tripWho'),count=$('#finderCount'),clear=$('#tripClear');
+ if(search&&year&&who){Array.from(new Set(SEQ.filter(function(t){return t.kind==='trip'}).map(function(t){return t.year}))).sort().reverse().forEach(function(y){var op=document.createElement('option');op.value=y;op.textContent=y;year.appendChild(op)});function filterTrips(){var q=search.value.trim().toLocaleLowerCase(),y=year.value,w=who.value,shown=0;$$('.trip[data-search]',view).forEach(function(card){var ok=(!q||card.getAttribute('data-search').toLocaleLowerCase().indexOf(q)>-1)&&(!y||card.getAttribute('data-year')===y)&&(!w||card.getAttribute('data-who')===w);card.hidden=!ok;if(ok)shown++});count.textContent=(q||y||w)?'找到 '+shown+' 段旅行':'共 '+$$('.trip[data-search]',view).length+' 段旅行 · 输入地点、城市或年份快速查找'};search.addEventListener('input',filterTrips);year.addEventListener('change',filterTrips);who.addEventListener('change',filterTrips);clear.addEventListener('click',function(){search.value='';year.value='';who.value='';filterTrips();search.focus()});filterTrips()}
  // count up
  var sEl=$('.stats',view);if(sEl){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;io.disconnect();$$('[data-count]',sEl).forEach(function(n,i){countUp(n,+n.getAttribute('data-count'),1800+i*120)})})},{threshold:.4});io.observe(sEl);homeIO.push(io)}
  // overview
@@ -223,7 +228,7 @@ function whenMapBoxReady(el,fn){
 function makeTripMap(el){
  var t=BYID[el.getAttribute('data-id')];if(!t||!t.stops.length)return;
  var art=el.getAttribute('data-map')==='art',big=el.getAttribute('data-map')==='big',city=isSeoulCity(t);
- var pts=mapPts(t),rb=bboxOf(pts),base=grow(rb,city?1.45:(art?2.2:2.4),city?cityMinSpan(t):(art?Math.max(3,routeSpan(pts)):Math.max(2.2,routeSpan(pts)*.35)));
+ var pts=mapPts(t),framePts=mapFramePts(t),koreaFrame=[[124,33],[132,39.5],[124,39.5],[132,33]],moscow=t.id==='2026-moscow-zx',rb=bboxOf(city?koreaFrame:framePts),base=grow(rb,city?1.2:moscow?(art?1.22:1.35):(art?2.2:2.4),city?cityMinSpan(t):moscow?Math.max(3,routeSpan(framePts)*.8):(art?Math.max(3,routeSpan(framePts)):Math.max(2.2,routeSpan(framePts)*.35)));
  var hl={};tripCountries(t).forEach(function(c){hl[c]=1});
  el._pend=1;(city?Promise.all([loadDetail(),loadSeoulOSM()]):loadDetail()).then(function(){el._pend=0;if(!el._want||!el.isConnected)return;
   whenMapBoxReady(el,function(){if(!el._want||!el.isConnected||el._map)return;
@@ -232,9 +237,9 @@ function makeTripMap(el){
   var rs=city?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg'));if(!city&&t.id==='2024-cornwall'&&BYID['2024-cornwall-zx'])rs=rs.concat(tripRoutes(BYID['2024-cornwall-zx'],'zx ghost2'));
   var stops=city?seoulPois(t).filter(function(s){return s.city!=='仁川机场'}):t.stops.filter(function(s){return !s.area}).map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t));
   m.setRoutes(rs,stops);
-  m.trip=t;m.art=art;m.wide=base;
-  if(city){addSeoulTransit(el,t)}
-  m.view((art||city)?pts:[base[0],base[1]],(art||city)?{pad:.2,minSpan:city?cityMinSpan(t):Math.max(2.2,routeSpan(pts)),instant:true}:{pad:0,instant:true});
+  m.trip=t;m.art=art;m.city=city;m.wide=base;
+  if(city){m.view(koreaFrame,{pad:.16,instant:true});requestAnimationFrame(function(){if(!m.dead&&el._want&&el.isConnected)m.view(framePts,{pad:.2,minSpan:cityMinSpan(t),dur:1800,linear:true,forceMotion:true})})}
+  else m.view(art?[base[0],base[1]]:[base[0],base[1]],art?{pad:.24,instant:true}:{pad:0,instant:true});
   if(!art){m.opt.lblSet={}}
   el._map=m;homeMaps.push(m);
   m._el=el;if(el.closest('.trip.act'))mapOnIdle(m);
@@ -244,7 +249,7 @@ var actTrip=null;
 // a route map zooms in and draws its line only once the page stops scrolling: animating big canvases mid-scroll cost ~6fps on desktop
 var mapIdleT=0;function mapOnIdle(m){if(!document.documentElement.classList.contains('scr')){mapOn(m);return}m._pendOn=1;clearTimeout(mapIdleT);mapIdleT=setTimeout(function chk(){if(document.documentElement.classList.contains('scr')){mapIdleT=setTimeout(chk,120);return}homeMaps.forEach(function(x){if(x._pendOn){x._pendOn=0;if(actTrip&&x._el&&actTrip.contains(x._el))mapOn(x)}})},180)}
 function activateTrip(tr){if(actTrip===tr)return;if(actTrip){actTrip.classList.remove('act');$$('[data-map]',actTrip).forEach(function(e){if(e._map){e._map._pendOn=0;mapOff(e._map)}})}actTrip=tr;tr.classList.add('act');$$('[data-map]',tr).forEach(function(e){if(e._map)mapOnIdle(e._map)})}
-function mapOn(m){var t=m.trip,pts=mapPts(t);m.opt.lblSet=null;m.view(pts,{pad:m.art?.2:.24,minSpan:tripMinSpan(t),dur:1300});var n=m.segP.length;for(var i=0;i<n;i++)m.animateSeg(i,1,Math.max(450,900/n),700+i*Math.max(380,800/n));m.setActive(-1)}
+function mapOn(m){var t=m.trip,pts=t.id==='2026-moscow-zx'?mapFocusPts(t):mapFramePts(t),moscow=t.id==='2026-moscow-zx',city=!!m.city;m.opt.lblSet=null;m.view(pts,{pad:city?.2:moscow?[.18,.18,.2,.18]:(m.art?.24:.24),minSpan:city?cityMinSpan(t):moscow?0:Math.max(tripMinSpan(t),0),dur:city?1800:moscow?1050:1300,linear:city||moscow,forceMotion:city});var n=m.segP.length;for(var i=0;i<n;i++)m.animateSeg(i,1,Math.max(450,900/n),700+i*Math.max(380,800/n));m.setActive(-1)}
 function mapOff(m){if(m.art)return;var q=document.documentElement.classList.contains('scr');m.opt.lblSet={};m.view([m.wide[0],m.wide[1]],{pad:0,dur:900,instant:q});for(var i=0;i<m.segP.length;i++)m.animateSeg(i,0,q?0:400,0)}
 
 function setupOverview(view){

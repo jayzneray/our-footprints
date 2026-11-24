@@ -75,7 +75,18 @@ function fmtNum(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,
 /* ---------- data ---------- */
 var TRIPS=[],BYID={},PL={},WORLD=null,DETAIL=null,CHINA=null,detailP=null,chinaP=null,ALLPH=[];
 function J(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(u);return r.json()})}
-function repairDetailGeometry(fc){var by={};WORLD.features.forEach(function(f){by[f.properties.name]=f});fc.features=fc.features.map(function(f){var n=f.properties.name;if((n==='俄罗斯'||n==='印度')&&by[n])return {type:'Feature',properties:f.properties,geometry:by[n].geometry};return f});delete fc._ref;return fc}
+function repairDetailGeometry(fc){
+ var by={};WORLD.features.forEach(function(f){by[f.properties.name]=f});
+ function bounds(g){var b=[Infinity,Infinity,-Infinity,-Infinity];function walk(v){if(!Array.isArray(v))return;if(typeof v[0]==='number'&&typeof v[1]==='number'){b[0]=Math.min(b[0],v[0]);b[1]=Math.min(b[1],v[1]);b[2]=Math.max(b[2],v[0]);b[3]=Math.max(b[3],v[1]);return}v.forEach(walk)}walk(g.coordinates);return b}
+ // detail-hi is intentionally cropped at 143°E / 11°S / 48°W / 73°N.
+ // Use the full world geometry for countries touching those cut edges so the map
+ // doesn't end in a straight seam (notably Indonesia, PNG and Australia).
+ fc.features=fc.features.map(function(f){var n=f.properties.name,w=by[n],b=bounds(f.geometry),wb=w?bounds(w.geometry):null,clipped=b[0]<=-47.95||b[1]<=-10.95||b[2]>=142.95||b[3]>=72.95;
+  // Several Sahara-border countries in detail-hi share a flat 24°N cutoff.
+  if(wb&&b[1]>=23.95&&b[1]<=24.05&&wb[1]<b[1]-1.5)clipped=true;
+  if((n==='俄罗斯'||n==='印度'||clipped)&&w)return {type:'Feature',properties:f.properties,geometry:w.geometry};return f});
+ delete fc._ref;return fc
+}
 function prepGeo(fc){fc.features.forEach(function(f){var b=d3.geoBounds(f);if(b[0][0]>b[1][0]){b=[[-180,b[0][1]],[180,b[1][1]]]}f._b=b;});return fc}
 function loadDetail(){if(!detailP)detailP=J('public/v9/detail-countries.topo.json').then(function(t){var d=topojson.feature(t,t.objects.c);if(!HI)DETAIL=prepGeo(repairDetailGeometry(d));return d});return detailP}
 // trip and country pages zoom far into coastlines, so they use the unsimplified layer
@@ -132,6 +143,10 @@ function isSeoulCity(t){if(!t||t.kind!=='trip')return false;var cs={};(t.stops||
 var SEOUL_POI={'2026-seoul-mom':[{city:'狎鸥亭',lng:127.0286,lat:37.5273},{city:'圣水',lng:127.0556,lat:37.5445},{city:'光化门',lng:126.9769,lat:37.5759},{city:'西村',lng:126.9668,lat:37.5788},{city:'三清',lng:126.9816,lat:37.5845},{city:'林荫道',lng:127.023175,lat:37.5206268},{city:'汝矣岛',lng:126.9245,lat:37.5219},{city:'弘大',lng:126.9237,lat:37.5563},{city:'延南',lng:126.9253,lat:37.5662},{city:'仁川机场',lng:126.4407,lat:37.4602},{city:'岛山',lng:127.0363,lat:37.5226}],'2026-korea':[{city:'明洞',lng:126.9849,lat:37.5636},{city:'景福宫',lng:126.977,lat:37.5796},{city:'南山塔',lng:126.9882,lat:37.5512},{city:'仁寺洞',lng:126.986,lat:37.574},{city:'广藏市场',lng:126.9996,lat:37.570}]};
 function seoulPois(t){return (SEOUL_POI[t&&t.id]||[]).slice()}
 function mapPts(t){if(isSeoulCity(t)){return seoulPois(t).filter(function(s){return s.city!=='仁川机场'}).map(function(s){return [s.lng,s.lat]})}var p=(t.stops||[]).map(function(s){return [s.lng,s.lat]});(t.legs||[]).forEach(function(l){l.forEach(function(x){p.push([x.lng,x.lat])})});return p}
+// Camera-only context for long east-west routes: these points widen the map frame
+// without becoming markers, stops, or route segments.
+function mapFramePts(t){var p=mapPts(t);if(t&&t.id==='2026-moscow-zx')p=p.concat([[78,8]]);return p}
+function mapFocusPts(t){return t&&t.id==='2026-moscow-zx'?[[32,48],[46,63]]:mapFramePts(t)}
 var SEOUL_OSM=null,seoulOSMP=null;
 function loadSeoulOSM(){
  if(seoulOSMP) return seoulOSMP;

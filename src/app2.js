@@ -15,7 +15,7 @@ function FlatMap(el,opt){
  this.gOver=this.svg.append('g');this.gSeaL=this.gOver.append('g');this.gCty=this.gOver.append('g');this.ctxG=this.gOver.append('g');this.gRoute=this.gOver.append('g');this.gDots=this.gOver.append('g');this.gLbl=this.gOver.append('g');
  this.resize();
 }
-var LAND_STYLE={n:['#171512','rgba(237,230,218,.06)'],v:['#5A4A38','rgba(237,230,218,.32)'],hl:['#6E5A44','rgba(237,230,218,.40)'],p:['#1A1714','rgba(237,230,218,.08)'],pv:['#5A4A38','rgba(237,230,218,.32)']};
+var LAND_STYLE={n:['#1B1814','rgba(201,162,122,.12)'],v:['#5A4A38','rgba(237,230,218,.32)'],hl:['#6E5A44','rgba(237,230,218,.40)'],p:['#1A1714','rgba(237,230,218,.08)'],pv:['#5A4A38','rgba(237,230,218,.32)']};
 FlatMap.prototype.resize=function(){
  var el=this.el,W=el.clientWidth||300,H=el.clientHeight||200,o=this.opt;this.W=W;this.H=H;
  this.dpr=Math.min(1.5,window.devicePixelRatio||1);this.cv.width=Math.round(W*this.dpr);this.cv.height=Math.round(H*this.dpr);this.cv.style.width=W+'px';this.cv.style.height=H+'px';
@@ -115,10 +115,11 @@ FlatMap.prototype.camT=function(pts,pad,minSpan){
  return {k:k,x:ox-k*cx,y:oy-k*cy}};
 FlatMap.prototype.view=function(pts,o){
  o=o||{};var self=this;this.cam={pts:pts,pad:o.pad,minSpan:o.minSpan};
- var T1=this.camT(pts,o.pad,o.minSpan),T0=this.T,dur=RM||o.instant?0:(o.dur||1400);
+ var T1=this.camT(pts,o.pad,o.minSpan),T0=this.T,dur=o.forceMotion?(o.dur||1400):(RM||o.instant?0:(o.dur||1400));
  cancelAnimationFrame(this.craf);
  if(!dur){this.moving=false;this.T=T1;this.applyT();return}
  var W=this.W,H=this.H;
+ if(o.linear){var c0x=(W/2-T0.x)/T0.k,c0y=(H/2-T0.y)/T0.k,c1x=(W/2-T1.x)/T1.k,c1y=(H/2-T1.y)/T1.k,t1=performance.now(),ease=d3.easeCubicInOut,half=false;self.moving=true;function linearFr(now){if(self.dead)return;var p=Math.min(1,(now-t1)/dur),e=ease(p),k=T0.k*Math.pow(T1.k/T0.k,e),cx=c0x+(c1x-c0x)*e,cy=c0y+(c1y-c0y)*e;self.T={k:k,x:W/2-k*cx,y:H/2-k*cy};if(!half&&o.onHalf&&p>=.48){half=true;o.onHalf()}if(p>=1)self.moving=false;self.applyT();if(p<1)self.craf=requestAnimationFrame(linearFr)}this.craf=requestAnimationFrame(linearFr);return}
  var c0=[(W/2-T0.x)/T0.k,(H/2-T0.y)/T0.k,W/T0.k],c1=[(W/2-T1.x)/T1.k,(H/2-T1.y)/T1.k,W/T1.k];
  var iz=d3.interpolateZoom(c0,c1),t0=performance.now(),ease=d3.easeCubicInOut;
  self.moving=true;function fr(now){if(self.dead)return;var t=Math.min(1,(now-t0)/dur),v=iz(ease(t)),k=W/v[2];self.T={k:k,x:W/2-k*v[0],y:H/2-k*v[1]};if(t>=1)self.moving=false;self.applyT();if(t<1)self.craf=requestAnimationFrame(fr)}
@@ -132,7 +133,7 @@ FlatMap.prototype.setRoutes=function(routes,stops){this.opt.routes=routes;this.o
  var self=this;this.routeEls=routes.map(function(r){var g={ghost:self.opt.ghost?self.gRoute.append('path').attr('class','mp-route ghost'):null,line:/\bleg\b/.test(r.cls)?self.gRoute.append('path').attr('class','mp-route '+r.cls):self.gRoute.append('path').attr('class','mp-route '+(r.cls||'tg')).attr('pathLength',1).style('stroke-dasharray','1 1').style('stroke-dashoffset',1)};return g});
  // unique dots by city
  var u={};this.dots=[];(stops||[]).forEach(function(s,i){var key=s.city;if(u[key]){u[key].idx.push(i);return}var d={city:s.city,ll:[s.lng,s.lat],idx:[i],cls:s.cls||'',lbl:s.label!==false};u[key]=d;self.dots.push(d)});
- this.dots.forEach(function(d){d.c=self.gDots.append('circle').attr('r',3.2).attr('class','mp-dot '+d.cls);if(d.lbl)d.t=self.gLbl.append('text').attr('class','mp-lbl').text(d.city)});
+ this.dots.forEach(function(d){d.c=self.gDots.append('circle').attr('r',3.2).attr('class','mp-dot '+d.cls);if(self.opt.onStop){d.c.attr('tabindex',0).attr('role','button').attr('aria-label','查看 '+d.city).style('cursor','pointer').on('click',function(){self.opt.onStop(d.city,d.idx[0])}).on('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();self.opt.onStop(d.city,d.idx[0])}})}if(d.lbl)d.t=self.gLbl.append('text').attr('class','mp-lbl').text(d.city)});
  this.pulse=this.gDots.append('circle').attr('class','mp-pulse').attr('r',12).attr('display','none');
  this.ringsG=this.gDots.append('g');
  this.renderOver()};
@@ -386,7 +387,7 @@ FlatMap.prototype.paintCityDiagram = function() {
   if (!c) return;
   if (!this.cityGeo) throw new Error('paintCityDiagram: cityGeo not initialized');
   c.setTransform(1, 0, 0, 1, 0, 0);
-  c.fillStyle = '#171b19';
+  c.fillStyle = '#171512';
   c.fillRect(0, 0, this.cv.width, this.cv.height);
   var m = this.m, t0 = this.t0;
   var K = T.k * m;
@@ -404,11 +405,11 @@ FlatMap.prototype.paintCityDiagram = function() {
       var name = (r.name || '').toLowerCase();
       var isHan = /han river|hangang|한강/.test(name);
       if (isHan || !/(river|stream|canal|drain|pond|reservoir|basin)/.test(name)) {
-        c.fillStyle = isHan ? '#1b3542' : '#1a2a32';
+        c.fillStyle = isHan ? '#403528' : '#28241e';
         c.fill(r.p);metrics.waterFills++;if(isHan)metrics.hanVisible=true;if(r.id)metrics.ids.push(r.id);
       }
     } else if (r.kind === 'coast') {
-      c.strokeStyle = '#2a3d47';
+      c.strokeStyle = 'rgba(201,162,122,.28)';
       c.lineWidth = 0.8 / K;
       c.lineJoin = 'round';
       c.lineCap = 'round';
@@ -423,7 +424,7 @@ function addOSMCredit(el){
  if(!el || el.querySelector('.osm-credit')) return;
  var div = document.createElement('div');
  div.className = 'osm-credit';
- div.innerHTML = '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a><a href="public/v9/seoul-osm.geo.json" target="_blank" rel="noopener">Seoul OSM data ODbL</a>';
+ div.innerHTML = '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>';
  el.appendChild(div);
 }
 function T0k(m){return m.T.k}

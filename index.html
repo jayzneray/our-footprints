@@ -318,6 +318,8 @@ body.is-detail .top .mark{display:none}
 .itin{padding:70px 0 40px}
 .dmap{position:sticky;top:64px;height:calc(100vh - 64px);height:calc(100svh - 64px);padding:28px 0 28px}
 .dmap .box{position:relative;width:100%;height:100%;background:#0E0C0B;border:1px solid var(--line);overflow:hidden}
+.korea-outline{position:absolute;inset:0;display:block;width:100%;height:100%;background:#0E0C0B}
+.korea-outline-shape{fill:#5A4A38;stroke:rgba(237,230,218,.28);stroke-width:1;vector-effect:non-scaling-stroke}
 .dmap svg{display:block;width:100%;height:100%}
 .dmap .cap{position:absolute;left:18px;bottom:14px;right:18px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.22em;color:var(--muted);pointer-events:none}
 .dmap .cap b{font-weight:400;font-family:var(--serif);font-size:14px;letter-spacing:.14em;color:var(--ink)}
@@ -517,6 +519,13 @@ body.is-detail .menub{display:flex}
 
 
 /* ---------- v9.2: covers keep their own orientation ---------- */
+.trip[hidden]{display:none!important}
+.search-toggle{width:40px;height:40px;border:1px solid transparent;border-radius:50%;color:var(--ink2);font-size:26px;line-height:1}.search-toggle:hover,.search-toggle[aria-expanded="true"]{border-color:var(--line2);color:var(--acc)}
+body.is-detail .search-toggle{display:none}
+.search-panel{position:fixed;z-index:51;top:72px;right:var(--pad);width:min(640px,calc(100vw - 2*var(--pad)));padding:18px;background:rgba(18,16,14,.98);border:1px solid var(--line2);box-shadow:0 18px 48px rgba(0,0,0,.42);opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;transition:.22s ease}
+.search-panel.open{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.finder-controls{display:grid;grid-template-columns:minmax(180px,1fr) 130px 150px auto;gap:8px;align-items:center}
+.finder-search{position:relative;display:block}.finder-search input,.finder-controls select{width:100%;height:48px;padding:0 16px;border:1px solid var(--line2);border-radius:2px;background:rgba(255,255,255,.025);color:var(--ink);font:inherit;font-size:14px;letter-spacing:.05em;outline:none}.finder-search input:focus,.finder-controls select:focus{border-color:var(--acc);box-shadow:0 0 0 2px rgba(190,145,89,.16)}.finder-search input::placeholder{color:var(--muted)}.finder-search>span:last-child{position:absolute;right:16px;top:8px;font-size:24px;color:var(--muted);pointer-events:none}.finder-controls select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 20px,calc(100% - 12px) 20px;background-size:5px 5px;background-repeat:no-repeat}.finder-controls select option{background:#181614;color:var(--ink)}.finder-controls>button{height:44px;padding:0 12px;border-bottom:1px solid var(--line2);color:var(--ink2);font:inherit;font-size:12px;letter-spacing:.1em}.finder-controls>button:hover{color:var(--acc)}.finder-count{min-height:1.5em;margin:14px 0 0;color:var(--muted);font-size:12px;letter-spacing:.08em}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .trip.ls .vis .main{aspect-ratio:4/3}
 .trip.pt .vis .main{aspect-ratio:4/5}
 .trip.pt.l-a .vis{grid-column:2/7}.trip.pt.l-a .info{grid-column:8/12}
@@ -537,6 +546,7 @@ body.is-detail .menub{display:flex}
   .chap-h .txt{grid-column:1/10;margin-top:30px}
 }
 @media (max-width:860px){
+.search-panel{top:62px;right:12px;width:calc(100vw - 24px);padding:14px}.finder-controls{grid-template-columns:1fr 1fr}.finder-search{grid-column:1/-1}.finder-controls>button{justify-self:start}
   .top{height:56px}
   .sheet{top:56px}
   .hero .meta{display:none}
@@ -669,6 +679,19 @@ body.is-detail .menub{display:flex}
 .miss .mlist+.home{margin-bottom:60px}.miss:has(.mlist){padding-top:120px}
 .rmap .rc,.rmap .rk,.maparts .tag,.dmap .zoom{z-index:3}
 /* v9.2b trip page: places + route map + photos by place */
+.trip-quicknav{position:sticky;top:64px;z-index:8;display:flex;align-items:center;gap:4px;padding:8px var(--pad);background:rgba(18,16,14,.9);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);overflow-x:auto;scrollbar-width:none}
+.trip-quicknav::-webkit-scrollbar{display:none}
+.trip-quicknav button{flex:0 0 auto;padding:8px 12px;color:var(--ink2);font:inherit;font-size:11px;letter-spacing:.12em;white-space:nowrap}
+.trip-quicknav button:hover,.trip-quicknav button:focus-visible{color:var(--acc);outline-color:var(--acc)}
+.trip-quicknav [data-replay-map]{margin-left:auto;color:var(--muted)}
+.trip-anchor{display:block;scroll-margin-top:92px}
+#trip-days,#trip-photos{scroll-margin-top:112px}
+.day-map-link{display:inline-flex;align-items:center;gap:8px;margin-top:15px;padding:5px 0;border-bottom:1px solid var(--line);font:inherit;font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.day-map-link:hover{color:var(--acc);border-color:var(--acc)}
+.day-map-link svg{width:16px;height:8px}
+.resume-journey{position:fixed;right:24px;bottom:24px;z-index:30;padding:13px 18px;border:1px solid var(--line2);border-radius:2px;background:rgba(25,22,19,.94);backdrop-filter:blur(12px);color:var(--ink);font:inherit;font-size:12px;letter-spacing:.1em;box-shadow:0 8px 30px rgba(0,0,0,.24);cursor:pointer}
+.resume-journey:hover{border-color:var(--acc);color:var(--acc)}
+.resume-journey[hidden]{display:none}
 .tp{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(28px,4vw,64px);padding:72px var(--pad) 56px;max-width:1440px;margin:0 auto;align-items:start}
 .sec-k{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-bottom:22px}
 .tp-pl ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
@@ -689,6 +712,10 @@ body.is-detail .menub{display:flex}
 .tp-g{margin-bottom:40px}
 .tp-g h3{margin:0 0 16px;font-family:var(--serif);font-weight:400;font-size:15px;letter-spacing:.24em;color:var(--acc)}
 @media (max-width:860px){
+  .trip-quicknav{top:56px;gap:0;padding:7px var(--pad)}
+  .trip-quicknav button{padding:9px 10px;font-size:10px}
+  .trip-quicknav [data-replay-map]{margin-left:auto}
+  .resume-journey{right:14px;bottom:calc(14px + env(safe-area-inset-bottom));max-width:calc(100vw - 28px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .tp{grid-template-columns:1fr;padding:44px var(--pad) 32px;gap:28px}
   .tp-pl .st-c{padding:14px 0 13px;grid-template-columns:36px 1fr auto}
   .tp-pl .st-c .nm{font-size:17px}
@@ -860,7 +887,7 @@ body.is-detail .menub{display:flex}
 .osm-credit a:hover{color:#fff;text-decoration:underline;}
 @media (max-width:600px){.osm-credit{font-size:11px;top:4px;left:4px;}.osm-credit a{padding:1px 4px;}}
 
-.mp-city-labels .mp-city-leader{stroke:rgba(237,230,218,.35);stroke-width:1;stroke-dasharray:2 2}.mp-city-labels .mp-city-label{fill:rgba(237,230,218,.9);paint-order:stroke;stroke:rgba(23,27,25,.6);stroke-width:3;stroke-linejoin:round;font-weight:600;letter-spacing:.02em}.mp-city-labels .mp-city-label.cur{fill:#f0c674;stroke:rgba(23,27,25,.8)}
+.mp-city-labels .mp-city-leader{stroke:rgba(201,162,122,.58);stroke-width:1;stroke-dasharray:2 2}.mp-city-labels .mp-city-label{fill:rgba(237,230,218,.96);paint-order:stroke;stroke:rgba(23,21,18,.94);stroke-width:3;stroke-linejoin:round;font-weight:600;letter-spacing:.02em}.mp-city-labels .mp-city-label.cur{fill:#d5b27e;stroke:rgba(23,21,18,.96)}
 /* Two Scotland home cards only: title+photos above a wide map; photos not 120px strips. */
 .trip[data-id="2024-highlands-zx"],
 .trip[data-id="2024-scotland-dec-zx"]{
@@ -979,11 +1006,13 @@ body.is-detail .menub{display:flex}
   <div class="d-title" id="dtitle"></div>
   <div style="display:flex;align-items:center;gap:22px">
     <nav class="nav" aria-label="目录"><a href="#/map" data-sec="map">足迹</a><a href="#/globe" data-sec="globe">地球</a><a href="#/trips" data-sec="trips">旅行</a><a href="#/again" data-sec="again">常去</a><a href="#/archive" data-sec="archive">国家</a></nav>
+    <button class="search-toggle" id="searchToggle" aria-label="搜索旅行" aria-expanded="false" aria-controls="tripSearchPanel">⌕</button>
     <button class="menub" id="menub" aria-label="目录" aria-expanded="false" aria-controls="sheet"><span></span><span></span></button>
     <div class="d-nav"><a id="dprev" href="#/">‹&nbsp; <span class="lbl">上一站</span></a><a id="dnext" href="#/"><span class="lbl">下一站</span> &nbsp;›</a></div>
     <button class="music" id="music" aria-label="背景音乐" aria-pressed="false"><span class="tip">音乐</span><svg class="snd" viewBox="0 0 16 16" aria-hidden="true"><path class="spk" d="M2.5 6.2h2.6L8.6 3.4v9.2L5.1 9.8H2.5z"/><path class="w1" d="M10.8 6a2.8 2.8 0 0 1 0 4"/><path class="w2" d="M12.6 4.2a5.4 5.4 0 0 1 0 7.6"/><path class="x" d="M11 6.2l3.6 3.6M14.6 6.2L11 9.8"/></svg></button>
   </div>
 </header>
+<section class="search-panel" id="tripSearchPanel" aria-label="搜索旅行" aria-hidden="true"><div class="finder-controls"><label class="finder-search"><span class="sr-only">搜索旅行、城市或关键词</span><input id="tripSearch" type="search" placeholder="搜旅行名、城市、年份…" autocomplete="off"><span aria-hidden="true">⌕</span></label><label><span class="sr-only">按年份筛选</span><select id="tripYear"><option value="">所有年份</option></select></label><label><span class="sr-only">按同行筛选</span><select id="tripWho"><option value="">所有同行方式</option><option value="tg">兴兴嘉怡一起</option><option value="jy">嘉怡一个人</option><option value="zx">兴兴一个人</option></select></label><button type="button" id="tripClear">清除</button></div><p class="finder-count" id="finderCount" aria-live="polite"></p></section>
 <nav class="sheet" id="sheet" aria-label="目录">
   <a href="#/map" data-sec="map"><b>足迹</b><small class="latin">Atlas</small></a>
   <a href="#/globe" data-sec="globe"><b>地球</b><small class="latin">Globe</small></a>
@@ -992,6 +1021,7 @@ body.is-detail .menub{display:flex}
   <a href="#/archive" data-sec="archive"><b>国家</b><small class="latin">Countries</small></a>
 </nav>
 <main id="view"></main>
+<button class="resume-journey" id="resumeJourney" type="button" hidden>继续上次的旅行</button>
 <div class="lb" id="lb" role="dialog" aria-label="照片"><div class="stage"><img alt=""></div><div class="cap"></div>
   <button class="x" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <button class="pv" aria-label="上一张"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1078,7 +1108,18 @@ function fmtNum(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,
 /* ---------- data ---------- */
 var TRIPS=[],BYID={},PL={},WORLD=null,DETAIL=null,CHINA=null,detailP=null,chinaP=null,ALLPH=[];
 function J(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(u);return r.json()})}
-function repairDetailGeometry(fc){var by={};WORLD.features.forEach(function(f){by[f.properties.name]=f});fc.features=fc.features.map(function(f){var n=f.properties.name;if((n==='俄罗斯'||n==='印度')&&by[n])return {type:'Feature',properties:f.properties,geometry:by[n].geometry};return f});delete fc._ref;return fc}
+function repairDetailGeometry(fc){
+ var by={};WORLD.features.forEach(function(f){by[f.properties.name]=f});
+ function bounds(g){var b=[Infinity,Infinity,-Infinity,-Infinity];function walk(v){if(!Array.isArray(v))return;if(typeof v[0]==='number'&&typeof v[1]==='number'){b[0]=Math.min(b[0],v[0]);b[1]=Math.min(b[1],v[1]);b[2]=Math.max(b[2],v[0]);b[3]=Math.max(b[3],v[1]);return}v.forEach(walk)}walk(g.coordinates);return b}
+ // detail-hi is intentionally cropped at 143°E / 11°S / 48°W / 73°N.
+ // Use the full world geometry for countries touching those cut edges so the map
+ // doesn't end in a straight seam (notably Indonesia, PNG and Australia).
+ fc.features=fc.features.map(function(f){var n=f.properties.name,w=by[n],b=bounds(f.geometry),wb=w?bounds(w.geometry):null,clipped=b[0]<=-47.95||b[1]<=-10.95||b[2]>=142.95||b[3]>=72.95;
+  // Several Sahara-border countries in detail-hi share a flat 24°N cutoff.
+  if(wb&&b[1]>=23.95&&b[1]<=24.05&&wb[1]<b[1]-1.5)clipped=true;
+  if((n==='俄罗斯'||n==='印度'||clipped)&&w)return {type:'Feature',properties:f.properties,geometry:w.geometry};return f});
+ delete fc._ref;return fc
+}
 function prepGeo(fc){fc.features.forEach(function(f){var b=d3.geoBounds(f);if(b[0][0]>b[1][0]){b=[[-180,b[0][1]],[180,b[1][1]]]}f._b=b;});return fc}
 function loadDetail(){if(!detailP)detailP=J('public/v9/detail-countries.topo.json').then(function(t){var d=topojson.feature(t,t.objects.c);if(!HI)DETAIL=prepGeo(repairDetailGeometry(d));return d});return detailP}
 // trip and country pages zoom far into coastlines, so they use the unsimplified layer
@@ -1135,6 +1176,10 @@ function isSeoulCity(t){if(!t||t.kind!=='trip')return false;var cs={};(t.stops||
 var SEOUL_POI={'2026-seoul-mom':[{city:'狎鸥亭',lng:127.0286,lat:37.5273},{city:'圣水',lng:127.0556,lat:37.5445},{city:'光化门',lng:126.9769,lat:37.5759},{city:'西村',lng:126.9668,lat:37.5788},{city:'三清',lng:126.9816,lat:37.5845},{city:'林荫道',lng:127.023175,lat:37.5206268},{city:'汝矣岛',lng:126.9245,lat:37.5219},{city:'弘大',lng:126.9237,lat:37.5563},{city:'延南',lng:126.9253,lat:37.5662},{city:'仁川机场',lng:126.4407,lat:37.4602},{city:'岛山',lng:127.0363,lat:37.5226}],'2026-korea':[{city:'明洞',lng:126.9849,lat:37.5636},{city:'景福宫',lng:126.977,lat:37.5796},{city:'南山塔',lng:126.9882,lat:37.5512},{city:'仁寺洞',lng:126.986,lat:37.574},{city:'广藏市场',lng:126.9996,lat:37.570}]};
 function seoulPois(t){return (SEOUL_POI[t&&t.id]||[]).slice()}
 function mapPts(t){if(isSeoulCity(t)){return seoulPois(t).filter(function(s){return s.city!=='仁川机场'}).map(function(s){return [s.lng,s.lat]})}var p=(t.stops||[]).map(function(s){return [s.lng,s.lat]});(t.legs||[]).forEach(function(l){l.forEach(function(x){p.push([x.lng,x.lat])})});return p}
+// Camera-only context for long east-west routes: these points widen the map frame
+// without becoming markers, stops, or route segments.
+function mapFramePts(t){var p=mapPts(t);if(t&&t.id==='2026-moscow-zx')p=p.concat([[78,8]]);return p}
+function mapFocusPts(t){return t&&t.id==='2026-moscow-zx'?[[32,48],[46,63]]:mapFramePts(t)}
 var SEOUL_OSM=null,seoulOSMP=null;
 function loadSeoulOSM(){
  if(seoulOSMP) return seoulOSMP;
@@ -1191,7 +1236,7 @@ function FlatMap(el,opt){
  this.gOver=this.svg.append('g');this.gSeaL=this.gOver.append('g');this.gCty=this.gOver.append('g');this.ctxG=this.gOver.append('g');this.gRoute=this.gOver.append('g');this.gDots=this.gOver.append('g');this.gLbl=this.gOver.append('g');
  this.resize();
 }
-var LAND_STYLE={n:['#171512','rgba(237,230,218,.06)'],v:['#5A4A38','rgba(237,230,218,.32)'],hl:['#6E5A44','rgba(237,230,218,.40)'],p:['#1A1714','rgba(237,230,218,.08)'],pv:['#5A4A38','rgba(237,230,218,.32)']};
+var LAND_STYLE={n:['#1B1814','rgba(201,162,122,.12)'],v:['#5A4A38','rgba(237,230,218,.32)'],hl:['#6E5A44','rgba(237,230,218,.40)'],p:['#1A1714','rgba(237,230,218,.08)'],pv:['#5A4A38','rgba(237,230,218,.32)']};
 FlatMap.prototype.resize=function(){
  var el=this.el,W=el.clientWidth||300,H=el.clientHeight||200,o=this.opt;this.W=W;this.H=H;
  this.dpr=Math.min(1.5,window.devicePixelRatio||1);this.cv.width=Math.round(W*this.dpr);this.cv.height=Math.round(H*this.dpr);this.cv.style.width=W+'px';this.cv.style.height=H+'px';
@@ -1291,10 +1336,11 @@ FlatMap.prototype.camT=function(pts,pad,minSpan){
  return {k:k,x:ox-k*cx,y:oy-k*cy}};
 FlatMap.prototype.view=function(pts,o){
  o=o||{};var self=this;this.cam={pts:pts,pad:o.pad,minSpan:o.minSpan};
- var T1=this.camT(pts,o.pad,o.minSpan),T0=this.T,dur=RM||o.instant?0:(o.dur||1400);
+ var T1=this.camT(pts,o.pad,o.minSpan),T0=this.T,dur=o.forceMotion?(o.dur||1400):(RM||o.instant?0:(o.dur||1400));
  cancelAnimationFrame(this.craf);
  if(!dur){this.moving=false;this.T=T1;this.applyT();return}
  var W=this.W,H=this.H;
+ if(o.linear){var c0x=(W/2-T0.x)/T0.k,c0y=(H/2-T0.y)/T0.k,c1x=(W/2-T1.x)/T1.k,c1y=(H/2-T1.y)/T1.k,t1=performance.now(),ease=d3.easeCubicInOut,half=false;self.moving=true;function linearFr(now){if(self.dead)return;var p=Math.min(1,(now-t1)/dur),e=ease(p),k=T0.k*Math.pow(T1.k/T0.k,e),cx=c0x+(c1x-c0x)*e,cy=c0y+(c1y-c0y)*e;self.T={k:k,x:W/2-k*cx,y:H/2-k*cy};if(!half&&o.onHalf&&p>=.48){half=true;o.onHalf()}if(p>=1)self.moving=false;self.applyT();if(p<1)self.craf=requestAnimationFrame(linearFr)}this.craf=requestAnimationFrame(linearFr);return}
  var c0=[(W/2-T0.x)/T0.k,(H/2-T0.y)/T0.k,W/T0.k],c1=[(W/2-T1.x)/T1.k,(H/2-T1.y)/T1.k,W/T1.k];
  var iz=d3.interpolateZoom(c0,c1),t0=performance.now(),ease=d3.easeCubicInOut;
  self.moving=true;function fr(now){if(self.dead)return;var t=Math.min(1,(now-t0)/dur),v=iz(ease(t)),k=W/v[2];self.T={k:k,x:W/2-k*v[0],y:H/2-k*v[1]};if(t>=1)self.moving=false;self.applyT();if(t<1)self.craf=requestAnimationFrame(fr)}
@@ -1308,7 +1354,7 @@ FlatMap.prototype.setRoutes=function(routes,stops){this.opt.routes=routes;this.o
  var self=this;this.routeEls=routes.map(function(r){var g={ghost:self.opt.ghost?self.gRoute.append('path').attr('class','mp-route ghost'):null,line:/\bleg\b/.test(r.cls)?self.gRoute.append('path').attr('class','mp-route '+r.cls):self.gRoute.append('path').attr('class','mp-route '+(r.cls||'tg')).attr('pathLength',1).style('stroke-dasharray','1 1').style('stroke-dashoffset',1)};return g});
  // unique dots by city
  var u={};this.dots=[];(stops||[]).forEach(function(s,i){var key=s.city;if(u[key]){u[key].idx.push(i);return}var d={city:s.city,ll:[s.lng,s.lat],idx:[i],cls:s.cls||'',lbl:s.label!==false};u[key]=d;self.dots.push(d)});
- this.dots.forEach(function(d){d.c=self.gDots.append('circle').attr('r',3.2).attr('class','mp-dot '+d.cls);if(d.lbl)d.t=self.gLbl.append('text').attr('class','mp-lbl').text(d.city)});
+ this.dots.forEach(function(d){d.c=self.gDots.append('circle').attr('r',3.2).attr('class','mp-dot '+d.cls);if(self.opt.onStop){d.c.attr('tabindex',0).attr('role','button').attr('aria-label','查看 '+d.city).style('cursor','pointer').on('click',function(){self.opt.onStop(d.city,d.idx[0])}).on('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();self.opt.onStop(d.city,d.idx[0])}})}if(d.lbl)d.t=self.gLbl.append('text').attr('class','mp-lbl').text(d.city)});
  this.pulse=this.gDots.append('circle').attr('class','mp-pulse').attr('r',12).attr('display','none');
  this.ringsG=this.gDots.append('g');
  this.renderOver()};
@@ -1562,7 +1608,7 @@ FlatMap.prototype.paintCityDiagram = function() {
   if (!c) return;
   if (!this.cityGeo) throw new Error('paintCityDiagram: cityGeo not initialized');
   c.setTransform(1, 0, 0, 1, 0, 0);
-  c.fillStyle = '#171b19';
+  c.fillStyle = '#171512';
   c.fillRect(0, 0, this.cv.width, this.cv.height);
   var m = this.m, t0 = this.t0;
   var K = T.k * m;
@@ -1580,11 +1626,11 @@ FlatMap.prototype.paintCityDiagram = function() {
       var name = (r.name || '').toLowerCase();
       var isHan = /han river|hangang|한강/.test(name);
       if (isHan || !/(river|stream|canal|drain|pond|reservoir|basin)/.test(name)) {
-        c.fillStyle = isHan ? '#1b3542' : '#1a2a32';
+        c.fillStyle = isHan ? '#403528' : '#28241e';
         c.fill(r.p);metrics.waterFills++;if(isHan)metrics.hanVisible=true;if(r.id)metrics.ids.push(r.id);
       }
     } else if (r.kind === 'coast') {
-      c.strokeStyle = '#2a3d47';
+      c.strokeStyle = 'rgba(201,162,122,.28)';
       c.lineWidth = 0.8 / K;
       c.lineJoin = 'round';
       c.lineCap = 'round';
@@ -1599,7 +1645,7 @@ function addOSMCredit(el){
  if(!el || el.querySelector('.osm-credit')) return;
  var div = document.createElement('div');
  div.className = 'osm-credit';
- div.innerHTML = '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a><a href="public/v9/seoul-osm.geo.json" target="_blank" rel="noopener">Seoul OSM data ODbL</a>';
+ div.innerHTML = '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>';
  el.appendChild(div);
 }
 function T0k(m){return m.T.k}
@@ -1644,6 +1690,8 @@ function renderHome(view){
   '<div class="cap"><div class="eyebrow latin">'+yr+'</div><h1>'+chars('旅行日志',.45)+'</h1><div class="en latin">Somewhere between here and everywhere</div></div>'+
   '<div class="gl-card" id="glcard" aria-live="polite"></div>'+
   '<div class="ghint">拖动地球，点一条线</div><a class="cue" href="#y2026" data-scroll="y2026">往下<i></i></a></section>';
+ // A practical index keeps the story-led home useful when the archive grows.
+ // Search UI lives in the header popover; keep the narrative home uncluttered.
  // chapters
  var real=SEQ.filter(function(t){return t.kind==='trip'}),years={};real.forEach(function(t){(years[t.year]=years[t.year]||[]).push(t)});
  var n=0,lay=['l-a','l-c','l-b','l-d'],li=0,mapFlip=false,metDone=false;
@@ -1668,8 +1716,9 @@ function renderHome(view){
 }
 function metHTML(){return '<div class="met rv" id="met"><span class="ln"></span><span class="tx"><b class="latin">2024.10.13</b>我们认识了</span><span class="ln"></span></div>'}
 function cornwallNote(t){return (t.id==='2024-cornwall'&&BYID['2024-cornwall-zx'])?'<div class="note2">同一片海，相隔两周。那时还不认识。</div>':''}
+function tripSearchText(t){return [t.title,t.summary,t.start,t.year,routeText(t).join(' '),(t.stops||[]).map(function(s){return s.city}).join(' '),(t.highlights||[]).join(' ')].join(' ')}
 function miniCard(t,n){var cm=companion(t),rt=routeText(t);
- return '<article class="trip l-mini" data-id="'+t.id+'"><a class="vis rv" href="#/trip/'+t.id+'"><div class="maparts" data-map="art" data-id="'+t.id+'"></div><div class="tag">'+engMonth(t)+'</div></a>'+
+ return '<article class="trip l-mini" data-id="'+t.id+'" data-year="'+esc(t.year||'')+'" data-who="'+(cm?cm.cls:'')+'" data-search="'+esc(tripSearchText(t))+'"><a class="vis rv" href="#/trip/'+t.id+'"><div class="maparts" data-map="art" data-id="'+t.id+'"></div><div class="tag">'+engMonth(t)+'</div></a>'+
   '<div class="info rv d1"><div class="no latin">'+p2(n)+'</div><h3><a href="#/trip/'+t.id+'">'+esc(t.title)+'</a></h3>'+
   '<div class="meta"><b>'+fmtRange(t.start,t.end)+'</b> · '+t.dayCount+' 天'+(t.cityCount?' · '+t.cityCount+' 座城':'')+'</div>'+
   (t.summary?'<p class="sum">'+esc(t.summary)+'</p>':'')+
@@ -1768,7 +1817,7 @@ function tripCard(t,n,L){
  var vis;
  if(L.indexOf('l-map')===0){vis='<div class="vis rv"><a class="main ph" href="#/trip/'+t.id+'" style="display:block"><div class="maparts" data-map="art" data-id="'+t.id+'"></div><div class="tag">'+engMonth(t)+'</div></a></div>'}
  else vis='<div class="vis rv"><a class="main ph big" href="#/trip/'+t.id+'" style="display:block" aria-label="'+esc(t.title)+'"><div class="maparts rmap-l" data-map="big" data-id="'+t.id+'"><div class="rc">'+(t.unordered?'到访城市':'路线')+'</div></div></a></div>';
- return '<article class="trip '+L+(t.portrait?' pt':' ls')+'" data-id="'+t.id+'">'+vis+
+ return '<article class="trip '+L+(t.portrait?' pt':' ls')+'" data-id="'+t.id+'" data-year="'+esc(t.year||'')+'" data-who="'+(cm?cm.cls:'')+'" data-search="'+esc(tripSearchText(t))+'">'+vis+
   '<div class="info rv d1"><div class="no latin">'+p2(n)+'</div><h3><a href="#/trip/'+t.id+'">'+esc(t.title)+'</a></h3>'+
   '<div class="meta"><b>'+fmtRange(t.start,t.end)+'</b> · '+t.dayCount+' 天'+(t.nights?' '+t.nights+' 晚':'')+(t.cityCount?' · '+t.cityCount+' 座城':'')+'</div>'+
   (t.summary?'<p class="sum">'+esc(t.summary)+'</p>':'')+
@@ -1784,6 +1833,8 @@ function footHTML(){return '<div class="foot"><div>旅行日志 · 兴兴嘉怡�
 
 function setupHome(view){
  reveal(view);
+ var search=$('#tripSearch'),year=$('#tripYear'),who=$('#tripWho'),count=$('#finderCount'),clear=$('#tripClear');
+ if(search&&year&&who){Array.from(new Set(SEQ.filter(function(t){return t.kind==='trip'}).map(function(t){return t.year}))).sort().reverse().forEach(function(y){var op=document.createElement('option');op.value=y;op.textContent=y;year.appendChild(op)});function filterTrips(){var q=search.value.trim().toLocaleLowerCase(),y=year.value,w=who.value,shown=0;$$('.trip[data-search]',view).forEach(function(card){var ok=(!q||card.getAttribute('data-search').toLocaleLowerCase().indexOf(q)>-1)&&(!y||card.getAttribute('data-year')===y)&&(!w||card.getAttribute('data-who')===w);card.hidden=!ok;if(ok)shown++});count.textContent=(q||y||w)?'找到 '+shown+' 段旅行':'共 '+$$('.trip[data-search]',view).length+' 段旅行 · 输入地点、城市或年份快速查找'};search.addEventListener('input',filterTrips);year.addEventListener('change',filterTrips);who.addEventListener('change',filterTrips);clear.addEventListener('click',function(){search.value='';year.value='';who.value='';filterTrips();search.focus()});filterTrips()}
  // count up
  var sEl=$('.stats',view);if(sEl){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;io.disconnect();$$('[data-count]',sEl).forEach(function(n,i){countUp(n,+n.getAttribute('data-count'),1800+i*120)})})},{threshold:.4});io.observe(sEl);homeIO.push(io)}
  // overview
@@ -1834,7 +1885,7 @@ function whenMapBoxReady(el,fn){
 function makeTripMap(el){
  var t=BYID[el.getAttribute('data-id')];if(!t||!t.stops.length)return;
  var art=el.getAttribute('data-map')==='art',big=el.getAttribute('data-map')==='big',city=isSeoulCity(t);
- var pts=mapPts(t),rb=bboxOf(pts),base=grow(rb,city?1.45:(art?2.2:2.4),city?cityMinSpan(t):(art?Math.max(3,routeSpan(pts)):Math.max(2.2,routeSpan(pts)*.35)));
+ var pts=mapPts(t),framePts=mapFramePts(t),koreaFrame=[[124,33],[132,39.5],[124,39.5],[132,33]],moscow=t.id==='2026-moscow-zx',rb=bboxOf(city?koreaFrame:framePts),base=grow(rb,city?1.2:moscow?(art?1.22:1.35):(art?2.2:2.4),city?cityMinSpan(t):moscow?Math.max(3,routeSpan(framePts)*.8):(art?Math.max(3,routeSpan(framePts)):Math.max(2.2,routeSpan(framePts)*.35)));
  var hl={};tripCountries(t).forEach(function(c){hl[c]=1});
  el._pend=1;(city?Promise.all([loadDetail(),loadSeoulOSM()]):loadDetail()).then(function(){el._pend=0;if(!el._want||!el.isConnected)return;
   whenMapBoxReady(el,function(){if(!el._want||!el.isConnected||el._map)return;
@@ -1843,9 +1894,9 @@ function makeTripMap(el){
   var rs=city?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg'));if(!city&&t.id==='2024-cornwall'&&BYID['2024-cornwall-zx'])rs=rs.concat(tripRoutes(BYID['2024-cornwall-zx'],'zx ghost2'));
   var stops=city?seoulPois(t).filter(function(s){return s.city!=='仁川机场'}):t.stops.filter(function(s){return !s.area}).map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t));
   m.setRoutes(rs,stops);
-  m.trip=t;m.art=art;m.wide=base;
-  if(city){addSeoulTransit(el,t)}
-  m.view((art||city)?pts:[base[0],base[1]],(art||city)?{pad:.2,minSpan:city?cityMinSpan(t):Math.max(2.2,routeSpan(pts)),instant:true}:{pad:0,instant:true});
+  m.trip=t;m.art=art;m.city=city;m.wide=base;
+  if(city){m.view(koreaFrame,{pad:.16,instant:true});requestAnimationFrame(function(){if(!m.dead&&el._want&&el.isConnected)m.view(framePts,{pad:.2,minSpan:cityMinSpan(t),dur:1800,linear:true,forceMotion:true})})}
+  else m.view(art?[base[0],base[1]]:[base[0],base[1]],art?{pad:.24,instant:true}:{pad:0,instant:true});
   if(!art){m.opt.lblSet={}}
   el._map=m;homeMaps.push(m);
   m._el=el;if(el.closest('.trip.act'))mapOnIdle(m);
@@ -1855,7 +1906,7 @@ var actTrip=null;
 // a route map zooms in and draws its line only once the page stops scrolling: animating big canvases mid-scroll cost ~6fps on desktop
 var mapIdleT=0;function mapOnIdle(m){if(!document.documentElement.classList.contains('scr')){mapOn(m);return}m._pendOn=1;clearTimeout(mapIdleT);mapIdleT=setTimeout(function chk(){if(document.documentElement.classList.contains('scr')){mapIdleT=setTimeout(chk,120);return}homeMaps.forEach(function(x){if(x._pendOn){x._pendOn=0;if(actTrip&&x._el&&actTrip.contains(x._el))mapOn(x)}})},180)}
 function activateTrip(tr){if(actTrip===tr)return;if(actTrip){actTrip.classList.remove('act');$$('[data-map]',actTrip).forEach(function(e){if(e._map){e._map._pendOn=0;mapOff(e._map)}})}actTrip=tr;tr.classList.add('act');$$('[data-map]',tr).forEach(function(e){if(e._map)mapOnIdle(e._map)})}
-function mapOn(m){var t=m.trip,pts=mapPts(t);m.opt.lblSet=null;m.view(pts,{pad:m.art?.2:.24,minSpan:tripMinSpan(t),dur:1300});var n=m.segP.length;for(var i=0;i<n;i++)m.animateSeg(i,1,Math.max(450,900/n),700+i*Math.max(380,800/n));m.setActive(-1)}
+function mapOn(m){var t=m.trip,pts=t.id==='2026-moscow-zx'?mapFocusPts(t):mapFramePts(t),moscow=t.id==='2026-moscow-zx',city=!!m.city;m.opt.lblSet=null;m.view(pts,{pad:city?.2:moscow?[.18,.18,.2,.18]:(m.art?.24:.24),minSpan:city?cityMinSpan(t):moscow?0:Math.max(tripMinSpan(t),0),dur:city?1800:moscow?1050:1300,linear:city||moscow,forceMotion:city});var n=m.segP.length;for(var i=0;i<n;i++)m.animateSeg(i,1,Math.max(450,900/n),700+i*Math.max(380,800/n));m.setActive(-1)}
 function mapOff(m){if(m.art)return;var q=document.documentElement.classList.contains('scr');m.opt.lblSet={};m.view([m.wide[0],m.wide[1]],{pad:0,dur:900,instant:q});for(var i=0;i<m.segP.length;i++)m.animateSeg(i,0,q?0:400,0)}
 
 function setupOverview(view){
@@ -1913,10 +1964,19 @@ function wireLightboxThumbs(view, opener, alsoLight){
   if(alsoLight)el.addEventListener('mousemove',cursorLight);
  });
 }
+function focusDayOnMap(day,scrollMap){
+ if(!day||!dMap)return;var hay=(day.textContent||'').replace(/在地图上查看.*/,''),stops=dMap.opt.stops||[],idx=-1;
+ for(var i=0;i<stops.length;i++){if(stops[i].city&&hay.indexOf(stops[i].city)>=0){idx=i;break}}
+ if(idx<0&&day.getAttribute('data-city')){idx=stops.findIndex(function(s){return s.city===day.getAttribute('data-city')})}
+ if(idx<0&&stops.length)idx=0;
+ if(idx>=0){dMap.setActive(idx);$('#dmapcap').textContent=stops[idx].city||''}
+ if(scrollMap){var map=$('#trip-map');if(map)map.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}
+}
+function focusPhotoPlace(el){var day=el.closest('.itin-d');if(day)focusDayOnMap(day,false)}
 function renderDetail(view,id){
  var t=BYID[id];if(!t){view.innerHTML=missHTML();return}
  var i=SEQ.indexOf(t),prev=SEQ[(i-1+SEQ.length)%SEQ.length],next=SEQ[(i+1)%SEQ.length];
- var cm=companion(t),h='',isE=!!t.visits,isU=!!t.moments,isC=t.id==='china-diary';
+ var cm=companion(t),h='',isE=!!t.visits,isU=!!t.moments,isC=t.id==='china-diary',days=(t.days||[]).filter(function(d){return !d.draft});
  var k=isE?'Edinburgh · '+t.visits.length+' visits':isU?'London · Exeter':isC?'China':engMonth(t);
  var dateS=isE?(t.visits[0].start.slice(0,4)+' — '+t.visits[t.visits.length-1].start.slice(0,4)):isU?'2024 — 2026':isC?'':fmtRange(t.start,t.end);
  var title=t.title,line=tripLine(t);
@@ -1930,14 +1990,14 @@ function renderDetail(view,id){
  else if(seoul)seoulPois(t).forEach(function(s,j){places.push({nm:s.city,sub:'',stop:j})});
  else if(!isC){var seen={};t.stops.forEach(function(s,j){var key=s.city;if(seen[key]!=null)return;seen[key]=j;places.push({nm:s.city,sub:isC?(s.province||''):(s.area?'':(s.country&&t.countries.length>1?s.country:'')),stop:j})})}
  var start=!isE&&!isC&&!isU&&t.stops.length>2&&t.stops[0].city===t.stops[t.stops.length-1].city?t.stops[0].city:'';
- h+='<section class="tp'+(places.length?'':' tp-solo')+'"><div class="tp-pl"><div class="sec-k">'+(isE?'四次到访':isC?'去过的城市':t.stops.length===1&&t.stops[0].area?'去过的地方':'去过的地方')+'</div><ol>'+
+ h+='<nav class="trip-quicknav" aria-label="本次旅行导航"><button type="button" data-trip-target="trip-map">地图</button>'+(days.length?'<button type="button" data-trip-target="trip-days">行程</button>':'')+'<button type="button" data-trip-target="trip-photos">照片</button><button type="button" data-replay-map>重播地图镜头</button></nav>';
+ h+='<section class="tp'+(places.length?'':' tp-solo')+'"><div class="tp-pl" id="trip-places"><div class="sec-k">'+(isE?'四次到访':isC?'去过的城市':t.stops.length===1&&t.stops[0].area?'去过的地方':'去过的地方')+'</div><ol>'+
   places.map(function(pl,j){return '<li class="st-c" data-stop="'+pl.stop+'"'+(pl.visit!=null?' data-visit="'+pl.visit+'"':'')+' tabindex="0"><span class="n latin">'+(t.unordered?'·':p2(j+1))+'</span><span class="nm">'+esc(pl.nm)+'</span>'+(pl.sub?'<span class="sb">'+esc(pl.sub)+'</span>':'')+(pl.link&&BYID[pl.link]?'<a class="vlink" href="#/trip/'+pl.link+'">那一趟'+ARROW+'</a>':'')+'</li>'}).join('')+'</ol>'+
   (start?'<div class="tp-note">从'+esc(start)+'出发，又回到'+esc(start)+'</div>':'')+'</div>'+
-  '<div class="dmap tp-map"><div class="box" id="dmapbox"><div class="zoom"><button data-z="in" aria-label="放大">+</button><button data-z="out" aria-label="缩小">−</button><button data-z="fit" aria-label="全部路线" style="font-size:11px">⤢</button></div><div class="cap"><span>'+(isE?'爱丁堡':isC?'中国':t.unordered?'到访城市':'路线')+'</span><b id="dmapcap"></b></div></div></div></section>';
+  '<div class="dmap tp-map"><div class="box" id="dmapbox"><span id="trip-map" class="trip-anchor"></span><div class="zoom"><button data-z="in" aria-label="放大">+</button><button data-z="out" aria-label="缩小">−</button><button data-z="fit" aria-label="全部路线" style="font-size:11px">⤢</button></div><div class="cap"><span>'+(isE?'爱丁堡':isC?'中国':t.unordered?'到访城市':'路线')+'</span><b id="dmapcap"></b></div></div></div></section>';
  h+=travelDirectionHTML(t);
  // published day cards (only days with draft:false; existing trips stay hidden)
  var ctx=t.photos.slice();
- var days=(t.days||[]).filter(function(d){return !d.draft});
  var used={};
  var dph=days.map(function(d){
   var ps=(d.pk||[]).map(function(k){return t.photos.filter(function(p){return p.key===k})[0]}).filter(Boolean);
@@ -1945,12 +2005,13 @@ function renderDetail(view,id){
   return {d:d,ps:ps};
  });
  if(days.length){
-  h+='<section class="itin"><div class="sec-k">行程</div><ol>'+dph.map(function(x){
-   var d=x.d,row='<li class="itin-d">';
+  h+='<section class="itin" id="trip-days"><div class="sec-k">行程</div><ol>'+dph.map(function(x){
+   var d=x.d,row='<li class="itin-d" data-city="'+esc(d.city||'')+'" data-day="'+esc(d.date||'')+'">';
    if(d.date)row+='<div class="itin-k latin">'+esc(fmtDay(d.date))+'</div>';
    if(d.title)row+='<h3>'+esc(d.title)+'</h3>';
    if(d.text)row+='<p>'+esc(d.text)+'</p>';
    if(d.stay)row+='<div class="itin-stay">'+esc(d.stay)+'</div>';
+   if(d.city)row+='<button class="day-map-link" type="button" data-focus-map="'+esc(d.city)+'">在地图上查看'+ARROW+'</button>';
    if(x.ps.length)row+=pgHTML(x.ps,ctx);
    return row+'</li>';
   }).join('')+'</ol></section>';
@@ -1958,7 +2019,9 @@ function renderDetail(view,id){
  // photos not already shown on a day card, grouped by place
  var rest=ctx.filter(function(p){return !used[p.key]}),groups=[],gi={};
  rest.forEach(function(p){var nm=isC?'':(p.place||'');var cn=!nm&&p.country?p.country:'';if(gi[nm+'|'+cn]==null){gi[nm+'|'+cn]=groups.length;groups.push({nm:nm,cn:cn,ps:[]})}groups[gi[nm+'|'+cn]].ps.push(p)});
- if(rest.length){h+='<section class="tp-ph"><div class="sec-k">照片 · '+rest.length+'</div>'+groups.map(function(g){var head=groups.length>1&&g.nm?'<h3 data-place="'+esc(g.nm)+'">'+esc(g.nm)+'</h3>':(groups.length>1&&g.cn?'<h3 data-country="'+esc(g.cn)+'">'+esc(g.cn)+'</h3>':'');return '<div class="tp-g">'+head+pgHTML(g.ps,ctx)+'</div>'}).join('')+'</section>'}
+ if(rest.length){h+='<section class="tp-ph" id="trip-photos"><div class="sec-k">照片 · '+rest.length+'</div>'+groups.map(function(g){var head=groups.length>1&&g.nm?'<h3 data-place="'+esc(g.nm)+'">'+esc(g.nm)+'</h3>':(groups.length>1&&g.cn?'<h3 data-country="'+esc(g.cn)+'">'+esc(g.cn)+'</h3>':'');return '<div class="tp-g">'+head+pgHTML(g.ps,ctx)+'</div>'}).join('')+'</section>'}
+ else if(days.length)h=h.replace('<section class="itin" id="trip-days">','<section class="itin" id="trip-days"><span id="trip-photos" class="trip-anchor"></span>');
+ else h+='<span id="trip-photos" class="trip-anchor"></span>';
  h+='<section class="dfoot"><div class="k">继续看</div><div class="nx">'+nxHTML(prev,'上一站',false)+nxHTML(next,'下一站',true)+'</div><div class="keys">键盘 <kbd>←</kbd><kbd>→</kbd> 切换旅行，<kbd>Esc</kbd> 回到全部</div>'+
   '<div style="text-align:center"><button class="rand" data-rand>'+icon('shuffle')+'随便翻一段旅行</button></div>'+footHTML()+'</section>';
  view.innerHTML=h;markLoaded(view);
@@ -1966,7 +2029,7 @@ function renderDetail(view,id){
  $('#dprev').setAttribute('href','#/trip/'+prev.id);$('#dprev .lbl').textContent=prev.title;
  $('#dnext').setAttribute('href','#/trip/'+next.id);$('#dnext .lbl').textContent=next.title;
  reveal(view);
- wireLightboxThumbs(view,function(el){openLB(ctx.map(function(p){return {p:p,a:title,b:(CAPS&&CAPS[p.src.replace(/^public\//,'')])||p.place}}),+el.getAttribute('data-lbi'))},true);
+ wireLightboxThumbs(view,function(el){focusPhotoPlace(el);openLB(ctx.map(function(p){return {p:p,a:title,b:(CAPS&&CAPS[p.src.replace(/^public\//,'')])||p.place}}),+el.getAttribute('data-lbi'))},true);
  setupDetailMap(t,view);
 }
 function tripLine(t){return t.summary||''}
@@ -1975,97 +2038,59 @@ function visitWho(v){if(v.who&&WHO[v.who])return WHO[v.who];var n=v.note||'';if(
 function nxHTML(t,lab,r){var ttl=t.title;var sub=t.visits?'4 次到访':t.moments?'伦敦 · 埃克塞特':t.id==='china-diary'?t.summary:fmtRange(t.start,t.end)+' · '+routeText(t).join(t.unordered?' · ':' — ');
  return '<a href="#/trip/'+t.id+'" class="'+(r?'r':'')+'">'+(t.cover?img(t.cover,{alt:ttl,sizes:'(max-width:860px) 100vw, 50vw'}):'<div class="maparts" data-map="art" data-id="'+t.id+'"></div>')+'<div class="t"><small>'+lab+'</small><b>'+esc(ttl)+'</b><em>'+esc(sub)+'</em></div></a>'}
 var detailMapGen=0;
-function addSeoulTransit(el, t) {
-    if (!el || !t || !Array.isArray(t.legs) || t.legs.length === 0) return;
-    
-    const legs = t.legs.filter(leg => Array.isArray(leg) && leg.length >= 2);
-    if (legs.length === 0) return;
-    
-    let note = null;
-    if (el._transitNote && el._transitNote.isConnected) {
-        note = el._transitNote;
-    } else {
-        if (el._transitNote && el._transitNote.parentNode) {
-            el._transitNote.parentNode.removeChild(el._transitNote);
-        }
-        note = document.createElement('div');
-        note.className = 'seoul-transit';
-        el._transitNote = note;
-        el.parentNode.insertBefore(note, el.nextSibling);
-    }
-    
-    const isHome = el.hasAttribute && el.hasAttribute('data-map');
-    const isCover = el.id === 'mapcover';
-    const isDetail = !isHome && !isCover;
-    
-    note.style.cssText = 'font-size:11px;color:rgba(237,230,218,.8);background:rgba(23,27,25,.6);padding:6px;line-height:1.5;pointer-events:none;';
-    
-    if (isHome) {
-        note.style.cssText += 'position:absolute;top:12px;left:12px;right:12px;z-index:3;';
-    } else if (isCover) {
-        note.style.cssText += 'position:absolute;top:12px;left:12px;right:12px;z-index:3;';
-    } else {
-        note.style.cssText += 'margin-top:6px;';
-    }
-    
-    const coordPairs = [];
-    
-    legs.forEach(leg => {
-        const first = leg[0];
-        const last = leg[leg.length - 1];
-        coordPairs.push(`${first.lng},${first.lat};${last.lng},${last.lat}`);
-    });
-    
-    const heading = '机场交通';
-    
-    note.innerHTML = '';
-    
-    const headingEl = document.createElement('div');
-    headingEl.textContent = heading;
-    headingEl.style.fontWeight = 'bold';
-    note.appendChild(headingEl);
-    
-    
-    legs.forEach((leg, index) => {
-        const row = document.createElement('div');
-        row.setAttribute('data-coord', coordPairs[index]);
-        row.textContent = `${esc(leg[0].city)} → ${esc(leg[leg.length - 1].city)}`;
-        note.appendChild(row);
-    });
+function koreaOutlineMap(box){
+ var feature=(DETAIL&&DETAIL.features||[]).filter(function(f){return f.properties&&f.properties.name==='韩国'})[0]||null;
+ var svg=d3.select(box).append('svg').attr('class','korea-outline').attr('aria-label','韩国地图');
+ var g=svg.append('g'),shape=g.append('path').attr('class','korea-outline-shape');
+ var W=0,H=0,scale=1,raf=0;
+ function transform(){g.attr('transform','translate('+(W/2)+' '+(H/2)+') scale('+scale+') translate('+(-W/2)+' '+(-H/2)+')')}
+ function resize(){W=box.clientWidth||300;H=box.clientHeight||300;svg.attr('viewBox','0 0 '+W+' '+H).attr('width',W).attr('height',H);
+  if(feature){var p=d3.geoMercator().fitExtent([[W*.08,H*.04],[W*.92,H*.96]],feature);shape.attr('d',d3.geoPath(p)(feature))}transform()}
+ function animate(){cancelAnimationFrame(raf);scale=.84;transform();var t0=performance.now(),from=scale,dur=RM?0:1500;function step(now){var p=dur?Math.min(1,(now-t0)/dur):1,e=1-Math.pow(1-p,3);scale=from+(1-from)*e;transform();if(p<1)raf=requestAnimationFrame(step)}raf=requestAnimationFrame(step)}
+ resize();
+ return {el:box,opt:{stops:[],countryLabels:false,cityDiagram:false},segP:[],fitAll:null,rings:0,resize:resize,destroy:function(){cancelAnimationFrame(raf);svg.remove()},setRoutes:function(){},setActive:function(){},zoomBy:function(f){scale=Math.max(.7,Math.min(3.5,scale*f));transform()},view:function(pts,o){if(o&&o.instant)return;animate()}};
 }
-
 function setupDetailMap(t,view){
  if(dMap){try{dMap.destroy()}catch(e){}dMap=null}
- var box=$('#dmapbox',view);if(!box)return;var isC=t.id==='china-diary',isE=!!t.visits,seoul=isSeoulCity(t),gen=++detailMapGen;
+ var box=$('#dmapbox',view);if(!box)return;var isC=t.id==='china-diary',isE=!!t.visits,seoul=isSeoulCity(t),moscow=t.id==='2026-moscow-zx',focusPts=mapFocusPts(t),gen=++detailMapGen;
  var pois=seoul?seoulPois(t):null;
- var pts=mapPts(t),hl={};tripCountries(t).forEach(function(c){hl[c]=1});if(isC)t.stops.forEach(function(s){hl[s.province]=1});
+ var pts=mapPts(t),framePts=mapFramePts(t),koreaFrame=[[122.4,31.5],[133.5,41.2],[122.4,41.2],[133.5,31.5]],koreaStart=[[118,28],[138,46],[118,46],[138,28]],hl={};tripCountries(t).forEach(function(c){if(c)hl[c]=1});if(isC)t.stops.forEach(function(s){hl[s.province]=1});
  var area=t.stops.length===1&&t.stops[0].area;
- var base=grow(bboxOf(pts),isC?22:area?14:seoul?1.4:1.55,isC?38:area?20:seoul?cityMinSpan(t):Math.max(1.2,routeSpan(pts)*.2));
- var p=isC?Promise.all([loadDetailHi(),loadChina()]):seoul?Promise.all([loadDetailHi(),loadSeoulOSM()]):loadDetailHi();
+ var base=grow(bboxOf(seoul?koreaFrame:framePts),isC?22:area?14:seoul?1.25:t.id==='2026-moscow-zx'?1.35:1.55,isC?38:area?20:seoul?cityMinSpan(t):Math.max(1.2,routeSpan(framePts)*.2));
+ var p=isC?Promise.all([loadDetailHi(),loadChina()]):loadDetailHi();
  p.then(function(){
   if(gen!==detailMapGen||!document.body.contains(box))return;
-  dMap=new FlatMap(box,{base:base,highlight:hl,overlay:null,cityDiagram:seoul,cityOSM:seoul?SEOUL_OSM:null,china:isC,kmax:seoul?80:60,lblSize:13.5,ctyAreaMin:isC?900:seoul?400:1800,seaK:seoul?9:.9,dotR:area?0:3.6,progress:false,ghost:false,capH:34,ctxCities:false,countryLabels:!seoul,ctxAvoid:function(W,H){return [W-56,0,W,136]}});
-  if(seoul)addOSMCredit(box);
+  dMap=seoul?koreaOutlineMap(box):new FlatMap(box,{base:base,highlight:hl,overlay:null,cityDiagram:false,cityOSM:null,china:isC,kmax:60,lblSize:13.5,ctyAreaMin:isC?900:1800,seaK:.9,dotR:area?0:3.6,progress:false,ghost:false,capH:34,ctxCities:false,countryLabels:true,onStop:function(city,idx){dMap.setActive(idx);$('#dmapcap').textContent=city;var target=$('.tp-g h3[data-place="'+city.replace(/"/g,'\\"')+'"]',view)||$$('.itin-d',view).filter(function(day){return (day.textContent||'').indexOf(city)>=0})[0];if(target)target.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})},ctxAvoid:function(W,H){return [W-56,0,W,136]}});
   var routes=(isC||!!t.moments||area||seoul)?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg'));
   if(t.moments)routes=[{pts:tripPts(t),cls:'tg',bend:.1}];
-  var stops=area?[]:seoul?pois.filter(function(s){return s.city!=='仁川机场'}):pois?pois.concat(legStops(t).filter(function(s){return !pois.some(function(x){return x.city===s.city})})):t.stops.map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t));
-  dMap.setRoutes(routes,stops);
-  if(seoul)addSeoulTransit(box,t);
-  var fitAll={pad:isMob()?[.14,.1,.16,.1]:[.12,.12,.16,.12],minSpan:isC?40:area?9:isE?7:seoul?cityMinSpan(t):Math.max(1.2,routeSpan(pts)*1.08)};
-  dMap.view(pts,{pad:fitAll.pad,minSpan:fitAll.minSpan,instant:true});dMap.fitAll=fitAll;
+  var stops=area||seoul?[]:pois?pois.concat(legStops(t).filter(function(s){return !pois.some(function(x){return x.city===s.city})})):t.stops.map(function(s){return {city:s.city,lat:s.lat,lng:s.lng}}).concat(legStops(t));
+  dMap.setRoutes(routes,seoul?[]:stops);
+  var cap0=seoul?'韩国':area?t.countries.join('、'):isE?'4 次':t.cityCount+' 座城';
+  var fitAll={pad:seoul?[.12,.12,.12,.12]:isMob()?[.14,.1,.16,.1]:[.12,.12,.16,.12],minSpan:isC?40:area?9:isE?7:seoul?0:Math.max(1.2,routeSpan(pts)*1.08)};
+  dMap.fitAll=fitAll;
+  if(seoul){
+   dMap.opt.countryLabels=false;
+   dMap.view(koreaFrame,{pad:fitAll.pad,instant:true});
+   var seoulMove=function(){if(!dMap||gen!==detailMapGen)return;dMap.view(koreaFrame,{pad:fitAll.pad,minSpan:0,dur:RM?0:1500,linear:true});$('#dmapcap').textContent='韩国'};
+  }else if(moscow){
+   dMap.view(framePts,{pad:fitAll.pad,minSpan:fitAll.minSpan,instant:true});
+   requestAnimationFrame(function(){if(!dMap||gen!==detailMapGen)return;dMap.view(focusPts,{pad:[.18,.18,.2,.18],dur:1050,linear:true})});
+  }else dMap.view(framePts,{pad:fitAll.pad,minSpan:fitAll.minSpan,instant:true});
   setTimeout(function(){if(!dMap||gen!==detailMapGen)return;for(var i=0;i<dMap.segP.length;i++)dMap.animateSeg(i,1,800,250+i*420)},250);
-  var cap0=seoul?'首尔':area?t.countries.join('、'):isE?'4 次':t.cityCount+' 座城';$('#dmapcap').textContent=cap0;
-  $$('.zoom button',box).forEach(function(b){b.addEventListener('click',function(){var z=b.getAttribute('data-z');if(z==='in')dMap.zoomBy(1.7);else if(z==='out')dMap.zoomBy(1/1.7);else{dMap.setActive(-1);dMap.view(pts,{pad:fitAll.pad,minSpan:fitAll.minSpan,dur:900})}})});
-  var mc=$('#mapcover',view);if(mc){var m2=new FlatMap(mc,{base:grow(bboxOf(pts),isC?22:area?14:seoul?1.4:1.8,isC?38:area?20:seoul?cityMinSpan(t):Math.max(1.6,routeSpan(pts)*.25)),highlight:hl,overlay:null,cityDiagram:seoul,cityOSM:seoul?SEOUL_OSM:null,kmax:seoul?80:30,lblSize:15,ctyAreaMin:3000,seaK:1,dotR:area?0:4,pulse:false,ghost:false,ctxCities:false,countryLabels:!seoul});if(seoul)addOSMCredit(mc);m2.setRoutes(area?[]:seoul?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg')),stops);m2.view(pts,{pad:isMob()?[.18,.12,.42,.12]:[.14,.1,.36,.42],minSpan:isC?40:area?9:seoul?cityMinSpan(t):2,instant:true});if(seoul)addSeoulTransit(mc,t);for(var i=0;i<m2.segP.length;i++)m2.animateSeg(i,1,1000,500+i*700)}
+  $('#dmapcap').textContent=seoul?'韩国':cap0;
+  $$('.zoom button',box).forEach(function(b){b.addEventListener('click',function(){var z=b.getAttribute('data-z');if(z==='in')dMap.zoomBy(1.7);else if(z==='out')dMap.zoomBy(1/1.7);else{dMap.setActive(-1);if(seoul){dMap.opt.countryLabels=false;dMap.setRoutes([],[]);dMap.view(koreaFrame,{pad:fitAll.pad,dur:900,linear:true})}else dMap.view(framePts,{pad:fitAll.pad,minSpan:fitAll.minSpan,dur:900})}})});
+  var replay=$('[data-replay-map]',view);if(replay)replay.addEventListener('click',function(){if(seoul){dMap.opt.countryLabels=false;dMap.setRoutes([],[]);dMap.view(koreaStart,{pad:.12,instant:true});$('#dmapcap').textContent='韩国';requestAnimationFrame(seoulMove)}else if(moscow){dMap.view(framePts,{pad:fitAll.pad,minSpan:fitAll.minSpan,instant:true});requestAnimationFrame(function(){dMap.view(focusPts,{pad:[.18,.18,.2,.18],dur:1050,linear:true})})}else dMap.view(framePts,{pad:fitAll.pad,minSpan:fitAll.minSpan,dur:900})});
+  $$('.day-map-link',view).forEach(function(b){b.addEventListener('click',function(){var day=b.closest('.itin-d');focusDayOnMap(day,true)})});
+  var mc=$('#mapcover',view);if(mc){var m2=new FlatMap(mc,{base:grow(bboxOf(pts),isC?22:area?14:seoul?1.4:1.8,isC?38:area?20:seoul?cityMinSpan(t):Math.max(1.6,routeSpan(pts)*.25)),highlight:hl,overlay:null,cityDiagram:false,cityOSM:null,kmax:seoul?80:30,lblSize:15,ctyAreaMin:3000,seaK:1,dotR:area?0:4,pulse:false,ghost:false,ctxCities:false,countryLabels:!seoul});m2.setRoutes(area?[]:seoul?[]:legRoutes(t).concat(tripRoutes(t,t.lc||'tg')),stops);m2.view(pts,{pad:isMob()?[.18,.12,.42,.12]:[.14,.1,.36,.42],minSpan:isC?40:area?9:seoul?cityMinSpan(t):2,instant:true});for(var i=0;i<m2.segP.length;i++)m2.animateSeg(i,1,1000,500+i*700)}
   $$('.nx [data-map]',view).forEach(function(el){makeTripMap(el)});
   // hovering or focusing a place lights it on the map; leaving returns to the whole route
   var on=-1,outT=0;
-  function lightUp(el){clearTimeout(outT);var si=+el.getAttribute('data-stop');if(si===on)return;on=si;$$('.st-c',view).forEach(function(c){c.classList.toggle('on',c===el)});
+  function lightUp(el){if(seoul)return;clearTimeout(outT);var si=+el.getAttribute('data-stop');if(si===on)return;on=si;$$('.st-c',view).forEach(function(c){c.classList.toggle('on',c===el)});
    if(isE){dMap.rings=+el.getAttribute('data-visit')+1;$('#dmapcap').textContent='第 '+dMap.rings+' 次';dMap.setActive(0);return}
    if(area)return;var s=pois?pois[si]:t.stops[si];$('#dmapcap').textContent=s?s.city:'';dMap.setActive(si);
    if(seoul){var origIdx=+el.getAttribute('data-stop');var filteredIdx=pois.filter(function(s){return s.city!=='仁川机场'}).findIndex(function(s){return s.city===pois[origIdx].city});dMap.setActive(filteredIdx);return}
-   if(!isMob()){var ll=s?[s.lng,s.lat]:null,near=ll?[ll]:[pts[si]||pts[0]];if(!seoul){if(si>0)near.push(pts[si-1]);if(si<pts.length-1)near.push(pts[si+1])}dMap.view(near,{pad:.22,minSpan:isC?4:seoul?.18:Math.max(routeSpan(near),2),dur:900})}}
-  function reset(){outT=setTimeout(function(){if(!dMap||gen!==detailMapGen)return;on=-1;$$('.st-c',view).forEach(function(c){c.classList.remove('on')});dMap.setActive(-1);dMap.rings=0;$('#dmapcap').textContent=cap0;dMap.view(pts,{pad:fitAll.pad,minSpan:fitAll.minSpan,dur:900})},260)}
+   if(!isMob()&&!moscow){var ll=s?[s.lng,s.lat]:null,near=ll?[ll]:[pts[si]||pts[0]];if(!seoul){if(si>0)near.push(pts[si-1]);if(si<pts.length-1)near.push(pts[si+1])}dMap.view(near,{pad:.22,minSpan:isC?4:seoul?.18:Math.max(routeSpan(near),2),dur:900})}}
+  function reset(){outT=setTimeout(function(){if(!dMap||gen!==detailMapGen)return;on=-1;$$('.st-c',view).forEach(function(c){c.classList.remove('on')});dMap.setActive(-1);dMap.rings=0;$('#dmapcap').textContent=cap0;var dest=moscow?focusPts:framePts;dMap.view(dest,{pad:moscow?[.18,.18,.2,.18]:fitAll.pad,minSpan:moscow?0:fitAll.minSpan,dur:900,linear:moscow})},260)}
   $$('.st-c',view).forEach(function(c){c.addEventListener('mouseenter',function(){lightUp(c)});c.addEventListener('focus',function(){lightUp(c)});c.addEventListener('click',function(e){if(e.target.closest('a'))return;lightUp(c)});c.addEventListener('mouseleave',reset);c.addEventListener('blur',reset)});
   // hovering a photo group heading lights its place too
   $$('.tp-g h3[data-place]',view).forEach(function(hd){var names=(pois||t.stops).map(function(s){return s.city});var j=names.indexOf(hd.getAttribute('data-place'));if(j<0)return;var c=$('.st-c[data-stop="'+j+'"]',view);if(!c)return;hd.addEventListener('mouseenter',function(){lightUp(c)});hd.addEventListener('mouseleave',reset)});
@@ -2387,7 +2412,13 @@ function tryStart(){if(MU.on||MU.trying)return;var a=ensureAudio();MU.trying=tru
  var ok=function(){MU.trying=false;MU.on=true;MU.want=false;disarm();fadeTo(musicTarget(),2000);updMusic()};
  if(p&&p.then)p.then(ok,function(){MU.trying=false;try{a.pause()}catch(_){}});else ok()}
 /* ---------- router ---------- */
-var homeY=0,curRoute=null,navJump=false;
+var homeY=0,curRoute=null,navJump=false,lastTripKey='fp-last-trip-v1',resumeAfterRoute=null,progressSaveTimer=0;
+function readTripProgress(){try{return JSON.parse(localStorage.getItem(lastTripKey)||'null')}catch(e){return null}}
+function saveTripProgress(){if(!curRoute||curRoute.v!=='trip'||scrollY<80)return;var r={id:curRoute.id,y:Math.round(scrollY),label:'继续这段旅行'};
+ var cards=$$('.itin-d');for(var i=0;i<cards.length;i++){if(cards[i].getBoundingClientRect().top<innerHeight*.55){var cue=cards[i].querySelector('h3')||cards[i].querySelector('.itin-k');r.label=cue?cue.textContent:'继续这段旅行'}}
+ try{localStorage.setItem(lastTripKey,JSON.stringify(r))}catch(e){}
+}
+function refreshResume(){var b=$('#resumeJourney');if(!b)return;var p=readTripProgress(),t=p&&BYID[p.id];b.hidden=!(t&&curRoute&&curRoute.v==='home');if(t)b.textContent='继续上次 · '+t.title+(p.label&&p.label!=='继续这段旅行'?' · '+p.label:'')}
 var ALIAS={trips:'y2026',again:'again',places:'again',archive:'archive',countries:'archive',globe:'globe',earth:'globe',map:'globe',intro:'globe'};
 function parse(){var h=location.hash.replace(/^#\/?/,'');var m=h.match(/^trip\/([^\/]+)(?:\/(\d+))?/);if(m){var tid=decodeURIComponent(m[1]);if(tid==='china')tid='china-diary';return {v:'trip',id:tid,day:m[2]?+m[2]:0}}
  var c=h.match(/^country\/(.+)$/);if(c){var nm;try{nm=decodeURIComponent(c[1])}catch(e){nm=c[1]}return {v:'country',id:nm}}
@@ -2420,7 +2451,8 @@ function route(first){
     else if(r.anchor&&(jump||!curRoute||curRoute.v==='home'||!homeY)){var an=r.anchor;requestAnimationFrame(function(){scrollToId(an,true)})}
     else window.scrollTo(0,curRoute&&curRoute.v!=='home'?homeY:0)}
   }catch(err){console.error(err);try{cleanup()}catch(_){}view.innerHTML=errHTML()}
-  curRoute=r;onScroll();
+  curRoute=r;onScroll();refreshResume();
+  if(resumeAfterRoute&&r.v==='trip'&&resumeAfterRoute.id===r.id){var saved=resumeAfterRoute;resumeAfterRoute=null;requestAnimationFrame(function(){window.scrollTo({top:saved.y,behavior:'auto'});onScroll()})}
   if(MU.on&&MU.a)fadeTo(musicTarget(),1500);
   requestAnimationFrame(function(){view.classList.remove('out')})};
  if(first||RM){go()}else{view.classList.add('out');setTimeout(go,300)}
@@ -2441,10 +2473,17 @@ function randomDay(){var pool=TRIPS.filter(function(t){return t.kind==='trip'||t
 
 /* ---------- scroll ui ---------- */
 var ticking=false;
-function onScroll(){if(ticking)return;ticking=true;requestAnimationFrame(function(){ticking=false;var y=scrollY,H=document.documentElement.scrollHeight-innerHeight;$('#progress').style.transform='scaleX('+(H>0?y/H:0)+')';
- var top=$('#top');top.classList.toggle('solid',y>innerHeight*0.6||(document.body.classList.contains('is-detail')&&y>innerHeight*0.5));
- top.classList.toggle('show-title',document.body.classList.contains('is-detail')&&y>innerHeight*0.7);
- if(!document.body.classList.contains('is-detail')){var secs=['globe','map','y2026','y2025','y2024','again','archive'],on='';secs.forEach(function(s){var el=document.getElementById(s);if(el&&el.getBoundingClientRect().top<innerHeight*.5)on=s});$$('.nav a').forEach(function(a){var k=a.getAttribute('data-sec');a.classList.toggle('on',k===on||(k==='trips'&&/^y/.test(on)))})}})}
+function onScroll(){
+ if(ticking)return;ticking=true;
+ requestAnimationFrame(function(){
+  ticking=false;var y=scrollY,H=document.documentElement.scrollHeight-innerHeight;
+  $('#progress').style.transform='scaleX('+(H>0?y/H:0)+')';
+  var top=$('#top');top.classList.toggle('solid',y>innerHeight*0.6||(document.body.classList.contains('is-detail')&&y>innerHeight*0.5));
+  top.classList.toggle('show-title',document.body.classList.contains('is-detail')&&y>innerHeight*0.7);
+  if(!document.body.classList.contains('is-detail')){var secs=['globe','map','y2026','y2025','y2024','again','archive'],on='';secs.forEach(function(s){var el=document.getElementById(s);if(el&&el.getBoundingClientRect().top<innerHeight*.5)on=s});$$('.nav a').forEach(function(a){var k=a.getAttribute('data-sec');a.classList.toggle('on',k===on||(k==='trips'&&/^y/.test(on)))})}
+  if(curRoute&&curRoute.v==='trip'){clearTimeout(progressSaveTimer);progressSaveTimer=setTimeout(saveTripProgress,450)}
+ });
+}
 
 /* ---------- init ---------- */
 function init(){
@@ -2458,7 +2497,9 @@ function init(){
   window.addEventListener('scroll',onScroll,{passive:true});
   var scrC=0,de=document.documentElement;window.addEventListener('scroll',function(){if(!scrC)de.classList.add('scr');clearTimeout(scrC);scrC=setTimeout(function(){scrC=0;de.classList.remove('scr')},160)},{passive:true});
   var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){[ovMap,dMap].concat(homeMaps).forEach(function(m){if(m&&m.el.clientWidth)m.resize()});if(globeCtl)globeCtl.resize()},200)});
-  document.addEventListener('click',function(e){var r=e.target.closest('[data-rand]');if(r){e.preventDefault();randomDay();return}var s=e.target.closest('[data-scroll]');if(s){e.preventDefault();scrollToId(s.getAttribute('data-scroll'))}
+  document.addEventListener('click',function(e){var st=e.target.closest('#searchToggle');if(st){e.preventDefault();var panel=$('#tripSearchPanel'),open=st.getAttribute('aria-expanded')==='true';st.setAttribute('aria-expanded',String(!open));panel.classList.toggle('open',!open);panel.setAttribute('aria-hidden',String(open));if(!open)$('#tripSearch').focus();return}var r=e.target.closest('[data-rand]');if(r){e.preventDefault();randomDay();return}var s=e.target.closest('[data-scroll]');if(s){e.preventDefault();scrollToId(s.getAttribute('data-scroll'))}
+   var tripTarget=e.target.closest('[data-trip-target]');if(tripTarget){e.preventDefault();var anchor=$('#'+tripTarget.getAttribute('data-trip-target'));if(anchor)anchor.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});return}
+   var resume=e.target.closest('#resumeJourney');if(resume){e.preventDefault();var p=readTripProgress();if(p&&BYID[p.id]){if(curRoute&&curRoute.v==='trip'&&curRoute.id===p.id)window.scrollTo({top:p.y,behavior:RM?'auto':'smooth'});else{resumeAfterRoute=p;location.hash='#/trip/'+p.id}}return}
    var mb=e.target.closest('#menub');if(mb){e.preventDefault();$('#sheet').classList.contains('open')?closeSheet():openSheet();return}
    var a=e.target.closest('a[data-sec]');if(a){e.preventDefault();closeSheet();var sec=a.getAttribute('data-sec');if(parse().v!=='home'){navJump=true;if(location.hash==='#/'+sec){route(false)}else location.hash='#/'+sec}else scrollToId(sec,false,sec);return}
    if($('#sheet').classList.contains('open')&&!e.target.closest('#sheet'))closeSheet()});
